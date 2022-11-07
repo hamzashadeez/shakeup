@@ -5,6 +5,9 @@ import BoardStack from "./stacks/BoardStack";
 import { NavigationContainer } from "@react-navigation/native";
 import ProfileStack from "./stacks/ProfileStack";
 // import Tab from "./stacks/Tab";
+import { Amplify, Auth } from 'aws-amplify';
+import awsconfig from './src/aws-exports'
+Amplify.configure(awsconfig);
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -41,4 +44,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+
 });

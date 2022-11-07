@@ -1,0 +1,20 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-shakeup-staging-10046-authRole",
+      "UnauthRoleArn": "arn:aws:iam::151662141501:role/amplify-shakeup-staging-10046-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::151662141501:role/amplify-shakeup-staging-10046-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-shakeup-staging-10046-deployment",
+      "UnauthRoleName": "amplify-shakeup-staging-10046-unauthRole",
+      "StackName": "amplify-shakeup-staging-10046",
+      "StackId": "arn:aws:cloudformation:us-east-1:151662141501:stack/amplify-shakeup-staging-10046/c8baef40-5a49-11ed-a881-12d4089cefb1",
+      "AmplifyAppId": "d1rcdzgzwn50ar"
+    },
+    "categories": {
+      "auth": {
+        "ShakeUP": {}
+      }
+    }
+  }
+}
