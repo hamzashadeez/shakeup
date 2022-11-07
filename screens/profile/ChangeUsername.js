@@ -6,6 +6,7 @@ import {
   View,
   TouchableOpacity,
   ActivityIndicator,
+  Image
 } from "react-native";
 import React, { useState } from "react";
 import CustomScreen from "../../components/CustomScreen";
@@ -81,7 +82,11 @@ const ChangeUsername = ({ navigation }) => {
               style={{ padding: 5 }}
               onPress={() => navigation.goBack()}
             >
-              <Entypo name="chevron-thin-left" size={24} color="#111" />
+              <Image
+                source={require("../../assets/arrow_back.png")}
+                resizeMode="contain"
+                style={{ width: 24, height: 27, margin: 0, marginRight: 0 }}
+              />
             </TouchableOpacity>
             {/* save btn */}
             {showSaveBtn && (
@@ -145,6 +150,7 @@ const styles = StyleSheet.create({
     height: 50,
     padding: 15,
     marginTop: 5,
+    color: "#000000DE",
     borderRadius: 3,
     fontSize: 18,
     fontFamily: "Truculenta-Regular",

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Modal,
+  Image
 } from "react-native";
 import React, { useState } from "react";
 import CustomScreen from "../../components/CustomScreen";
@@ -99,7 +100,12 @@ const ChangeEmail = ({ navigation }) => {
               style={{ padding: 5 }}
               onPress={() => navigation.goBack()}
             >
-              <Entypo name="chevron-thin-left" size={24} color="#111" />
+              {/* <Entypo name="chevron-thin-left" size={24} color="#111" /> */}
+              <Image
+                source={require("../../assets/arrow_back.png")}
+                resizeMode="contain"
+                style={{ width: 24, height: 27, margin: 0, marginRight: 0 }}
+              />
             </TouchableOpacity>
             {/* save btn */}
             {showSaveBtn && (

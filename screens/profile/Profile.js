@@ -4,7 +4,6 @@ import {
   Text,
   TextInput,
   View,
-  Modal,
   Image,
   TouchableOpacity,
 } from "react-native";
@@ -13,6 +12,7 @@ import CustomScreen from "../../components/CustomScreen";
 import CustomHeader from "../../components/CustomHeader";
 import { COLORS } from "../../Theme";
 import { Entypo } from "@expo/vector-icons";
+import Modal from "react-native-modal";
 
 const Profile = ({ navigation }) => {
   const [showModal, setShowModal] = useState(false);
@@ -26,46 +26,7 @@ const Profile = ({ navigation }) => {
         showsVerticalScrollIndicator={false}
         style={{ flex: 1, padding: 20 }}
       >
-        {/* Modal */}
-        <Modal
-          animationType="slide"
-          visible={showModal}
-          onRequestClose={() => setShowModal(false)}
-        >
-          <View style={{ backgroundColor: "#55555522", flex: 1 }}>
-            <View style={styles.modalView}>
-              <Text style={styles.boldText}>Deleting Account?</Text>
-              <Text style={[styles.label, { color: "#000000DE" }]}>
-                Deleting your account cannot be undone, Are you sure?
-              </Text>
-              <View
-                style={{
-                  marginTop: 15,
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "flex-end",
-                }}
-              >
-                <TouchableOpacity
-                  onPress={() => setShowModal(false)}
-                  style={{ paddingLeft: 7, paddingVertical: 5 }}
-                >
-                  <Text style={styles.label}>CANCEL</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{ paddingLeft: 7, paddingVertical: 5 }}
-                  onPress={() => {
-                    setShowModal(false);
-                    navigation.navigate("accountdeleted");
-                  }}
-                >
-                  <Text style={styles.label}>DELETE</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </Modal>
-        {/* End Modal */}
+        
         <Text style={styles.label}>Name</Text>
         <TouchableOpacity
           style={{ zIndex: 15 }}
@@ -160,6 +121,46 @@ const Profile = ({ navigation }) => {
           <Text style={styles.label}>Log Out</Text>
         </TouchableOpacity>
       </View>
+      {/* Modal */}
+        <Modal
+          animationType="slide"
+          isVisible={showModal}
+          // onRequestClose={() => setShowModal(false)}
+        >
+          <View style={{ backgroundColor: "rgba(0,0,0,.1)", flex: 1 }}>
+            <View style={styles.modalView}>
+              <Text style={styles.boldText}>Deleting Account?</Text>
+              <Text style={[styles.label, { color: "#000000DE" }]}>
+                Deleting your account cannot be undone, Are you sure?
+              </Text>
+              <View
+                style={{
+                  marginTop: 15,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() => setShowModal(false)}
+                  style={{ paddingLeft: 7, paddingVertical: 5 }}
+                >
+                  <Text style={styles.label}>CANCEL</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{ paddingLeft: 7, paddingVertical: 5 }}
+                  onPress={() => {
+                    setShowModal(false);
+                    navigation.navigate("accountdeleted");
+                  }}
+                >
+                  <Text style={styles.label}>DELETE</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
+        {/* End Modal */}
     </CustomScreen>
   );
 };
@@ -198,6 +199,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     fontSize: 18,
     fontFamily: "Truculenta-Regular",
+    color: "#000000DE",
   },
   relative: {
     position: "relative",
@@ -221,8 +223,8 @@ const styles = StyleSheet.create({
   },
   modalView: {
     backgroundColor: "white",
-    width: "78%",
-    marginLeft: "11%",
+    width: "82%",
+    marginLeft: "9%",
     marginTop: "20%",
     padding: 24,
     elevation: 1,

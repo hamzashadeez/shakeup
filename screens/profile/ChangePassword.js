@@ -210,6 +210,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: "Truculenta-Regular",
     borderColor: COLORS.primary,
+    color: "#000000DE",
   },
   relative: {
     position: "relative",
