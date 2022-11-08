@@ -4,17 +4,11 @@ import { useCallback } from "react";
 import BoardStack from "./stacks/BoardStack";
 import { NavigationContainer } from "@react-navigation/native";
 import ProfileStack from "./stacks/ProfileStack";
-// import Tab from "./stacks/Tab";
+import TabStack from "./stacks/TabStack";
 import { Amplify, Auth } from 'aws-amplify';
 import awsconfig from './src/aws-exports';
 import {withAuthenticator} from 'aws-amplify-react-native'
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-} from 'recoil';
+import { RecoilRoot, useRecoilState, useRecoilValue } from 'recoil';
 Amplify.configure(awsconfig);
 
 function App() {
@@ -42,8 +36,8 @@ function App() {
       <SafeAreaView style={styles.container}>
         <StatusBar style="auto" />
         {/* <BoardStack /> */}
-        <ProfileStack />
-        {/* <Tab /> */}
+        {/* <ProfileStack /> */}
+        <TabStack />
       </SafeAreaView>
     </NavigationContainer>
   </RecoilRoot>

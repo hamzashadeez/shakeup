@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Modal,
-  Image
+  Image,
 } from "react-native";
 import React, { useState } from "react";
 import CustomScreen from "../../components/CustomScreen";
@@ -50,7 +50,8 @@ const ChangeEmail = ({ navigation }) => {
   };
 
   function validateEmail(email) {
-    const res = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const res =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return res.test(String(email).toLowerCase());
   }
 
@@ -73,15 +74,14 @@ const ChangeEmail = ({ navigation }) => {
   const saveNewInfo = () => {
     // save the new info
     showText(!validateEmail(email));
-    if(validateEmail(email) === true){
+    if (validateEmail(email) === true) {
       setBtnLabel("Saving");
       setTimeout(() => {
         setShowSaveBtn(false);
         setBtnLabel("Save");
         setShowModal(true);
       }, 100);
-
-    }else{
+    } else {
       setShowSaveBtn(false);
     }
   };
@@ -127,9 +127,12 @@ const ChangeEmail = ({ navigation }) => {
             <Text style={styles.label}>Email Address</Text>
             <TextInput
               value={email}
-              onFocus={() => {showText(false);setBorderOne(2)}}
+              onFocus={() => {
+                showText(false);
+                setBorderOne(2);
+              }}
               onEndEditing={() => setBorderOne(0)}
-              keyboardType='email-address'
+              keyboardType="email-address"
               onChangeText={(e) => {
                 setEmail(e);
                 infoHasChanged();
@@ -138,17 +141,16 @@ const ChangeEmail = ({ navigation }) => {
             />
             {/* error message */}
             {show && (
-            <Text
-              style={{
-                color: COLORS.red,
-                fontSize: 16,
-                fontFamily: "Truculenta-Regular",
-              }}
-            >
-              Error: Invalid input
-            </Text>
-          )}
-
+              <Text
+                style={{
+                  color: COLORS.red,
+                  fontSize: 16,
+                  fontFamily: "Truculenta-Regular",
+                }}
+              >
+                Error: Invalid input
+              </Text>
+            )}
           </View>
           {/* Modal */}
           <Modal

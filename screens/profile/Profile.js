@@ -42,7 +42,7 @@ async function signUp() {
 // logout function
 async function signOut() {
     try {
-        await Auth.signOut().then(()=>console.log("logout successfully"))
+        await Auth.signOut().then(()=>console.log("logout successfully")).then(()=>resendConfirmationCode("hahmad1178@gmail.com"))
         
     } catch (error) {
         console.log('error signing out: ', error);
@@ -59,6 +59,14 @@ async function signIn() {
 }
 
 
+async function resendConfirmationCode(username) {
+    try {
+        await Auth.resendSignUp(username);
+        console.log('code resent successfully');
+    } catch (err) {
+        console.log('error resending code: ', err);
+    }
+}
 
   const [user_data, setUser] = useRecoilState(userData);
   console.log(user_data)
