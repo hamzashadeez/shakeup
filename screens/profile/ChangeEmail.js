@@ -25,11 +25,16 @@ const ChangeEmail = ({ navigation }) => {
   const [emailUnavailable, setEmailUnavailable] = useState(false);
   const [showSaveBtn, setShowSaveBtn] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [incorrectOTP, setIncorrectOTP] = useState(false);
+  const [otpCode, setOTPCode] = useState("");
+  const [borderColor2, setBorderColor2] = useState("white");
   const [btnLabel, setBtnLabel] = useState("Save");
   const [borderColor, setBorderColor] = useState("white");
   const [user] = useState({
     email: "john@gmail.com",
   });
+
+  const OTP = "12345";
 
   const infoHasChanged = (email) => {
     let userFieldValues = { email };
@@ -41,14 +46,19 @@ const ChangeEmail = ({ navigation }) => {
   };
 
   const verifyOTP = () => {
-    setTimeout(() => {
-      Toast.show({
-        type: "success",
-        text1: "Changes Successfully Saved",
-        position: "bottom",
-      });
-      setShowModal(false);
-    }, 200);
+    if (otpCode === OTP) {
+      setTimeout(() => {
+        Toast.show({
+          type: "success",
+          text1: "Changes Successfully Saved",
+          position: "bottom",
+        });
+        setShowModal(false);
+      }, 200);
+    } else {
+      setBorderColor2(COLORS.red);
+      setIncorrectOTP(true);
+    }
   };
 
   function validateEmail(email) {
@@ -114,7 +124,7 @@ const ChangeEmail = ({ navigation }) => {
               <Image
                 source={require("../../assets/arrow_back.png")}
                 resizeMode="contain"
-                style={{ width: 24, height: 27, margin: 0, marginRight: 0 }}
+                style={{ width: 24, height: 27, margin: 0, marginLeft: 0 }}
               />
             </TouchableOpacity>
             {/* save btn */}
@@ -218,11 +228,28 @@ const ChangeEmail = ({ navigation }) => {
                 {email}
               </Text>
               <TextInput
-                onFocus={() => setBorderTwo(2)}
-                onEndEditing={() => setBorderTwo(0)}
+                keyboardType="numeric"
+                onFocus={() => {
+                  setIncorrectOTP(false);
+                  setBorderColor2(COLORS.primary);
+                }}
+                onEndEditing={() => setBorderColor2("white")}
                 placeholder="00000"
-                style={[styles.input, { borderWidth: borderTwo }]}
+                value={otpCode}
+                onChangeText={(e) => setOTPCode(e)}
+                style={[styles.input, { borderColor: borderColor2 }]}
               />
+              {incorrectOTP && (
+                <Text
+                  style={{
+                    color: COLORS.red,
+                    fontSize: 16,
+                    fontFamily: "Truculenta-Regular",
+                  }}
+                >
+                  Error: Incorrect OTP code
+                </Text>
+              )}
               <TouchableOpacity
                 onPress={() => verifyOTP()}
                 style={[
@@ -230,6 +257,7 @@ const ChangeEmail = ({ navigation }) => {
                   {
                     justifyContent: "center",
                     marginTop: 25,
+                    borderWidth: 0,
                     alignItems: "center",
                     backgroundColor: COLORS.primary,
                   },
@@ -237,7 +265,6 @@ const ChangeEmail = ({ navigation }) => {
               >
                 <Text style={[styles.label, { color: "white" }]}>Verify</Text>
               </TouchableOpacity>
-
               <TouchableOpacity
                 style={{ marginTop: 25, padding: 15, width: "32%" }}
               >

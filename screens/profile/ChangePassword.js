@@ -19,11 +19,14 @@ const ChangePassword = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [newpassword, setNewPassword] = useState("");
   const [cpassword, setcPassword] = useState("");
-  const [borderOne, setBorderOne] = useState(0);
-  const [borderTwo, setBorderTwo] = useState(0);
-  const [borderThree, setBorderThree] = useState(0);
+  const [borderColorOne, setBorderColorOne] = useState("white");
+  const [borderColorTwo, setBorderColorTwo] = useState("white");
+  const [borderColorThree, setBorderColorThree] = useState("white");
   const [showSaveBtn, setShowSaveBtn] = useState(false);
   const [btnLabel, setBtnLabel] = useState("Save");
+  const [error1, setError1] = useState(false);
+  const [error2, setError2] = useState(false);
+  const [error3, setError3] = useState(false);
   const [user] = useState({
     password: "hamza1",
   });
@@ -62,7 +65,7 @@ const ChangePassword = ({ navigation }) => {
     // if (JSON.stringify(userFieldValues) === JSON.stringify(user)) {
     //   setShowSaveBtn(false);
     // } else {
-      setShowSaveBtn(true);
+    setShowSaveBtn(true);
     // }
   };
 
@@ -70,34 +73,35 @@ const ChangePassword = ({ navigation }) => {
     if (password === user.password) {
       // save the new info
       setBtnLabel("Saving");
-      if (cpassword === newpassword) {
-        setTimeout(() => {
-          setShowSaveBtn(false);
-          setBtnLabel("Save");
-          Toast.show({
-            type: "success",
-            text1: "Successfully Changed",
-            position: "bottom",
-          });
-        }, 50);
-      } else {
-        Toast.show({
-          type: "error",
-          text1: "Password didn't match",
-          position: "bottom",
-        });
-        setBtnLabel("Save");
-        setShowSaveBtn(false);
-        return;
-      }
     } else {
-      Toast.show({
-        type: "error",
-        text1: "Incorrect Password",
-        position: "bottom",
-      });
+      setError1(true);
+      setBorderColorOne(COLORS.red);
       setBtnLabel("Save");
       setShowSaveBtn(false);
+      return;
+    }
+
+    if (newpassword.length < 6) {
+      setError2(true);
+      setBorderColorTwo(COLORS.red);
+      setBtnLabel("Save");
+      return;
+    }
+
+    if (cpassword === newpassword) {
+      setTimeout(() => {
+        setShowSaveBtn(false);
+        setBtnLabel("Save");
+        Toast.show({
+          type: "success",
+          text1: "Successfully Changed",
+          position: "bottom",
+        });
+      }, 50);
+    } else {
+      setError3(true);
+      setBorderColorThree(COLORS.red);
+      setBtnLabel("Save");
       return;
     }
   };
@@ -145,32 +149,84 @@ const ChangePassword = ({ navigation }) => {
             {/* field */}
             <PasswordField
               value={password}
-              onFocus={() => setBorderOne(2)}
-              onEndEditing={() => setBorderOne(0)}
+              onFocus={() => {
+                setError1(false);
+                setBorderColorOne(COLORS.primary);
+              }}
+              onEndEditing={() => setBorderColorOne("white")}
               onChangeText={(e) => {
                 setPassword(e);
                 infoHasChanged(e);
               }}
-              style={[styles.input, { borderWidth: borderOne }]}
+              style={[styles.input, { borderColor: borderColorOne }]}
             />
+            {/* Error Message */}
+            {error1 && (
+              <Text
+                style={{
+                  color: COLORS.red,
+                  fontSize: 16,
+                  fontFamily: "Truculenta-Regular",
+                }}
+              >
+                Error: Incorrect Password
+              </Text>
+            )}
+
             <Text style={[styles.label, { marginTop: 20 }]}>New Password</Text>
             <PasswordField
               value={newpassword}
-              onFocus={() => setBorderTwo(2)}
-              onEndEditing={() => setBorderTwo(0)}
-              onChangeText={(e) => {setNewPassword(e); setShowSaveBtn(true);}}
-              style={[styles.input, { borderWidth: borderTwo }]}
+              onFocus={() => {
+                setError2(false);
+                setBorderColorTwo(COLORS.primary);
+              }}
+              onEndEditing={() => setBorderColorTwo("white")}
+              onChangeText={(e) => {
+                setNewPassword(e);
+                setShowSaveBtn(true);
+              }}
+              style={[styles.input, { borderColor: borderColorTwo }]}
             />
+            {/* Error Message */}
+            {error2 && (
+              <Text
+                style={{
+                  color: COLORS.red,
+                  fontSize: 16,
+                  fontFamily: "Truculenta-Regular",
+                }}
+              >
+                Error: Minimum 6 characters
+              </Text>
+            )}
             <Text style={[styles.label, { marginTop: 20 }]}>
               Confirm New Password
             </Text>
             <PasswordField
               value={cpassword}
-              onFocus={() => setBorderThree(2)}
-              onEndEditing={() => setBorderThree(0)}
-              onChangeText={(e) => {setcPassword(e); setShowSaveBtn(true)}}
-              style={[styles.input, { borderWidth: borderThree }]}
+              onFocus={() => {
+                setError3(false);
+                setBorderColorThree(COLORS.primary);
+              }}
+              onEndEditing={() => setBorderColorThree("white")}
+              onChangeText={(e) => {
+                setcPassword(e);
+                setShowSaveBtn(true);
+              }}
+              style={[styles.input, { borderColor: borderColorThree }]}
             />
+            {/* Error Message */}
+            {error3 && (
+              <Text
+                style={{
+                  color: COLORS.red,
+                  fontSize: 16,
+                  fontFamily: "Truculenta-Regular",
+                }}
+              >
+                Error: Passwords don't match
+              </Text>
+            )}
           </View>
 
           {/* end */}
@@ -209,7 +265,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     fontSize: 18,
     fontFamily: "Truculenta-Regular",
-    borderColor: COLORS.primary,
+    borderWidth: 2,
     color: "#000000DE",
   },
   relative: {
