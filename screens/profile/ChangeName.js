@@ -20,10 +20,11 @@ const ChangeName = ({ navigation }) => {
   const [middle, setMiddleName] = useState("");
   const [btnLabel, setBtnLabel] = useState("Save");
   const [LastName, setLastName] = useState("");
-  const [borderOne, setBorderOne] = useState(0);
   const [borderTwo, setBorderTwo] = useState(0);
   const [borderThree, setBorderThree] = useState(0);
   const [showSaveBtn, setShowSaveBtn] = useState(false);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [borderColor, setBorderColor] = useState("white");
   const [user] = useState({
     firstName: "John",
     middle: "",
@@ -41,16 +42,21 @@ const ChangeName = ({ navigation }) => {
 
   const saveNewInfo = () => {
     // save the new info
-    setBtnLabel("Saving");
-    setTimeout(() => {
-      setShowSaveBtn(false);
-      setBtnLabel("Save");
-      Toast.show({
-        type: "success",
-        text1: "Changes Successfully Saved",
-        position: "bottom",
-      });
-    }, 50);
+    if (firstName.length > 1) {
+      setBtnLabel("Saving");
+      setTimeout(() => {
+        setShowSaveBtn(false);
+        setBtnLabel("Save");
+        Toast.show({
+          type: "success",
+          text1: "Changes Successfully Saved",
+          position: "bottom",
+        });
+      }, 50);
+    } else {
+      setBorderColor(COLORS.red);
+      setShowErrorMessage(true);
+    }
   };
 
   const toastConfig = {
@@ -105,14 +111,28 @@ const ChangeName = ({ navigation }) => {
             <Text style={styles.label}>First Name</Text>
             <TextInput
               value={firstName}
-              onFocus={() => setBorderOne(2)}
-              onEndEditing={() => setBorderOne(0)}
+              onFocus={() => {
+                setShowErrorMessage(false);
+                setBorderColor(COLORS.primary);
+              }}
+              onEndEditing={() => setBorderColor("white")}
               onChangeText={(e) => {
                 setFirstName(e);
                 infoHasChanged(e);
               }}
-              style={[styles.input, { borderWidth: borderOne }]}
+              style={[styles.input, { borderColor }]}
             />
+            {showErrorMessage && (
+              <Text
+                style={{
+                  color: COLORS.red,
+                  fontSize: 16,
+                  fontFamily: "Truculenta-Regular",
+                }}
+              >
+                Error: Email Address unavailable
+              </Text>
+            )}
           </View>
           <View style={{ marginTop: 20 }}>
             <Text style={styles.label}>Middle</Text>
@@ -121,7 +141,7 @@ const ChangeName = ({ navigation }) => {
               placeholder="Optional"
               onFocus={() => setBorderTwo(2)}
               onEndEditing={() => setBorderTwo(0)}
-              style={[styles.input, { borderWidth: borderTwo }]}
+              style={[styles.input, { borderColor: "white" }]}
             />
           </View>
           <View style={{ marginTop: 20 }}>
@@ -131,7 +151,7 @@ const ChangeName = ({ navigation }) => {
               onFocus={() => setBorderThree(2)}
               placeholder="Optional"
               onEndEditing={() => setBorderThree(0)}
-              style={[styles.input, { borderWidth: borderThree }]}
+              style={[styles.input, { borderColor: "white" }]}
             />
           </View>
           {/* end */}
@@ -170,7 +190,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     fontSize: 18,
     fontFamily: "Truculenta-Regular",
-    borderColor: COLORS.primary,
+    borderWidth: 2,
     color: "#000000DE",
   },
   relative: {

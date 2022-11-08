@@ -6,7 +6,7 @@ import {
   View,
   TouchableOpacity,
   ActivityIndicator,
-  Image
+  Image,
 } from "react-native";
 import React, { useState } from "react";
 import CustomScreen from "../../components/CustomScreen";
@@ -18,16 +18,16 @@ import Toast, { BaseToast } from "react-native-toast-message";
 
 const ChangeUsername = ({ navigation }) => {
   const [firstName, setFirstName] = useState("John");
-  const [middle, setMiddleName] = useState("");
-  const [LastName, setLastName] = useState("");
-  const [borderOne, setBorderOne] = useState(0);
-  const [borderTwo, setBorderTwo] = useState(0);
-  const [borderThree, setBorderThree] = useState(0);
   const [showSaveBtn, setShowSaveBtn] = useState(false);
   const [btnLabel, setBtnLabel] = useState("Save");
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [showErrorMessage2, setShowErrorMessage2] = useState(false);
+  const [borderColor, setBorderColor] = useState("white");
   const [user] = useState({
     username: "John",
   });
+
+  const usernameList = ["hamza", "joe"];
 
   const infoHasChanged = (name) => {
     let userFieldValues = { username: name };
@@ -56,16 +56,26 @@ const ChangeUsername = ({ navigation }) => {
 
   const saveNewInfo = () => {
     // save the new info
-    setBtnLabel("Saving");
-    setTimeout(() => {
-      setShowSaveBtn(false);
-      setBtnLabel("Save");
-      Toast.show({
-        type: "success",
-        text1: "Changes Successfully Saved",
-        position: "bottom",
-      });
-    }, 50);
+    if (firstName.length > 1) {
+      if (usernameList.includes(firstName)) {
+        setShowErrorMessage2(true);
+        setBorderColor(COLORS.red);
+      } else {
+        setBtnLabel("Saving");
+        setTimeout(() => {
+          setShowSaveBtn(false);
+          setBtnLabel("Save");
+          Toast.show({
+            type: "success",
+            text1: "Changes Successfully Saved",
+            position: "bottom",
+          });
+        }, 50);
+      }
+    } else {
+      setBorderColor(COLORS.red);
+      setShowErrorMessage(true);
+    }
   };
 
   return (
@@ -108,14 +118,40 @@ const ChangeUsername = ({ navigation }) => {
             <Text style={styles.label}>Username</Text>
             <TextInput
               value={firstName}
-              onFocus={() => setBorderOne(2)}
-              onEndEditing={() => setBorderOne(0)}
+              onFocus={() => {
+                setShowErrorMessage(false);
+                setBorderColor(COLORS.primary);
+                setShowErrorMessage2(false);
+              }}
+              onEndEditing={() => setBorderColor("white")}
               onChangeText={(e) => {
                 setFirstName(e);
                 infoHasChanged(e);
               }}
-              style={[styles.input, { borderWidth: borderOne }]}
+              style={[styles.input, { borderColor }]}
             />
+            {showErrorMessage && (
+              <Text
+                style={{
+                  color: COLORS.red,
+                  fontSize: 16,
+                  fontFamily: "Truculenta-Regular",
+                }}
+              >
+                Error: Must be 2 or more characters
+              </Text>
+            )}
+            {showErrorMessage2 && (
+              <Text
+                style={{
+                  color: COLORS.red,
+                  fontSize: 16,
+                  fontFamily: "Truculenta-Regular",
+                }}
+              >
+                Error: Username unavailable
+              </Text>
+            )}
           </View>
           {/* end */}
         </ScrollView>
@@ -154,7 +190,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     fontSize: 18,
     fontFamily: "Truculenta-Regular",
-    borderColor: COLORS.primary,
+    borderWidth: 2,
   },
   relative: {
     position: "relative",
