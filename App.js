@@ -1,14 +1,12 @@
 import { StyleSheet, Text, View, SafeAreaView, StatusBar } from "react-native";
 import { useFonts } from "expo-font";
 import { useCallback } from "react";
-import BoardStack from "./stacks/BoardStack";
 import { NavigationContainer } from "@react-navigation/native";
-import ProfileStack from "./stacks/ProfileStack";
-import TabStack from "./stacks/TabStack";
-import { Amplify, Auth } from 'aws-amplify';
-import awsconfig from './src/aws-exports';
-import {withAuthenticator} from 'aws-amplify-react-native'
-import { RecoilRoot, useRecoilState, useRecoilValue } from 'recoil';
+import { Amplify, Auth } from "aws-amplify";
+import awsconfig from "./src/aws-exports";
+import { withAuthenticator } from "aws-amplify-react-native";
+import { RecoilRoot, useRecoilState, useRecoilValue } from "recoil";
+import AppStack from "./stacks/AppStack";
 Amplify.configure(awsconfig);
 
 function App() {
@@ -31,17 +29,14 @@ function App() {
   }
 
   return (
-  <RecoilRoot>
-    <NavigationContainer>
-      <SafeAreaView style={styles.container}>
-        <StatusBar style="auto" />
-        {/* <BoardStack /> */}
-        {/* <ProfileStack /> */}
-        <TabStack />
-      </SafeAreaView>
-    </NavigationContainer>
-  </RecoilRoot>
-  
+    <RecoilRoot>
+      <NavigationContainer>
+        <SafeAreaView style={styles.container}>
+          <StatusBar style="auto" />
+          <AppStack />
+        </SafeAreaView>
+      </NavigationContainer>
+    </RecoilRoot>
   );
 }
 
@@ -52,5 +47,4 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-
 });

@@ -5,6 +5,7 @@ import ProfileStack from "./ProfileStack";
 import { COLORS } from "../Theme";
 import { Ionicons } from "@expo/vector-icons";
 import { Image, StyleSheet } from "react-native";
+import { Profile } from "../screens/profile";
 
 const Tab = createBottomTabNavigator();
 const TabStack = () => {
@@ -71,8 +72,8 @@ const TabStack = () => {
       />
 
       <Tab.Screen
-        name="profileStack"
-        component={ProfileStack}
+        name="profile"
+        component={Profile}
         options={{
           tabBarLabel: "Profile",
           tabBarIcon: ({ focused }) =>
