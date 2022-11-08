@@ -22,9 +22,11 @@ const ChangeEmail = ({ navigation }) => {
   const [borderOne, setBorderOne] = useState(0);
   const [borderTwo, setBorderTwo] = useState(0);
   const [show, showText] = useState(false);
+  const [emailUnavailable, setEmailUnavailable] = useState(false);
   const [showSaveBtn, setShowSaveBtn] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [btnLabel, setBtnLabel] = useState("Save");
+  const [borderColor, setBorderColor] = useState("white");
   const [user] = useState({
     email: "john@gmail.com",
   });
@@ -71,18 +73,26 @@ const ChangeEmail = ({ navigation }) => {
     ),
   };
 
+  let emailList = ["hamza@gmail.com", "saulawaj@yahoo.com"];
+
   const saveNewInfo = () => {
     // save the new info
     showText(!validateEmail(email));
     if (validateEmail(email) === true) {
-      setBtnLabel("Saving");
-      setTimeout(() => {
-        setShowSaveBtn(false);
-        setBtnLabel("Save");
-        setShowModal(true);
-      }, 100);
+      if (emailList.includes(email)) {
+        setEmailUnavailable(true);
+        setBorderColor(COLORS.red);
+      } else {
+        setBtnLabel("Saving");
+        setTimeout(() => {
+          setShowSaveBtn(false);
+          setBtnLabel("Save");
+          setShowModal(true);
+        }, 100);
+      }
     } else {
       setShowSaveBtn(false);
+      setBorderColor(COLORS.red);
     }
   };
 
@@ -129,15 +139,17 @@ const ChangeEmail = ({ navigation }) => {
               value={email}
               onFocus={() => {
                 showText(false);
+                setEmailUnavailable(false);
+                setBorderColor(COLORS.primary);
                 setBorderOne(2);
               }}
-              onEndEditing={() => setBorderOne(0)}
+              onEndEditing={() => setBorderColor("white")}
               keyboardType="email-address"
               onChangeText={(e) => {
                 setEmail(e);
                 infoHasChanged();
               }}
-              style={[styles.input, { borderWidth: borderOne }]}
+              style={[styles.input, { borderColor }]}
             />
             {/* error message */}
             {show && (
@@ -148,7 +160,18 @@ const ChangeEmail = ({ navigation }) => {
                   fontFamily: "Truculenta-Regular",
                 }}
               >
-                Error: Invalid input
+                Error: Check your spelling, Invalid format
+              </Text>
+            )}
+            {emailUnavailable && (
+              <Text
+                style={{
+                  color: COLORS.red,
+                  fontSize: 16,
+                  fontFamily: "Truculenta-Regular",
+                }}
+              >
+                Error: Email Address unavailable
               </Text>
             )}
           </View>
@@ -259,7 +282,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     fontSize: 18,
     fontFamily: "Truculenta-Regular",
-    borderColor: COLORS.primary,
+    borderWidth: 2,
   },
   relative: {
     position: "relative",

@@ -78,12 +78,14 @@ const TabStack = () => {
           tabBarLabel: "Profile",
           tabBarIcon: ({ focused }) =>
             focused ? (
+              // <Icon />
               <Image
                 resizeMode="contain"
                 source={require("../assets/profile_enabled.png")}
                 style={styles.activeImg}
               />
             ) : (
+              // <SvgUri width="31" height="31" source={Icon} />
               <Image
                 resizeMode="contain"
                 source={require("../assets/profile.png")}
