@@ -6,10 +6,18 @@ import { NavigationContainer } from "@react-navigation/native";
 import ProfileStack from "./stacks/ProfileStack";
 // import Tab from "./stacks/Tab";
 import { Amplify, Auth } from 'aws-amplify';
-import awsconfig from './src/aws-exports'
+import awsconfig from './src/aws-exports';
+import {withAuthenticator} from 'aws-amplify-react-native'
+import {
+  RecoilRoot,
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+} from 'recoil';
 Amplify.configure(awsconfig);
 
-export default function App() {
+function App() {
   const [fontsLoaded] = useFonts({
     "Truculenta-Black": require("./assets/Truculenta/Truculenta-Black.ttf"),
     "Truculenta-Regular": require("./assets/Truculenta/Truculenta-Regular.ttf"),
@@ -29,6 +37,7 @@ export default function App() {
   }
 
   return (
+  <RecoilRoot>
     <NavigationContainer>
       <SafeAreaView style={styles.container}>
         <StatusBar style="auto" />
@@ -37,8 +46,13 @@ export default function App() {
         {/* <Tab /> */}
       </SafeAreaView>
     </NavigationContainer>
+  </RecoilRoot>
+  
   );
 }
+
+// export default withAuthenticator(App);
+export default App;
 
 const styles = StyleSheet.create({
   container: {

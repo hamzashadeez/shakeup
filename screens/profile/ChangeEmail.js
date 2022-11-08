@@ -13,7 +13,7 @@ import React, { useState } from "react";
 import CustomScreen from "../../components/CustomScreen";
 import CustomHeader from "../../components/CustomHeader";
 import { COLORS } from "../../Theme";
-import { Entypo, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Toast, { BaseToast } from "react-native-toast-message";
 

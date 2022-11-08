@@ -13,8 +13,55 @@ import CustomHeader from "../../components/CustomHeader";
 import { COLORS } from "../../Theme";
 import { Entypo } from "@expo/vector-icons";
 import Modal from "react-native-modal";
+import userData from "../../recoil/userData";
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { Auth } from 'aws-amplify';
 
 const Profile = ({ navigation }) => {
+
+// sign up function for aws
+async function signUp() {
+    try {
+        const { user } = await Auth.signUp({
+            username: "hahmad1178@gmail.com",
+            password: "hamzaa",
+            attributes: {
+                email: "hahmad1178@gmail.com", 
+                preferred_username: "hamza",
+                name: "hamza"
+            },
+            autoSignIn: {
+                enabled: true,
+            }
+        });
+        console.log("sucessfully....",user);
+    } catch (error) {
+        console.log('error signing up:', error);
+    }
+}
+// logout function
+async function signOut() {
+    try {
+        await Auth.signOut().then(()=>console.log("logout successfully"))
+        
+    } catch (error) {
+        console.log('error signing out: ', error);
+    }
+}
+
+// Log in
+async function signIn() {
+    try {
+        const user = await Auth.signIn("hahmad1178@gmail.com", "hamzaa").then((data)=>console.log("Sucessfully ",data.attributes))
+    } catch (error) {
+        console.log('error signing in', error);
+    }
+}
+
+
+
+  const [user_data, setUser] = useRecoilState(userData);
+  console.log(user_data)
   const [showModal, setShowModal] = useState(false);
   const deleteAccount = () => {
     setShowModal(!showModal);
@@ -112,7 +159,7 @@ const Profile = ({ navigation }) => {
           <Text style={styles.label}>Delete Account</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity style={styles.btn} onPress={()=>signUp()}>
           <Image
             source={require("../../assets/logout.png")}
             resizeMode="contain"
