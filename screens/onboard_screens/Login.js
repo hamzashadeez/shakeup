@@ -12,17 +12,27 @@ import Header from "../../components/Header";
 import { COLORS } from "../../Theme";
 import PasswordField from "../../components/PasswordField";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import userData from "../../recoil/userData";
+import { useRecoilState } from "recoil";
+import { Auth } from "aws-amplify";
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [coloredBoarder, setColoredBoarder] = useState("white");
   const [coloredBoarder2, setColoredBoarder2] = useState("white");
+  const [_, setUser] = useRecoilState(userData);
 
-  const signUp = () => {
-    // save name and go to the username screen
-    navigation.navigate("home");
-  };
+  // Log in
+  async function signIn() {
+    try {
+      const user = await Auth.signIn(email, password).then((data) => {
+        setUser(data.attributes);
+      });
+    } catch (error) {
+      console.log("error signing in", error);
+    }
+  }
   return (
     <Screen>
       <KeyboardAwareScrollView enableOnAndroid={true}>
@@ -151,7 +161,7 @@ const Login = ({ navigation }) => {
             />
           </View>
           <TouchableOpacity
-            onPress={() => signUp()}
+            onPress={() => signIn()}
             disabled={email !== "" && password !== "" ? false : true}
             style={[
               styles.btn,

@@ -18,25 +18,13 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { Auth } from "aws-amplify";
 
 const Profile = ({ navigation }) => {
+  const [_, setUser] = useRecoilState(userData);
   // logout function
   async function signOut() {
     try {
-      await Auth.signOut()
-        .then(() => console.log("logout successfully"))
-        .then(() => resendConfirmationCode("hahmad1178@gmail.com"));
+      await Auth.signOut().then(() => setUser(null));
     } catch (error) {
       console.log("error signing out: ", error);
-    }
-  }
-
-  // Log in
-  async function signIn() {
-    try {
-      const user = await Auth.signIn("hahmad1178@gmail.com", "hamzaa").then(
-        (data) => console.log("Sucessfully ", data.attributes)
-      );
-    } catch (error) {
-      console.log("error signing in", error);
     }
   }
 
@@ -49,8 +37,6 @@ const Profile = ({ navigation }) => {
     }
   }
 
-  const [user_data, setUser] = useRecoilState(userData);
-  console.log(user_data);
   const [showModal, setShowModal] = useState(false);
   const deleteAccount = () => {
     setShowModal(!showModal);
@@ -147,7 +133,7 @@ const Profile = ({ navigation }) => {
           <Text style={styles.label}>Delete Account</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.btn} onPress={() => signUp()}>
+        <TouchableOpacity style={styles.btn} onPress={() => signOut()}>
           <Image
             source={require("../../assets/logout.png")}
             resizeMode="contain"

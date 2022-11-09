@@ -17,15 +17,11 @@ const MainStack = () => {
     name: "",
   };
 
-  // Auth.currentAuthenticatedUser()
-
   useEffect(() => {
     const syncUser = async () => {
       const authUser = await Auth.currentAuthenticatedUser({
         bypassCache: true,
       });
-      console.log(authUser.attributes);
-      // setState(authUser.attributes);
       setUser(authUser.attributes);
     };
 
