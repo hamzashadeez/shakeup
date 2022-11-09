@@ -14,6 +14,9 @@ import { Entypo } from "@expo/vector-icons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Toast, { BaseToast } from "react-native-toast-message";
 import PasswordField from "../../components/PasswordField";
+import { Auth } from "aws-amplify";
+import userData from "../../recoil/userData";
+import { useRecoilState } from "recoil";
 
 const ChangePassword = ({ navigation }) => {
   const [password, setPassword] = useState("");
@@ -31,6 +34,9 @@ const ChangePassword = ({ navigation }) => {
     password: "hamza1",
   });
 
+  const [user_data, setUser] = useRecoilState(userData);
+  console.log(user_data);
+
   const toastConfig = {
     success: (props) => (
       <BaseToast
@@ -45,6 +51,7 @@ const ChangePassword = ({ navigation }) => {
         }}
       />
     ),
+
     error: (props) => (
       <BaseToast
         {...props}
@@ -92,6 +99,12 @@ const ChangePassword = ({ navigation }) => {
       setTimeout(() => {
         setShowSaveBtn(false);
         setBtnLabel("Save");
+        // Auth.currentAuthenticatedUser()
+        //   .then((user) => {
+        //     return Auth.changePassword(user, "oldPassword", "newPassword");
+        //   })
+        //   .then((data) => console.log(data))
+        //   .catch((err) => console.log(err));
         Toast.show({
           type: "success",
           text1: "Successfully Changed",

@@ -18,14 +18,12 @@ import { useRecoilState } from "recoil";
 const OTP = ({ navigation, route }) => {
   const { name, username, email } = route.params;
   const [otpcode, setOTP] = useState("");
-  const [valid, setValid] = useState(null);
-  const [show, showText] = useState(false);
   const [coloredBoarder, setColoredBoarder] = useState("white");
-  const [user_data, setUser] = useRecoilState(userData);
+  const [_, setUser] = useRecoilState(userData);
+  const [showError, setErrorMessage] = useState(false);
 
   const changeText = (text) => {
     setOTP(text);
-    showText(false);
   };
 
   const submit = async () => {
@@ -34,6 +32,7 @@ const OTP = ({ navigation, route }) => {
         setUser({ name, username, email });
       });
     } catch (error) {
+      setErrorMessage(true);
       console.log("error confirming sign up", error);
     }
     // if OTP is correct, Navigate to Update State
@@ -83,7 +82,10 @@ const OTP = ({ navigation, route }) => {
               value={otpcode}
               onChangeText={(e) => changeText(e)}
               placeholder="00000"
-              onFocus={() => setColoredBoarder(COLORS.orange)}
+              onFocus={() => {
+                setErrorMessage(true);
+                setColoredBoarder(COLORS.orange);
+              }}
               keyboardType="numeric"
               style={[
                 styles.input,
@@ -93,7 +95,7 @@ const OTP = ({ navigation, route }) => {
               ]}
             />
           </View>
-          {false && (
+          {showError && (
             <Text
               style={{
                 color: COLORS.yellow,

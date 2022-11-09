@@ -22,6 +22,7 @@ const Login = ({ navigation }) => {
   const [coloredBoarder, setColoredBoarder] = useState("white");
   const [coloredBoarder2, setColoredBoarder2] = useState("white");
   const [_, setUser] = useRecoilState(userData);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
 
   // Log in
   async function signIn() {
@@ -30,6 +31,7 @@ const Login = ({ navigation }) => {
         setUser(data.attributes);
       });
     } catch (error) {
+      setShowErrorMessage(true);
       console.log("error signing in", error);
     }
   }
@@ -126,7 +128,10 @@ const Login = ({ navigation }) => {
               value={email}
               onChangeText={(e) => setEmail(e)}
               placeholder="Enter Username"
-              onFocus={() => setColoredBoarder(COLORS.orange)}
+              onFocus={() => {
+                setShowErrorMessage(false);
+                setColoredBoarder(COLORS.orange);
+              }}
               onEndEditing={() => setColoredBoarder(COLORS.primary)}
               style={[
                 styles.input,
@@ -150,7 +155,10 @@ const Login = ({ navigation }) => {
               value={password}
               onChangeText={(e) => setPassword(e)}
               placeholder="Enter password"
-              onFocus={() => setColoredBoarder2(COLORS.orange)}
+              onFocus={() => {
+                setShowErrorMessage(false);
+                setColoredBoarder2(COLORS.orange);
+              }}
               onEndEditing={() => setColoredBoarder2(COLORS.primary)}
               style={[
                 styles.input,
@@ -159,6 +167,17 @@ const Login = ({ navigation }) => {
                 },
               ]}
             />
+            {showErrorMessage && (
+              <Text
+                style={{
+                  color: COLORS.yellow,
+                  fontSize: 16,
+                  fontFamily: "Truculenta-Regular",
+                }}
+              >
+                Error: Incorrcet email or password
+              </Text>
+            )}
           </View>
           <TouchableOpacity
             onPress={() => signIn()}
