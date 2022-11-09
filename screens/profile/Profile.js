@@ -14,62 +14,43 @@ import { COLORS } from "../../Theme";
 import { Entypo } from "@expo/vector-icons";
 import Modal from "react-native-modal";
 import userData from "../../recoil/userData";
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { Auth } from 'aws-amplify';
+import { useRecoilState, useRecoilValue } from "recoil";
+import { Auth } from "aws-amplify";
 
 const Profile = ({ navigation }) => {
-
-// sign up function for aws
-async function signUp() {
+  // logout function
+  async function signOut() {
     try {
-        const { user } = await Auth.signUp({
-            username: "hahmad1178@gmail.com",
-            password: "hamzaa",
-            attributes: {
-                email: "hahmad1178@gmail.com", 
-                preferred_username: "hamza",
-                name: "hamza"
-            },
-            autoSignIn: {
-                enabled: true,
-            }
-        });
-        console.log("sucessfully....",user);
+      await Auth.signOut()
+        .then(() => console.log("logout successfully"))
+        .then(() => resendConfirmationCode("hahmad1178@gmail.com"));
     } catch (error) {
-        console.log('error signing up:', error);
+      console.log("error signing out: ", error);
     }
-}
-// logout function
-async function signOut() {
+  }
+
+  // Log in
+  async function signIn() {
     try {
-        await Auth.signOut().then(()=>console.log("logout successfully")).then(()=>resendConfirmationCode("hahmad1178@gmail.com"))
-        
+      const user = await Auth.signIn("hahmad1178@gmail.com", "hamzaa").then(
+        (data) => console.log("Sucessfully ", data.attributes)
+      );
     } catch (error) {
-        console.log('error signing out: ', error);
+      console.log("error signing in", error);
     }
-}
+  }
 
-// Log in
-async function signIn() {
+  async function resendConfirmationCode(username) {
     try {
-        const user = await Auth.signIn("hahmad1178@gmail.com", "hamzaa").then((data)=>console.log("Sucessfully ",data.attributes))
-    } catch (error) {
-        console.log('error signing in', error);
-    }
-}
-
-
-async function resendConfirmationCode(username) {
-    try {
-        await Auth.resendSignUp(username);
-        console.log('code resent successfully');
+      await Auth.resendSignUp(username);
+      console.log("code resent successfully");
     } catch (err) {
-        console.log('error resending code: ', err);
+      console.log("error resending code: ", err);
     }
-}
+  }
 
   const [user_data, setUser] = useRecoilState(userData);
-  console.log(user_data)
+  console.log(user_data);
   const [showModal, setShowModal] = useState(false);
   const deleteAccount = () => {
     setShowModal(!showModal);
@@ -81,7 +62,6 @@ async function resendConfirmationCode(username) {
         showsVerticalScrollIndicator={false}
         style={{ flex: 1, padding: 20 }}
       >
-        
         <Text style={styles.label}>Name</Text>
         <TouchableOpacity
           style={{ zIndex: 15 }}
@@ -167,7 +147,7 @@ async function resendConfirmationCode(username) {
           <Text style={styles.label}>Delete Account</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.btn} onPress={()=>signUp()}>
+        <TouchableOpacity style={styles.btn} onPress={() => signUp()}>
           <Image
             source={require("../../assets/logout.png")}
             resizeMode="contain"
@@ -177,45 +157,45 @@ async function resendConfirmationCode(username) {
         </TouchableOpacity>
       </View>
       {/* Modal */}
-        <Modal
-          animationType="slide"
-          isVisible={showModal}
-          // onRequestClose={() => setShowModal(false)}
-        >
-          <View style={{ backgroundColor: "rgba(0,0,0,.1)", flex: 1 }}>
-            <View style={styles.modalView}>
-              <Text style={styles.boldText}>Deleting Account?</Text>
-              <Text style={[styles.label, { color: "#000000DE" }]}>
-                Deleting your account cannot be undone, Are you sure?
-              </Text>
-              <View
-                style={{
-                  marginTop: 15,
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "flex-end",
+      <Modal
+        animationType="slide"
+        isVisible={showModal}
+        // onRequestClose={() => setShowModal(false)}
+      >
+        <View style={{ backgroundColor: "rgba(0,0,0,.1)", flex: 1 }}>
+          <View style={styles.modalView}>
+            <Text style={styles.boldText}>Deleting Account?</Text>
+            <Text style={[styles.label, { color: "#000000DE" }]}>
+              Deleting your account cannot be undone, Are you sure?
+            </Text>
+            <View
+              style={{
+                marginTop: 15,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "flex-end",
+              }}
+            >
+              <TouchableOpacity
+                onPress={() => setShowModal(false)}
+                style={{ paddingLeft: 7, paddingVertical: 5 }}
+              >
+                <Text style={styles.label}>CANCEL</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ paddingLeft: 7, paddingVertical: 5 }}
+                onPress={() => {
+                  setShowModal(false);
+                  navigation.navigate("accountdeleted");
                 }}
               >
-                <TouchableOpacity
-                  onPress={() => setShowModal(false)}
-                  style={{ paddingLeft: 7, paddingVertical: 5 }}
-                >
-                  <Text style={styles.label}>CANCEL</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{ paddingLeft: 7, paddingVertical: 5 }}
-                  onPress={() => {
-                    setShowModal(false);
-                    navigation.navigate("accountdeleted");
-                  }}
-                >
-                  <Text style={styles.label}>DELETE</Text>
-                </TouchableOpacity>
-              </View>
+                <Text style={styles.label}>DELETE</Text>
+              </TouchableOpacity>
             </View>
           </View>
-        </Modal>
-        {/* End Modal */}
+        </View>
+      </Modal>
+      {/* End Modal */}
     </CustomScreen>
   );
 };

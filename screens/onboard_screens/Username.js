@@ -12,7 +12,8 @@ import Screen from "../../components/Screen";
 import Header from "../../components/Header";
 import { COLORS } from "../../Theme";
 
-const Username = ({ navigation }) => {
+const Username = ({ navigation, route }) => {
+  const { fullname } = route.params;
   const [name, setName] = useState("");
   const [valid, setValid] = useState(false);
   const [coloredBoarder, setColoredBoarder] = useState("white");
@@ -29,7 +30,7 @@ const Username = ({ navigation }) => {
   const next = () => {
     // save username and go to the username screen
     if (valid) {
-      navigation.navigate("email");
+      navigation.navigate("email", { name: fullname, username: name });
     }
   };
 

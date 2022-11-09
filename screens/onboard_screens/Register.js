@@ -12,26 +12,23 @@ import Header from "../../components/Header";
 import { COLORS } from "../../Theme";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-
 const Register = ({ navigation }) => {
   const [name, setName] = useState("");
   const [valid, setValid] = useState(null);
   const [coloredBoarder, setColoredBoarder] = useState("white");
   const [show, showText] = useState(false);
 
-
   const changeText = (text) => {
     setName(text);
     if (text.length > 0 && text.length < 2) {
       console.log(true);
-      
     } else {
       if (text.length !== 0) {
         setValid(true);
         showText(false);
       } else {
         setValid(null);
-        setColoredBoarder("white")
+        setColoredBoarder("white");
       }
     }
   };
@@ -40,11 +37,11 @@ const Register = ({ navigation }) => {
     if (text.length > 0 && text.length < 2) {
       setValid(false);
       showText(true);
-      setColoredBoarder(COLORS.yellow)
+      setColoredBoarder(COLORS.yellow);
     } else {
       if (text.length !== 0) {
         setValid(true);
-        navigation.navigate("username");
+        navigation.navigate("username", { fullname: name });
       } else {
         setValid(null);
       }
@@ -162,16 +159,16 @@ const Register = ({ navigation }) => {
               value={name}
               onChangeText={(e) => changeText(e)}
               placeholder="Enter First Name"
-              onFocus={()=>setColoredBoarder(COLORS.orange)}
+              onFocus={() => setColoredBoarder(COLORS.orange)}
               style={[
                 styles.input,
                 {
-                  borderColor: coloredBoarder
-                    // valid === null
-                    //   ? "white"
-                    //   : valid === true
-                    //   ? COLORS.orange
-                    //   : COLORS.yellow,
+                  borderColor: coloredBoarder,
+                  // valid === null
+                  //   ? "white"
+                  //   : valid === true
+                  //   ? COLORS.orange
+                  //   : COLORS.yellow,
                 },
               ]}
             />
@@ -189,7 +186,7 @@ const Register = ({ navigation }) => {
           )}
           <TouchableOpacity
             onPress={() => signUp()}
-            disabled = {valid ? false: true}
+            disabled={valid ? false : true}
             style={[
               styles.btn,
               { backgroundColor: valid ? COLORS.orange : "#E3E4E6" },
@@ -199,7 +196,7 @@ const Register = ({ navigation }) => {
               style={{
                 fontFamily: "Truculenta-Regular",
                 color: valid ? "white" : "#000",
-                fontSize: 17.1
+                fontSize: 17.1,
               }}
             >
               Sign Up

@@ -7,9 +7,9 @@ let data = {
   name: "",
 };
 
-const userData = atom({
-  key: "userData",
-  default: null,
+const authData = atom({
+  key: "authData",
+  default: data,
 });
 
-export default userData;
+export default authData;

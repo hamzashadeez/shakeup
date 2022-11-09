@@ -11,38 +11,33 @@ import Screen from "../../components/Screen";
 import Header from "../../components/Header";
 import { COLORS } from "../../Theme";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Auth } from "aws-amplify";
+import userData from "../../recoil/userData";
+import { useRecoilState } from "recoil";
 
-const Email = ({ navigation, route }) => {
-  const { name, username } = route.params;
-  const [email, setEmail] = useState("");
+const OTP = ({ navigation, route }) => {
+  const { name, username, email } = route.params;
+  const [otpcode, setOTP] = useState("");
   const [valid, setValid] = useState(null);
   const [show, showText] = useState(false);
   const [coloredBoarder, setColoredBoarder] = useState("white");
-
-  function validateEmail(email) {
-    const res =
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return res.test(String(email).toLowerCase());
-  }
+  const [user_data, setUser] = useRecoilState(userData);
 
   const changeText = (text) => {
-    setEmail(text);
+    setOTP(text);
     showText(false);
   };
 
-  const submit = () => {
-    if (email.length === 0) {
-      setValid(null);
-      showText(false);
-    } else {
-      setValid(validateEmail(email));
-      showText(!validateEmail(email));
+  const submit = async () => {
+    try {
+      await Auth.confirmSignUp(email, otpcode).then((user) => {
+        setUser({ name, username, email });
+      });
+    } catch (error) {
+      console.log("error confirming sign up", error);
     }
-    if (validateEmail(email)) {
-      navigation.navigate("createpassword", { name, username, email });
-    } else {
-      setColoredBoarder(COLORS.yellow);
-    }
+    // if OTP is correct, Navigate to Update State
+    //else, display error message
   };
 
   return (
@@ -50,11 +45,6 @@ const Email = ({ navigation, route }) => {
       <KeyboardAwareScrollView enableOnAndroid={true}>
         <Header />
         <View style={{ paddingHorizontal: 15, paddingVertical: 10, flex: 1 }}>
-          <Image
-            source={require("../../assets/2.png")}
-            resizeMode="contain"
-            style={{ width: "100%", height: 28 }}
-          />
           <Text
             style={{
               fontSize: 32,
@@ -65,17 +55,17 @@ const Email = ({ navigation, route }) => {
               marginBottom: 12,
             }}
           >
-            Sign Up
+            Verify OTP Code
           </Text>
           <Text
             style={{
-              fontSize: 24,
+              fontSize: 18,
               textAlign: "center",
               color: "#EEEFF0",
               fontFamily: "Truculenta-Regular",
             }}
           >
-            Welcome to learning cocktails!
+            We have sent an OTP Code to your email address
           </Text>
 
           {/* form */}
@@ -87,14 +77,14 @@ const Email = ({ navigation, route }) => {
                 fontFamily: "Truculenta-Regular",
               }}
             >
-              Email Address
+              OTP Code
             </Text>
             <TextInput
-              value={email}
+              value={otpcode}
               onChangeText={(e) => changeText(e)}
-              placeholder="Enter Email"
+              placeholder="00000"
               onFocus={() => setColoredBoarder(COLORS.orange)}
-              keyboardType="email-address"
+              keyboardType="numeric"
               style={[
                 styles.input,
                 {
@@ -103,7 +93,7 @@ const Email = ({ navigation, route }) => {
               ]}
             />
           </View>
-          {show && (
+          {false && (
             <Text
               style={{
                 color: COLORS.yellow,
@@ -111,25 +101,23 @@ const Email = ({ navigation, route }) => {
                 fontFamily: "Truculenta-Regular",
               }}
             >
-              Error: Invalid input
+              Error: Incorrect OTP Code
             </Text>
           )}
           <TouchableOpacity
             onPress={() => submit()}
-            disabled={email.length > 3 ? false : true}
+            disabled={otpcode.length > 3 ? false : true}
             style={[
               styles.btn,
               {
-                backgroundColor: validateEmail(email)
-                  ? COLORS.orange
-                  : "#E3E4E6",
+                backgroundColor: true ? COLORS.orange : "#E3E4E6",
               },
             ]}
           >
             <Text
               style={{
                 fontFamily: "Truculenta-Regular",
-                color: validateEmail(email) ? "white" : "#000",
+                color: true ? "white" : "#000",
                 fontSize: 18,
               }}
             >
@@ -153,7 +141,7 @@ const Email = ({ navigation, route }) => {
   );
 };
 
-export default Email;
+export default OTP;
 
 const styles = StyleSheet.create({
   input: {

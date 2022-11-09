@@ -9,6 +9,7 @@ import {
   CreatePassword,
   Terms,
   Login,
+  OTP,
 } from "../screens/onboard_screens";
 
 const Stack = createStackNavigator();
@@ -24,10 +25,11 @@ function BoardStack() {
       <Stack.Screen name="username" component={Username} />
       <Stack.Screen name="email" component={Email} />
       <Stack.Screen name="createpassword" component={CreatePassword} />
-      <Stack.Screen name="home" component={Home} />
+      <Stack.Screen name="homescreen" component={Home} />
       <Stack.Screen name="forgotpassword" component={ForgotPassword} />
       <Stack.Screen name="forgotusername" component={ForgotUsername} />
       <Stack.Screen name="terms" component={Terms} />
+      <Stack.Screen name="otp" component={OTP} />
     </Stack.Navigator>
   );
 }

@@ -6,8 +6,8 @@ import { Amplify, Auth } from "aws-amplify";
 import awsconfig from "./src/aws-exports";
 import { withAuthenticator } from "aws-amplify-react-native";
 import { RecoilRoot, useRecoilState, useRecoilValue } from "recoil";
-import AppStack from "./stacks/AppStack";
-Amplify.configure(awsconfig);
+import MainStack from "./stacks/MainStack";
+Amplify.configure({ ...awsconfig, Analytics: { disabled: true } });
 
 function App() {
   const [fontsLoaded] = useFonts({
@@ -16,7 +16,6 @@ function App() {
     "Truculenta-SemiBold": require("./assets/Truculenta/Truculenta-SemiBold.ttf"),
     "Truculenta-Bold": require("./assets/Truculenta/Truculenta-Bold.ttf"),
   });
-  //some few changes
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
@@ -33,7 +32,7 @@ function App() {
       <NavigationContainer>
         <SafeAreaView style={styles.container}>
           <StatusBar style="auto" />
-          <AppStack />
+          <MainStack />
         </SafeAreaView>
       </NavigationContainer>
     </RecoilRoot>

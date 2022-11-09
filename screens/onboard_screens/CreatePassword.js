@@ -13,8 +13,10 @@ import { COLORS } from "../../Theme";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import PasswordField from "../../components/PasswordField";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Auth } from "aws-amplify";
 
-const CreatePassword = ({ navigation }) => {
+const CreatePassword = ({ navigation, route }) => {
+  const { name, username, email } = route.params;
   const [password, setPassword] = useState("");
   const [cpassword, setCPassword] = useState("");
   const [valid, setValid] = useState(null);
@@ -33,6 +35,28 @@ const CreatePassword = ({ navigation }) => {
     setShowMatchErrorLabel(false);
     setShowCountErrorLabel(false);
   };
+
+  async function signUp() {
+    try {
+      const { user } = await Auth.signUp({
+        username: email,
+        password,
+        attributes: {
+          email,
+          preferred_username: username,
+          name,
+        },
+        autoSignIn: {
+          enabled: true,
+        },
+      }).then(() => {
+        navigation.navigate("otp", { name, username, email });
+      });
+      console.log("sucessfully....", user);
+    } catch (error) {
+      console.log("error signing up:", error);
+    }
+  }
 
   const realtimeValidation = () => {
     if (password === cpassword) {
@@ -66,21 +90,22 @@ const CreatePassword = ({ navigation }) => {
         // check for matching
         tempValid = false;
         setValid(false);
-        setColoredBoarder(COLORS.yellow)
-        setColoredBoarder2(COLORS.yellow)
+        setColoredBoarder(COLORS.yellow);
+        setColoredBoarder2(COLORS.yellow);
         setShowCountErrorLabel(true);
       }
     } else {
       tempMatch = false;
       setmatch(false);
-      setColoredBoarder(COLORS.yellow)
-      setColoredBoarder2(COLORS.yellow)
-      setCPassword("")
+      setColoredBoarder(COLORS.yellow);
+      setColoredBoarder2(COLORS.yellow);
+      setCPassword("");
       setShowMatchErrorLabel(true);
     }
 
     if (tempValid && tempMatch) {
-      navigation.navigate("home");
+      // signup here
+      signUp();
     }
   };
   return (
@@ -130,8 +155,8 @@ const CreatePassword = ({ navigation }) => {
             <PasswordField
               value={password}
               secureTextEntry={true}
-              onFocus={()=>setColoredBoarder(COLORS.orange)}
-              onEndEditing={()=>setColoredBoarder(COLORS.primary)}
+              onFocus={() => setColoredBoarder(COLORS.orange)}
+              onEndEditing={() => setColoredBoarder(COLORS.primary)}
               onChangeText={(e) => {
                 setPassword(e);
                 realtimeValidation();
@@ -139,7 +164,7 @@ const CreatePassword = ({ navigation }) => {
                 setShowCountErrorLabel(false);
               }}
               placeholder="Create Password"
-              style={[styles.input,{borderColor: coloredBoarder}]}
+              style={[styles.input, { borderColor: coloredBoarder }]}
             />
             <Text
               style={{
@@ -155,9 +180,9 @@ const CreatePassword = ({ navigation }) => {
               value={cpassword}
               secureTextEntry={true}
               onChangeText={(e) => changeText(e)}
-              onFocus={()=>setColoredBoarder2(COLORS.orange)}
+              onFocus={() => setColoredBoarder2(COLORS.orange)}
               placeholder="Confirm Password"
-              onEndEditing={()=>setColoredBoarder2(COLORS.primary)}
+              onEndEditing={() => setColoredBoarder2(COLORS.primary)}
               style={[
                 styles.input,
                 {
@@ -189,36 +214,53 @@ const CreatePassword = ({ navigation }) => {
             )}
           </View>
 
-        {/*checkbox*/}
-        <View style={{paddingVertical: 10, flexDirection: 'row', display: "flex", alignItems: "center"}}>
-          <BouncyCheckbox
-            size={25}
-            fillColor={COLORS.orange}
-            unfillColor="#BCC0C4"
-            style={{borderRadius: 0}}
-            iconStyle={{ borderRadius: 2 }}
-            innerIconStyle={{ borderWidth: 0, color: 'blue' }}
-            textStyle={{ fontFamily: "Truculenta-Regular"}}
-            onPress={(e) => {setAgreed(e)}}
-          />
-          <Text style={styles.text}>I Agree to <Text onPress={()=>navigation.navigate("terms")} style={{color: COLORS.yellow}}>Terms & Conditions</Text></Text>
-        </View>
-        {/*end checkbox*/}
+          {/*checkbox*/}
+          <View
+            style={{
+              paddingVertical: 10,
+              flexDirection: "row",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <BouncyCheckbox
+              size={25}
+              fillColor={COLORS.orange}
+              unfillColor="#BCC0C4"
+              style={{ borderRadius: 0 }}
+              iconStyle={{ borderRadius: 2 }}
+              innerIconStyle={{ borderWidth: 0, color: "blue" }}
+              textStyle={{ fontFamily: "Truculenta-Regular" }}
+              onPress={(e) => {
+                setAgreed(e);
+              }}
+            />
+            <Text style={styles.text}>
+              I Agree to{" "}
+              <Text
+                onPress={() => navigation.navigate("terms")}
+                style={{ color: COLORS.yellow }}
+              >
+                Terms & Conditions
+              </Text>
+            </Text>
+          </View>
+          {/*end checkbox*/}
           <TouchableOpacity
             onPress={() => next()}
-            disabled={password.length>1 && agreed? false: true}
+            disabled={password.length > 1 && agreed ? false : true}
             style={[
               styles.btn,
               {
-                backgroundColor: agreed===true? COLORS.orange: "#E3E4E6",
+                backgroundColor: agreed === true ? COLORS.orange : "#E3E4E6",
               },
             ]}
           >
             <Text
               style={{
                 fontFamily: "Truculenta-Regular",
-                color: agreed===true? "#fff": "#000",
-                fontSize: 18
+                color: agreed === true ? "#fff" : "#000",
+                fontSize: 18,
               }}
             >
               Continue
@@ -265,10 +307,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  text:{
-    color: 'white',
+  text: {
+    color: "white",
     fontSize: 16,
     fontFamily: "Truculenta-Regular",
-    marginLeft: -10
-  }
+    marginLeft: -10,
+  },
 });
