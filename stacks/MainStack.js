@@ -24,6 +24,7 @@ const MainStack = () => {
       );
 
       if (user.data.getUsers) {
+        // console.log("already in DB", user.data.getUsers);
         return;
       }
 
@@ -35,7 +36,9 @@ const MainStack = () => {
         password: "",
       };
 
-      await API.graphql(graphqlOperation(createUsers, { input: newUser }));
+      await API.graphql(graphqlOperation(createUsers, { input: newUser })).then(
+        () => console.log("Added")
+      );
     };
 
     syncUser();

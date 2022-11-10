@@ -51,10 +51,10 @@ const Profile = ({ navigation }) => {
         <Text style={styles.label}>Name</Text>
         <TouchableOpacity
           style={{ zIndex: 15 }}
-          onPress={() => navigation.navigate("change_name")}
+          onPress={() => navigation.navigate("change_name", { data: _ })}
         >
           <View style={styles.relative}>
-            <TextInput editable={false} value="john" style={styles.input} />
+            <TextInput editable={false} value={_?.name} style={styles.input} />
             <Entypo
               style={styles.chevron}
               name="chevron-thin-right"
@@ -66,39 +66,41 @@ const Profile = ({ navigation }) => {
         <View style={styles.flex}>
           <Text style={styles.label}>Username</Text>
           <TouchableOpacity
-            onPress={() => navigation.navigate("change_username")}
+            onPress={() => navigation.navigate("change_username", { data: _ })}
           >
             <Text style={styles.label2}>Edit</Text>
           </TouchableOpacity>
         </View>
         <TouchableOpacity
           style={{ zIndex: 15 }}
-          onPress={() => navigation.navigate("change_username")}
+          onPress={() => navigation.navigate("change_username", { data: _ })}
         >
-          <TextInput editable={false} value="jsmith" style={styles.input} />
+          <TextInput
+            editable={false}
+            value={_?.preferred_username}
+            style={styles.input}
+          />
         </TouchableOpacity>
         {/* Email */}
         <View style={styles.flex}>
           <Text style={styles.label}>Email Address</Text>
-          <TouchableOpacity onPress={() => navigation.navigate("change_email")}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("change_email", { data: _ })}
+          >
             <Text style={styles.label2}>Edit</Text>
           </TouchableOpacity>
         </View>
         <TouchableOpacity
           style={{ zIndex: 15 }}
-          onPress={() => navigation.navigate("change_email")}
+          onPress={() => navigation.navigate("change_email", { data: _ })}
         >
-          <TextInput
-            editable={false}
-            value="jsmith@gmail.com"
-            style={styles.input}
-          />
+          <TextInput editable={false} value={_?.email} style={styles.input} />
         </TouchableOpacity>
 
         {/* change password */}
         <TouchableOpacity
           style={styles.changeBtn}
-          onPress={() => navigation.navigate("change_password")}
+          onPress={() => navigation.navigate("change_password", { data: _ })}
         >
           <Image
             source={require("../../assets/password_change.png")}
@@ -172,7 +174,7 @@ const Profile = ({ navigation }) => {
                 style={{ paddingLeft: 7, paddingVertical: 5 }}
                 onPress={() => {
                   setShowModal(false);
-                  navigation.navigate("accountdeleted");
+                  navigation.navigate("accountdeleted", { data: _ });
                 }}
               >
                 <Text style={styles.label}>DELETE</Text>

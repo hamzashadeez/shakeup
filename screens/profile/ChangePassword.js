@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import CustomScreen from "../../components/CustomScreen";
@@ -35,7 +36,6 @@ const ChangePassword = ({ navigation }) => {
   });
 
   const [user_data, setUser] = useRecoilState(userData);
-  console.log(user_data);
 
   const toastConfig = {
     success: (props) => (
@@ -77,17 +77,6 @@ const ChangePassword = ({ navigation }) => {
   };
 
   const saveNewInfo = () => {
-    if (password === user.password) {
-      // save the new info
-      setBtnLabel("Saving");
-    } else {
-      setError1(true);
-      setBorderColorOne(COLORS.red);
-      setBtnLabel("Save");
-      setShowSaveBtn(false);
-      return;
-    }
-
     if (newpassword.length < 6) {
       setError2(true);
       setBorderColorTwo(COLORS.red);
@@ -96,27 +85,87 @@ const ChangePassword = ({ navigation }) => {
     }
 
     if (cpassword === newpassword) {
-      setTimeout(() => {
-        setShowSaveBtn(false);
-        setBtnLabel("Save");
-        // Auth.currentAuthenticatedUser()
-        //   .then((user) => {
-        //     return Auth.changePassword(user, "oldPassword", "newPassword");
-        //   })
-        //   .then((data) => console.log(data))
-        //   .catch((err) => console.log(err));
-        Toast.show({
-          type: "success",
-          text1: "Successfully Changed",
-          position: "bottom",
+      setShowSaveBtn(false);
+      setBtnLabel("Save");
+      // function is here
+      Auth.currentAuthenticatedUser()
+        .then((user) => {
+          return Auth.changePassword(user, password, newpassword);
+        })
+        .then((data) => {
+          Toast.show({
+            type: "success",
+            text1: "Successfully Changed",
+            position: "bottom",
+          });
+          console.log(data);
+        })
+        .catch((err) => {
+          if (
+            err ===
+            "password error [NotAuthorizedException: Incorrect username or password.]"
+          ) {
+            // console.log("Incorrect Password");
+            setError1(true);
+            setBorderColorOne(COLORS.red);
+            setBtnLabel("Save");
+            setShowSaveBtn(false);
+          } else if (
+            (err =
+              "password error [LimitExceededException: Attempt limit exceeded, please try after some time.]")
+          ) {
+            Alert.alert(
+              "Limit Exceeded",
+              "Attempt limit exceeded, please try after some time"
+            );
+          } else {
+            console.log("password error", err);
+          }
         });
-      }, 50);
+
+      // end of function
     } else {
       setError3(true);
       setBorderColorThree(COLORS.red);
       setBtnLabel("Save");
       return;
     }
+
+    // if (password === user.password) {
+    //   // save the new info
+    //   setBtnLabel("Saving");
+    // } else {
+    //   setError1(true);
+    //   setBorderColorOne(COLORS.red);
+    //   setBtnLabel("Save");
+    //   setShowSaveBtn(false);
+    //   return;
+    // }
+
+    // if (newpassword.length < 6) {
+    //   setError2(true);
+    //   setBorderColorTwo(COLORS.red);
+    //   setBtnLabel("Save");
+    //   return;
+    // }
+
+    // if (cpassword === newpassword) {
+    //   setTimeout(() => {
+    //     setShowSaveBtn(false);
+    //     setBtnLabel("Save");
+    //     // function is here
+    //     Toast.show({
+    //       type: "success",
+    //       text1: "Successfully Changed",
+    //       position: "bottom",
+    //     });
+    //   }, 50);
+    // } else {
+    //   setError3(true);
+    //   setBorderColorThree(COLORS.red);
+    //   setBtnLabel("Save");
+    //   return;
+    // }
   };
 
   return (
