@@ -58,6 +58,7 @@ const Login = ({ navigation }) => {
     );
     if (userStored.data.getUsers) {
       setUser(userStored.data.getUsers);
+      // console.log("user fetched data ", userStored.data.getUsers);
       return;
     }
   }

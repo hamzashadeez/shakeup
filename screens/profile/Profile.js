@@ -77,7 +77,7 @@ const Profile = ({ navigation }) => {
         >
           <TextInput
             editable={false}
-            value={_?.preferred_username}
+            value={_?.username}
             style={styles.input}
           />
         </TouchableOpacity>

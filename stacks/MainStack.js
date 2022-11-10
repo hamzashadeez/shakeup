@@ -14,35 +14,39 @@ const MainStack = () => {
 
   useEffect(() => {
     const syncUser = async () => {
-      const authUser = await Auth.currentAuthenticatedUser({
-        bypassCache: true,
-      });
-      setUser(authUser.attributes);
-      // check database
-      const user = await API.graphql(
-        graphqlOperation(getUsers, { id: authUser.attributes.email })
-      );
+      try {
+        const authUser = await Auth.currentAuthenticatedUser({
+          bypassCache: true,
+        });
+        setUser(authUser.attributes);
+        // check database
+        const user = await API.graphql(
+          graphqlOperation(getUsers, { id: authUser.attributes.email })
+        );
 
-      if (user.data.getUsers) {
-        // console.log("already in DB", user.data.getUsers);
-        return;
+        if (user.data.getUsers) {
+          // console.log("already in DB", user.data.getUsers);
+          return;
+        }
+
+        const newUser = {
+          id: authUser.attributes.email,
+          email: authUser.attributes.email,
+          username: authUser.attributes.preferred_username,
+          name: authUser.attributes.name,
+          password: "",
+        };
+
+        await API.graphql(
+          graphqlOperation(createUsers, { input: newUser })
+        ).then(() => console.log("Added"));
+      } catch (error) {
+        console.log(error);
       }
-
-      const newUser = {
-        id: authUser.attributes.email,
-        email: authUser.attributes.email,
-        username: authUser.attributes.preferred_username,
-        name: authUser.attributes.name,
-        password: "",
-      };
-
-      await API.graphql(graphqlOperation(createUsers, { input: newUser })).then(
-        () => console.log("Added")
-      );
     };
 
     syncUser();
-  }, [user_data]);
+  }, []);
 
   return (
     <View style={{ flex: 1 }}>
