@@ -18,7 +18,10 @@ const MainStack = () => {
         const authUser = await Auth.currentAuthenticatedUser({
           bypassCache: true,
         });
-        setUser(authUser.attributes);
+        setUser({
+          ...authUser.attributes,
+          username: authUser.attributes.preferred_username,
+        });
         // check database
         const user = await API.graphql(
           graphqlOperation(getUsers, { id: authUser.attributes.email })

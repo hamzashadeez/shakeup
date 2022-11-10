@@ -12,7 +12,9 @@
         ],
         "signupAttributes": [
           "NAME",
-          "PREFERRED_USERNAME"
+          "PREFERRED_USERNAME",
+          "MIDDLE_NAME",
+          "FAMILY_NAME"
         ],
         "passwordProtectionSettings": {
           "passwordPolicyMinLength": 6,
@@ -20,7 +22,7 @@
         },
         "mfaConfiguration": "OFF",
         "mfaTypes": [
-          "TOTP"
+          "SMS"
         ],
         "verificationMechanisms": [
           "EMAIL"

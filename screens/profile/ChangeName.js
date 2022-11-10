@@ -14,49 +14,74 @@ import { COLORS } from "../../Theme";
 import { Entypo } from "@expo/vector-icons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
+import { Auth } from "aws-amplify";
+import userData from "../../recoil/userData";
+import { useRecoilState } from "recoil";
 
-const ChangeName = ({ navigation }) => {
-  const [firstName, setFirstName] = useState("John");
-  const [middle, setMiddleName] = useState("");
+const ChangeName = ({ navigation, route }) => {
+  const [user_data, setUser] = useRecoilState(userData);
+  const { name, family_name, middle_name } = route.params.data;
+  const [firstName, setFirstName] = useState(name);
+  const [middle, setMiddleName] = useState(middle_name);
   const [btnLabel, setBtnLabel] = useState("Save");
-  const [LastName, setLastName] = useState("");
+  const [LastName, setLastName] = useState(family_name);
   const [borderTwo, setBorderTwo] = useState(0);
   const [borderThree, setBorderThree] = useState(0);
   const [showSaveBtn, setShowSaveBtn] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [borderColor, setBorderColor] = useState("white");
-  const [user] = useState({
-    firstName: "John",
-    middle: "",
-    LastName: "",
-  });
+  // const [user] = useState({
+  //   firstName: "John",
+  //   middle: "",
+  //   LastName: "",
+  // });
 
-  const infoHasChanged = (name) => {
-    let userFieldValues = { firstName: name, middle, LastName };
-    if (JSON.stringify(userFieldValues) === JSON.stringify(user)) {
-      setShowSaveBtn(false);
-    } else {
-      setShowSaveBtn(true);
-    }
-  };
+  // const infoHasChanged = (name) => {
+  //   let userFieldValues = { firstName: name, middle, LastName };
+  //   if (JSON.stringify(userFieldValues) === JSON.stringify(user)) {
+  //     setShowSaveBtn(false);
+  //   } else {
+  //     setShowSaveBtn(true);
+  //   }
+  // };
 
-  const saveNewInfo = () => {
-    // save the new info
-    if (firstName.length > 1) {
-      setBtnLabel("Saving");
-      setTimeout(() => {
-        setShowSaveBtn(false);
-        setBtnLabel("Save");
-        Toast.show({
-          type: "success",
-          text1: "Changes Successfully Saved",
-          position: "bottom",
+  const saveNewInfo = async () => {
+    try {
+      let user = await Auth.currentAuthenticatedUser();
+
+      if (firstName.length > 1) {
+        setBtnLabel("Saving");
+        let result = await Auth.updateUserAttributes(user, {
+          name: firstName,
+          family_name: LastName,
+          middle_name: middle,
+        }).then(async () => {
+          // get the user again
+          const authUser = await Auth.currentAuthenticatedUser({
+            bypassCache: true,
+          });
+          setUser({
+            ...authUser.attributes,
+            username: authUser.attributes.preferred_username,
+          });
         });
-      }, 50);
-    } else {
-      setBorderColor(COLORS.red);
-      setShowErrorMessage(true);
+        setTimeout(() => {
+          setShowSaveBtn(false);
+          setBtnLabel("Save");
+          Toast.show({
+            type: "success",
+            text1: "Changes Successfully Saved",
+            position: "bottom",
+          });
+        }, 50);
+      } else {
+        setBorderColor(COLORS.red);
+        setShowErrorMessage(true);
+      }
+    } catch (error) {
+      console.log(error);
     }
+    // save the new info
   };
 
   const toastConfig = {
@@ -118,7 +143,7 @@ const ChangeName = ({ navigation }) => {
               onEndEditing={() => setBorderColor("white")}
               onChangeText={(e) => {
                 setFirstName(e);
-                infoHasChanged(e);
+                setShowSaveBtn(true);
               }}
               style={[styles.input, { borderColor }]}
             />
@@ -130,7 +155,7 @@ const ChangeName = ({ navigation }) => {
                   fontFamily: "Truculenta-Regular",
                 }}
               >
-                Error: Email Address unavailable
+                Error: Must be 2 or more characters
               </Text>
             )}
           </View>
@@ -138,6 +163,10 @@ const ChangeName = ({ navigation }) => {
             <Text style={styles.label}>Middle</Text>
             <TextInput
               value={middle}
+              onChangeText={(e) => {
+                setShowSaveBtn(true);
+                setMiddleName(e);
+              }}
               placeholder="Optional"
               onFocus={() => setBorderTwo(2)}
               onEndEditing={() => setBorderTwo(0)}
@@ -150,6 +179,10 @@ const ChangeName = ({ navigation }) => {
               value={LastName}
               onFocus={() => setBorderThree(2)}
               placeholder="Optional"
+              onChangeText={(e) => {
+                setShowSaveBtn(true);
+                setLastName(e);
+              }}
               onEndEditing={() => setBorderThree(0)}
               style={[styles.input, { borderColor: "white" }]}
             />

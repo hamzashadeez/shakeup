@@ -28,6 +28,15 @@ const Profile = ({ navigation }) => {
     }
   }
 
+  // Update User Attributes here
+  //   let user = await Auth.currentAuthenticatedUser();
+
+  // let result = await Auth.updateUserAttributes(user, {
+  //     'email': 'me@anotherdomain.com',
+  //     'family_name': 'Lastname'
+  // });
+  // console.log(result); // SUCCESS
+
   async function resendConfirmationCode(username) {
     try {
       await Auth.resendSignUp(username);

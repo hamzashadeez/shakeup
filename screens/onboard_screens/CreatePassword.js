@@ -45,6 +45,8 @@ const CreatePassword = ({ navigation, route }) => {
           email,
           preferred_username: username,
           name,
+          family_name: "",
+          middle_name: "",
         },
         autoSignIn: {
           enabled: true,
