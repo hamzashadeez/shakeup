@@ -38,7 +38,7 @@ const CreatePassword = ({ navigation, route }) => {
 
   async function signUp() {
     try {
-      const { user } = await Auth.signUp({
+      const user = await Auth.signUp({
         username: email,
         password,
         attributes: {
@@ -50,9 +50,8 @@ const CreatePassword = ({ navigation, route }) => {
           enabled: true,
         },
       }).then(() => {
-        navigation.navigate("otp", { name, username, email });
+        navigation.navigate("otp", { name, username, email, password });
       });
-      console.log("sucessfully....", user);
     } catch (error) {
       console.log("error signing up:", error);
     }

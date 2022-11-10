@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Screen from "../../components/Screen";
 import Header from "../../components/Header";
 import { COLORS } from "../../Theme";
@@ -14,7 +14,8 @@ import PasswordField from "../../components/PasswordField";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import userData from "../../recoil/userData";
 import { useRecoilState } from "recoil";
-import { Auth } from "aws-amplify";
+import { Auth, API, graphqlOperation } from "aws-amplify";
+import { listUsers, getUsers } from "../../src/graphql/queries";
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -24,15 +25,41 @@ const Login = ({ navigation }) => {
   const [_, setUser] = useRecoilState(userData);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
 
+  // useEffect(() => {
+  //   API.graphql(graphqlOperation(listUsers)).then((result) =>
+  //     console.log(result.data?.listUsers?.items)
+  //   );
+  // }, []);
+
+  // useEffect(() => {
+  //   const getUserData = async () => {
+  //     const data = await API.graphql(
+  //       graphqlOperation(getUsers, {
+  //         id: "564fbec1-6605-4594-b680-c011b2ab72bc",
+  //       })
+  //     );
+  //     console.log(data.data.getUsers);
+  //   };
+  //   getUserData();
+  // }, []);
   // Log in
   async function signIn() {
     try {
-      const user = await Auth.signIn(email, password).then((data) => {
-        setUser(data.attributes);
+      const user = await Auth.signIn(email, password).then(() => {
+        console.log("Signed Successfully");
       });
     } catch (error) {
       setShowErrorMessage(true);
       console.log("error signing in", error);
+    }
+
+    const userStored = await API.graphql(
+      graphqlOperation(getUsers, { id: email })
+    );
+    if (userStored.data.getUsers) {
+      setUser(userStored.data.getUsers);
+      console.log(_);
+      return;
     }
   }
   return (

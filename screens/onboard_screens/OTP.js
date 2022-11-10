@@ -11,12 +11,14 @@ import Screen from "../../components/Screen";
 import Header from "../../components/Header";
 import { COLORS } from "../../Theme";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { Auth } from "aws-amplify";
+import { API, Auth, graphqlOperation } from "aws-amplify";
 import userData from "../../recoil/userData";
 import { useRecoilState } from "recoil";
 
+import { createUsers } from "../../src/graphql/mutations";
+
 const OTP = ({ navigation, route }) => {
-  const { name, username, email } = route.params;
+  const { name, username, email, password } = route.params;
   const [otpcode, setOTP] = useState("");
   const [coloredBoarder, setColoredBoarder] = useState("white");
   const [_, setUser] = useRecoilState(userData);
@@ -28,15 +30,25 @@ const OTP = ({ navigation, route }) => {
 
   const submit = async () => {
     try {
-      await Auth.confirmSignUp(email, otpcode).then((user) => {
-        setUser({ name, username, email });
+      await Auth.confirmSignUp(email, otpcode).then(() => {
+        console.log("Succefully Registed");
       });
     } catch (error) {
       setErrorMessage(true);
       console.log("error confirming sign up", error);
     }
     // if OTP is correct, Navigate to Update State
-    //else, display error message
+    //else, display error message'
+    // const newUser = {
+    //   name,
+    //   id: _.sub,
+    //   email,
+    //   password,
+    //   username,
+    // };
+    // await API.graphql(graphqlOperation(createUsers, { input: newUser }))
+    //   .then(() => console.log("sucessfully added"))
+    //   .catch((err) => console.log(err));
   };
 
   return (
@@ -83,7 +95,7 @@ const OTP = ({ navigation, route }) => {
               onChangeText={(e) => changeText(e)}
               placeholder="00000"
               onFocus={() => {
-                setErrorMessage(true);
+                setErrorMessage(false);
                 setColoredBoarder(COLORS.orange);
               }}
               keyboardType="numeric"
