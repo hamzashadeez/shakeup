@@ -2,7 +2,7 @@ import {
   Image,
   StyleSheet,
   Text,
-  TextInput,
+  ActivityIndicator,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -24,6 +24,7 @@ const CreatePassword = ({ navigation, route }) => {
   const [showMatchErorrLabel, setShowMatchErrorLabel] = useState(false);
   const [showCountErrorLabel, setShowCountErrorLabel] = useState(false);
   const [agreed, setAgreed] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [coloredBoarder, setColoredBoarder] = useState("white");
   const [coloredBoarder2, setColoredBoarder2] = useState("white");
   let tempValid = valid;
@@ -37,7 +38,10 @@ const CreatePassword = ({ navigation, route }) => {
   };
 
   async function signUp() {
+    console.log("hey");
+    if (loading === true) return;
     try {
+      setLoading(true);
       const user = await Auth.signUp({
         username: email,
         password,
@@ -55,6 +59,7 @@ const CreatePassword = ({ navigation, route }) => {
         navigation.navigate("otp", { name, username, email, password });
       });
     } catch (error) {
+      setLoading(false);
       console.log("error signing up:", error);
     }
   }

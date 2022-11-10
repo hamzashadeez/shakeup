@@ -11,6 +11,7 @@ import React, { useState } from "react";
 import Screen from "../../components/Screen";
 import { COLORS } from "../../Theme";
 import { Entypo } from "@expo/vector-icons";
+import { Auth } from "aws-amplify";
 
 const ForgotPassword = ({ navigation }) => {
   const [name, setName] = useState("");
@@ -25,6 +26,18 @@ const ForgotPassword = ({ navigation }) => {
       setValid(false);
     }
   };
+
+  const forgotpassword = async () => {
+    // Send confirmation code to user's email
+    Auth.forgotPassword(email)
+      .then((data) => console.log(data))
+      .catch((err) => console.log(err));
+  };
+
+  // // Collect confirmation code and new password, then
+  // Auth.forgotPasswordSubmit(username, code, new_password)
+  //   .then((data) => console.log(data))
+  //   .catch((err) => console.log(err));
 
   const next = () => {
     // save username and go to the username screen
@@ -104,10 +117,13 @@ const ForgotPassword = ({ navigation }) => {
               flexDirection: "row",
               display: "flex",
               alignItems: "center",
-              marginTop: 10
+              marginTop: 10,
             }}
           >
-            <TouchableOpacity style={styles.backBtn} onPress={()=>navigation.navigate("login")}>
+            <TouchableOpacity
+              style={styles.backBtn}
+              onPress={() => navigation.navigate("login")}
+            >
               <Entypo name="chevron-thin-left" size={24} color="white" />
             </TouchableOpacity>
             <Text
@@ -117,7 +133,7 @@ const ForgotPassword = ({ navigation }) => {
                 color: "white",
                 fontFamily: "Truculenta-Regular",
                 textAlign: "center",
-                flex: 1
+                flex: 1,
               }}
             >
               Forgot Password
@@ -170,7 +186,7 @@ const ForgotPassword = ({ navigation }) => {
               Submit
             </Text>
           </TouchableOpacity>
-         
+
           <Image
             source={require("../../assets/ShakeUp.png")}
             resizeMode="contain"
@@ -223,7 +239,7 @@ const styles = StyleSheet.create({
     marginLeft: -18,
     marginBottom: 4,
   },
-  backBtn:{
-    padding: 10
-  }
+  backBtn: {
+    padding: 10,
+  },
 });

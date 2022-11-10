@@ -36,6 +36,7 @@ const ChangeEmail = ({ navigation, route }) => {
   const [borderColor2, setBorderColor2] = useState("white");
   const [btnLabel, setBtnLabel] = useState("Save");
   const [borderColor, setBorderColor] = useState("white");
+  const [loading, setLoading] = useState(false);
   const [user] = useState({
     emaili: "john@gmail.com",
   });
@@ -76,7 +77,9 @@ const ChangeEmail = ({ navigation, route }) => {
   // console.log("Changed"); // SUCCESS
 
   const verifyOTP = async () => {
+    if (loading === true) return;
     try {
+      setLoading(true);
       let result = await Auth.verifyCurrentUserAttributeSubmit(
         "email",
         otpCode
@@ -100,6 +103,7 @@ const ChangeEmail = ({ navigation, route }) => {
       setShowModal(false);
       console.log("Changed"); // SUCCESS
     } catch (error) {
+      setLoading(false);
       console.log("error ", error);
     }
   };

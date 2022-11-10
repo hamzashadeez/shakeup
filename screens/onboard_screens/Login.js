@@ -149,12 +149,13 @@ const Login = ({ navigation }) => {
                 fontFamily: "Truculenta-Regular",
               }}
             >
-              Enter Username
+              Enter Email
             </Text>
             <TextInput
               value={email}
               onChangeText={(e) => setEmail(e)}
-              placeholder="Enter Username"
+              placeholder="Enter Email"
+              keyboardType="email-address"
               onFocus={() => {
                 setShowErrorMessage(false);
                 setColoredBoarder(COLORS.orange);

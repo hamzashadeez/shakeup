@@ -22,36 +22,24 @@ const OTP = ({ navigation, route }) => {
   const [coloredBoarder, setColoredBoarder] = useState("white");
   const [_, setUser] = useRecoilState(userData);
   const [showError, setErrorMessage] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const changeText = (text) => {
     setOTP(text);
   };
 
   const submit = async () => {
+    if (loading === true) return;
     try {
+      setLoading(true);
       await Auth.confirmSignUp(email, otpcode).then(() => {
         console.log("Succefully Registed");
       });
     } catch (error) {
       setErrorMessage(true);
+      setLoading(false);
       console.log("error confirming sign up", error);
     }
-
-    // try {
-    //   const newUser = {
-    //     id: email,
-    //     email: email,
-    //     username: username,
-    //     name: name,
-    //     password,
-    //     middle: "",
-    //     last: "",
-    //   };
-
-    //   await API.graphql(graphqlOperation(createUsers, { input: newUser }));
-    // } catch (error) {
-    //   console.log("error from DB", error);
-    // }
   };
 
   return (
