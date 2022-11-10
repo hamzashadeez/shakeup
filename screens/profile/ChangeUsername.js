@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Image,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import CustomScreen from "../../components/CustomScreen";
@@ -15,28 +16,21 @@ import { COLORS } from "../../Theme";
 import { Entypo } from "@expo/vector-icons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Toast, { BaseToast } from "react-native-toast-message";
+import { Auth } from "aws-amplify";
+import userData from "../../recoil/userData";
+import { useRecoilState } from "recoil";
 
-const ChangeUsername = ({ navigation }) => {
-  const [firstName, setFirstName] = useState("John");
+const ChangeUsername = ({ navigation, route }) => {
+  const { preferred_username } = route.params.data;
+  const [firstName, setFirstName] = useState(preferred_username);
   const [showSaveBtn, setShowSaveBtn] = useState(false);
   const [btnLabel, setBtnLabel] = useState("Save");
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [showErrorMessage2, setShowErrorMessage2] = useState(false);
   const [borderColor, setBorderColor] = useState("white");
-  const [user] = useState({
-    username: "John",
-  });
+  const [user_data, setUser] = useRecoilState(userData);
 
   const usernameList = ["hamza", "joe"];
-
-  const infoHasChanged = (name) => {
-    let userFieldValues = { username: name };
-    if (JSON.stringify(userFieldValues) === JSON.stringify(user)) {
-      setShowSaveBtn(false);
-    } else {
-      setShowSaveBtn(true);
-    }
-  };
 
   const toastConfig = {
     success: (props) => (
@@ -54,27 +48,41 @@ const ChangeUsername = ({ navigation }) => {
     ),
   };
 
-  const saveNewInfo = () => {
-    // save the new info
-    if (firstName.length > 1) {
-      if (usernameList.includes(firstName)) {
-        setShowErrorMessage2(true);
-        setBorderColor(COLORS.red);
-      } else {
-        setBtnLabel("Saving");
-        setTimeout(() => {
-          setShowSaveBtn(false);
-          setBtnLabel("Save");
+  const saveNewInfo = async () => {
+    try {
+      setBtnLabel("Saving");
+      // save the new info
+      if (firstName.length > 1) {
+        // Update User Attributes here
+        let user = await Auth.currentAuthenticatedUser();
+
+        let result = await Auth.updateUserAttributes(user, {
+          preferred_username: firstName,
+        }).then(async () => {
+          // get the user again
+          const authUser = await Auth.currentAuthenticatedUser({
+            bypassCache: true,
+          });
+          setUser({
+            ...authUser.attributes,
+            username: authUser.attributes.preferred_username,
+          });
           Toast.show({
             type: "success",
             text1: "Changes Successfully Saved",
             position: "bottom",
           });
-        }, 50);
+          setBtnLabel("Save");
+          setShowSaveBtn(false);
+        });
+        console.log("Changed"); // SUCCESS
+      } else {
+        setBorderColor(COLORS.red);
+        setShowErrorMessage(true);
       }
-    } else {
-      setBorderColor(COLORS.red);
-      setShowErrorMessage(true);
+    } catch (error) {
+      console.log("Error: ", error);
+      Alert.alert("Error", error);
     }
   };
 
@@ -126,7 +134,7 @@ const ChangeUsername = ({ navigation }) => {
               onEndEditing={() => setBorderColor("white")}
               onChangeText={(e) => {
                 setFirstName(e);
-                infoHasChanged(e);
+                setShowSaveBtn(true);
               }}
               style={[styles.input, { borderColor }]}
             />

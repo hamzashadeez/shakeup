@@ -1,9 +1,12 @@
 import { Text, TouchableOpacity, View } from "react-native";
+import { useRecoilState } from "recoil";
 import CustomScreen from "../../components/CustomScreen";
 import Header from "../../components/Header";
+import userData from "../../recoil/userData";
 import { COLORS } from "../../Theme";
 
 const AccountDeleted = () => {
+  const [_, setUser] = useRecoilState(userData);
   return (
     <CustomScreen>
       <Header />
@@ -38,6 +41,7 @@ const AccountDeleted = () => {
         </Text>
 
         <TouchableOpacity
+          onPress={() => setUser(null)}
           style={{
             backgroundColor: COLORS.primary,
             width: "80%",
@@ -56,7 +60,7 @@ const AccountDeleted = () => {
             Sign Up
           </Text>
         </TouchableOpacity>
-        <View  style={{flex: 0.6}}/>
+        <View style={{ flex: 0.6 }} />
       </View>
     </CustomScreen>
   );
@@ -64,8 +68,15 @@ const AccountDeleted = () => {
 
 export default AccountDeleted;
 
-
-{/* <Entypo name="graduation-cap" size={24} color="black" /> */}
-{/* <MaterialCommunityIcons name="cards" size={24} color="black" /> */}
-{/* <MaterialCommunityIcons name="cards-outline" size={24} color="black" /> */}
-{/* <FontAwesome5 name="user" size={24} color="black" /> */}
+{
+  /* <Entypo name="graduation-cap" size={24} color="black" /> */
+}
+{
+  /* <MaterialCommunityIcons name="cards" size={24} color="black" /> */
+}
+{
+  /* <MaterialCommunityIcons name="cards-outline" size={24} color="black" /> */
+}
+{
+  /* <FontAwesome5 name="user" size={24} color="black" /> */
+}

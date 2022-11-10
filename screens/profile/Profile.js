@@ -27,22 +27,13 @@ const Profile = ({ navigation }) => {
       console.log("error signing out: ", error);
     }
   }
-
-  // Update User Attributes here
-  //   let user = await Auth.currentAuthenticatedUser();
-
-  // let result = await Auth.updateUserAttributes(user, {
-  //     'email': 'me@anotherdomain.com',
-  //     'family_name': 'Lastname'
-  // });
-  // console.log(result); // SUCCESS
-
-  async function resendConfirmationCode(username) {
+  async function deleteUser() {
     try {
-      await Auth.resendSignUp(username);
-      console.log("code resent successfully");
-    } catch (err) {
-      console.log("error resending code: ", err);
+      const result = await Auth.deleteUser();
+      console.log(result);
+      navigation.navigate("accountdeleted", { data: _ });
+    } catch (error) {
+      console.log("Error deleting user", error);
     }
   }
 
@@ -183,7 +174,7 @@ const Profile = ({ navigation }) => {
                 style={{ paddingLeft: 7, paddingVertical: 5 }}
                 onPress={() => {
                   setShowModal(false);
-                  navigation.navigate("accountdeleted", { data: _ });
+                  deleteUser();
                 }}
               >
                 <Text style={styles.label}>DELETE</Text>

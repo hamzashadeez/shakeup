@@ -30,20 +30,6 @@ const ChangeName = ({ navigation, route }) => {
   const [showSaveBtn, setShowSaveBtn] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [borderColor, setBorderColor] = useState("white");
-  // const [user] = useState({
-  //   firstName: "John",
-  //   middle: "",
-  //   LastName: "",
-  // });
-
-  // const infoHasChanged = (name) => {
-  //   let userFieldValues = { firstName: name, middle, LastName };
-  //   if (JSON.stringify(userFieldValues) === JSON.stringify(user)) {
-  //     setShowSaveBtn(false);
-  //   } else {
-  //     setShowSaveBtn(true);
-  //   }
-  // };
 
   const saveNewInfo = async () => {
     try {

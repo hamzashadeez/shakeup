@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Modal,
   Image,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import CustomScreen from "../../components/CustomScreen";
@@ -16,9 +17,14 @@ import { COLORS } from "../../Theme";
 import { Ionicons } from "@expo/vector-icons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Toast, { BaseToast } from "react-native-toast-message";
+import { Auth } from "aws-amplify";
+import userData from "../../recoil/userData";
+import { useRecoilState } from "recoil";
 
-const ChangeEmail = ({ navigation }) => {
-  const [email, setEmail] = useState("john@gmail.com");
+const ChangeEmail = ({ navigation, route }) => {
+  const { email } = route.params.data;
+  const [_, setUser] = useRecoilState(userData);
+  const [emaili, setEmail] = useState(email);
   const [borderOne, setBorderOne] = useState(0);
   const [borderTwo, setBorderTwo] = useState(0);
   const [show, showText] = useState(false);
@@ -31,13 +37,13 @@ const ChangeEmail = ({ navigation }) => {
   const [btnLabel, setBtnLabel] = useState("Save");
   const [borderColor, setBorderColor] = useState("white");
   const [user] = useState({
-    email: "john@gmail.com",
+    emaili: "john@gmail.com",
   });
 
   const OTP = "12345";
 
-  const infoHasChanged = (email) => {
-    let userFieldValues = { email };
+  const infoHasChanged = (emaili) => {
+    let userFieldValues = { emaili };
     if (JSON.stringify(userFieldValues) === JSON.stringify(user)) {
       setShowSaveBtn(false);
     } else {
@@ -45,26 +51,78 @@ const ChangeEmail = ({ navigation }) => {
     }
   };
 
-  const verifyOTP = () => {
-    if (otpCode === OTP) {
-      setTimeout(() => {
-        Toast.show({
-          type: "success",
-          text1: "Changes Successfully Saved",
-          position: "bottom",
-        });
-        setShowModal(false);
-      }, 200);
-    } else {
-      setBorderColor2(COLORS.red);
-      setIncorrectOTP(true);
+  // Update User Attributes here
+  // let user = await Auth.currentAuthenticatedUser();
+
+  // let result = await Auth.updateUserAttributes(user, {
+  //   preferred_username: firstName,
+  // }).then(async () => {
+  //   // get the user again
+  //   const authUser = await Auth.currentAuthenticatedUser({
+  //     bypassCache: true,
+  //   });
+  //   setUser({
+  //     ...authUser.attributes,
+  //     username: authUser.attributes.preferred_username,
+  //   });
+  //   Toast.show({
+  //     type: "success",
+  //     text1: "Changes Successfully Saved",
+  //     position: "bottom",
+  //   });
+  //   setBtnLabel("Save");
+  //   setShowSaveBtn(false);
+  // });
+  // console.log("Changed"); // SUCCESS
+
+  const verifyOTP = async () => {
+    try {
+      let result = await Auth.verifyCurrentUserAttributeSubmit(
+        "email",
+        otpCode
+      );
+      // get the user again
+      const authUser = await Auth.currentAuthenticatedUser({
+        bypassCache: true,
+      });
+      setUser({
+        ...authUser.attributes,
+        username: authUser.attributes.preferred_username,
+      });
+      Toast.show({
+        type: "success",
+        text1: "Changes Successfully Saved",
+        position: "bottom",
+      });
+      setBtnLabel("Save");
+      setShowSaveBtn(false);
+
+      setShowModal(false);
+      console.log("Changed"); // SUCCESS
+    } catch (error) {
+      console.log("error ", error);
     }
   };
 
-  function validateEmail(email) {
+  async function resendConfirmationCode(username) {
+    try {
+      await Auth.resendSignUp(username);
+      console.log("code resent successfully");
+      Toast.show({
+        type: "success",
+        text1: "Code resent successfully",
+        position: "bottom",
+      });
+    } catch (err) {
+      Alert.alert("Error", err);
+      console.log("error resending code: ", err);
+    }
+  }
+
+  function validateEmail(emaili) {
     const res =
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return res.test(String(email).toLowerCase());
+    return res.test(String(emaili).toLowerCase());
   }
 
   const toastConfig = {
@@ -85,24 +143,21 @@ const ChangeEmail = ({ navigation }) => {
 
   let emailList = ["hamza@gmail.com", "saulawaj@yahoo.com"];
 
-  const saveNewInfo = () => {
-    // save the new info
-    showText(!validateEmail(email));
-    if (validateEmail(email) === true) {
-      if (emailList.includes(email)) {
-        setEmailUnavailable(true);
-        setBorderColor(COLORS.red);
+  const saveNewInfo = async () => {
+    try {
+      showText(!validateEmail(emaili));
+      if (validateEmail(emaili) === true) {
+        // update
+        let user = await Auth.currentAuthenticatedUser();
+        let result = await Auth.updateUserAttributes(user, {
+          email: emaili,
+        }).then(() => setShowModal(true));
       } else {
-        setBtnLabel("Saving");
-        setTimeout(() => {
-          setShowSaveBtn(false);
-          setBtnLabel("Save");
-          setShowModal(true);
-        }, 100);
+        setShowSaveBtn(false);
+        setBorderColor(COLORS.red);
       }
-    } else {
-      setShowSaveBtn(false);
-      setBorderColor(COLORS.red);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -146,7 +201,7 @@ const ChangeEmail = ({ navigation }) => {
           <View style={{ marginTop: 20 }}>
             <Text style={styles.label}>Email Address</Text>
             <TextInput
-              value={email}
+              value={emaili}
               onFocus={() => {
                 showText(false);
                 setEmailUnavailable(false);
@@ -225,7 +280,7 @@ const ChangeEmail = ({ navigation }) => {
                   },
                 ]}
               >
-                {email}
+                {emaili}
               </Text>
               <TextInput
                 keyboardType="numeric"
@@ -266,6 +321,7 @@ const ChangeEmail = ({ navigation }) => {
                 <Text style={[styles.label, { color: "white" }]}>Verify</Text>
               </TouchableOpacity>
               <TouchableOpacity
+                onPress={() => resendConfirmationCode()}
                 style={{ marginTop: 25, padding: 15, width: "32%" }}
               >
                 <Text style={styles.label2}>Resend Code</Text>
