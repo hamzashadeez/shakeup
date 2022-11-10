@@ -35,6 +35,7 @@ const OTP = ({ navigation, route }) => {
       await Auth.confirmSignUp(email, otpcode).then(() => {
         console.log("Succefully Registed");
       });
+      setUser({ name, username, email, password });
     } catch (error) {
       setErrorMessage(true);
       setLoading(false);
@@ -109,27 +110,43 @@ const OTP = ({ navigation, route }) => {
               Error: Incorrect OTP Code
             </Text>
           )}
-          <TouchableOpacity
-            onPress={() => submit()}
-            disabled={otpcode.length > 3 ? false : true}
-            style={[
-              styles.btn,
-              {
-                backgroundColor: true ? COLORS.orange : "#E3E4E6",
-              },
-            ]}
-          >
-            <Text
-              style={{
-                fontFamily: "Truculenta-Regular",
-                color: true ? "white" : "#000",
-                fontSize: 18,
-              }}
+          {!loading && (
+            <TouchableOpacity
+              onPress={() => submit()}
+              disabled={otpcode.length > 3 ? false : true}
+              style={[
+                styles.btn,
+                {
+                  backgroundColor: true ? COLORS.orange : "#E3E4E6",
+                },
+              ]}
             >
-              Continue
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={{
+                  fontFamily: "Truculenta-Regular",
+                  color: true ? "white" : "#000",
+                  fontSize: 18,
+                }}
+              >
+                Continue
+              </Text>
+            </TouchableOpacity>
+          )}
           {/* end form */}
+          {/* loader */}
+          {loading && (
+            <TouchableOpacity
+              style={[
+                styles.btn,
+                {
+                  backgroundColor: COLORS.orange,
+                },
+              ]}
+            >
+              <ActivityIndicator color="#fff" size={16} />
+            </TouchableOpacity>
+          )}
+
           <Image
             source={require("../../assets/ShakeUp.png")}
             resizeMode="contain"

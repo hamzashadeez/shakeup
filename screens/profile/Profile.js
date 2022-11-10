@@ -72,9 +72,15 @@ const Profile = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         <TouchableOpacity
-          style={{ zIndex: 15 }}
+          style={{ zIndex: 15, position: "relative" }}
           onPress={() => navigation.navigate("change_username", { data: _ })}
         >
+          <Entypo
+            style={styles.chevron}
+            name="chevron-thin-right"
+            size={24}
+            color="#111"
+          />
           <TextInput
             editable={false}
             value={_?.username}
@@ -91,9 +97,15 @@ const Profile = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         <TouchableOpacity
-          style={{ zIndex: 15 }}
+          style={{ zIndex: 15, position: "relative" }}
           onPress={() => navigation.navigate("change_email", { data: _ })}
         >
+          <Entypo
+            style={styles.chevron}
+            name="chevron-thin-right"
+            size={24}
+            color="#111"
+          />
           <TextInput editable={false} value={_?.email} style={styles.input} />
         </TouchableOpacity>
 

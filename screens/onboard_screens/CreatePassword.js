@@ -38,7 +38,6 @@ const CreatePassword = ({ navigation, route }) => {
   };
 
   async function signUp() {
-    console.log("hey");
     if (loading === true) return;
     try {
       setLoading(true);

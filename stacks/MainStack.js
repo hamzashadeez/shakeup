@@ -38,6 +38,8 @@ const MainStack = () => {
           username: authUser.attributes.preferred_username,
           name: authUser.attributes.name,
           password: "",
+          last: "",
+          middle: "",
         };
 
         await API.graphql(

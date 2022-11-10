@@ -39,8 +39,8 @@ const ChangeName = ({ navigation, route }) => {
         setBtnLabel("Saving");
         let result = await Auth.updateUserAttributes(user, {
           name: firstName,
-          family_name: LastName,
-          middle_name: middle,
+          family_name: LastName ? LastName : "",
+          middle_name: middle ? middle : "",
         }).then(async () => {
           // get the user again
           const authUser = await Auth.currentAuthenticatedUser({

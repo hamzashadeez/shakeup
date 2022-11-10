@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Image,
   StyleSheet,
   Text,
@@ -23,6 +24,7 @@ const Login = ({ navigation }) => {
   const [coloredBoarder, setColoredBoarder] = useState("white");
   const [coloredBoarder2, setColoredBoarder2] = useState("white");
   const [_, setUser] = useRecoilState(userData);
+  const [loading, setLoading] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
 
   // useEffect(() => {
@@ -44,23 +46,31 @@ const Login = ({ navigation }) => {
   // }, []);
   // Log in
   async function signIn() {
+    setLoading(true);
     try {
       const user = await Auth.signIn(email, password).then(() => {
         console.log("Signed Successfully");
       });
     } catch (error) {
+      setLoading(false);
       setShowErrorMessage(true);
       console.log("error signing in", error);
     }
-
-    const userStored = await API.graphql(
-      graphqlOperation(getUsers, { id: email })
-    );
-    if (userStored.data.getUsers) {
-      setUser(userStored.data.getUsers);
-      // console.log("user fetched data ", userStored.data.getUsers);
-      return;
-    }
+    const authUser = await Auth.currentAuthenticatedUser({
+      bypassCache: true,
+    });
+    setUser({
+      ...authUser.attributes,
+      username: authUser.attributes.preferred_username,
+    });
+    // const userStored = await API.graphql(
+    //   graphqlOperation(getUsers, { id: email })
+    // );
+    // if (userStored.data.getUsers) {
+    //   setUser(userStored.data.getUsers);
+    //   // console.log("user fetched data ", userStored.data.getUsers);
+    //   return;
+    // }
   }
   return (
     <Screen>
@@ -207,27 +217,43 @@ const Login = ({ navigation }) => {
               </Text>
             )}
           </View>
-          <TouchableOpacity
-            onPress={() => signIn()}
-            disabled={email !== "" && password !== "" ? false : true}
-            style={[
-              styles.btn,
-              {
-                backgroundColor:
-                  email !== "" && password !== "" ? COLORS.orange : "#E3E4E6",
-              },
-            ]}
-          >
-            <Text
-              style={{
-                color: email !== "" && password !== "" ? "white" : "#777",
-                fontSize: 16,
-                fontFamily: "Truculenta-Regular",
-              }}
+          {!loading && (
+            <TouchableOpacity
+              onPress={() => signIn()}
+              disabled={email !== "" && password !== "" ? false : true}
+              style={[
+                styles.btn,
+                {
+                  backgroundColor:
+                    email !== "" && password !== "" ? COLORS.orange : "#E3E4E6",
+                },
+              ]}
             >
-              Log In
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={{
+                  color: email !== "" && password !== "" ? "white" : "#777",
+                  fontSize: 16,
+                  fontFamily: "Truculenta-Regular",
+                }}
+              >
+                Log In
+              </Text>
+            </TouchableOpacity>
+          )}
+          {/* loader */}
+          {loading && (
+            <TouchableOpacity
+              style={[
+                styles.btn,
+                {
+                  backgroundColor: COLORS.orange,
+                },
+              ]}
+            >
+              <ActivityIndicator color="#fff" size={16} />
+            </TouchableOpacity>
+          )}
+
           <TouchableOpacity>
             <Text />
           </TouchableOpacity>
