@@ -3,16 +3,16 @@
   "cognitoConfig": {
     "identityPoolName": "testAuthIdentityPool",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "shakeu8a2ca0e5",
+    "resourceNameTruncated": "shakeu125b5955",
     "userPoolName": "ShakeUP",
     "autoVerifiedAttributes": [
       "email"
     ],
-    "mfaConfiguration": "OFF",
+    "mfaConfiguration": "OPTIONAL",
     "mfaTypes": [
-      "SMS Text Message"
+      "TOTP"
     ],
-    "smsAuthenticationMessage": "Your authentication code is {####}",
+    "smsAuthenticationMessage": "Sha  {####}",
     "smsVerificationMessage": "Your verification code is {####}",
     "emailVerificationSubject": "ShakeUp Verification code: {####}",
     "emailVerificationMessage": "Hello there, \nHere is your verification code: {####}",
@@ -30,9 +30,9 @@
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [],
     "userpoolClientReadAttributes": [],
-    "userpoolClientLambdaRole": "ShakeU8a2ca0e5_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "ShakeU125b5955_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "8a2ca0e5",
+    "sharedId": "125b5955",
     "resourceName": "ShakeUP",
     "authSelections": "identityPoolAndUserPool",
     "serviceName": "Cognito",

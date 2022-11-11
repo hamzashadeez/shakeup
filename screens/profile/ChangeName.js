@@ -22,15 +22,14 @@ const ChangeName = ({ navigation, route }) => {
   const [user_data, setUser] = useRecoilState(userData);
   const { name, family_name, middle_name } = route.params.data;
   const [firstName, setFirstName] = useState(name);
-  const [middle, setMiddleName] = useState(middle_name);
+  const [middle, setMiddleName] = useState("Optional");
   const [btnLabel, setBtnLabel] = useState("Save");
-  const [LastName, setLastName] = useState(family_name);
+  const [LastName, setLastName] = useState("Optional");
   const [borderTwo, setBorderTwo] = useState(0);
   const [borderThree, setBorderThree] = useState(0);
   const [showSaveBtn, setShowSaveBtn] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [borderColor, setBorderColor] = useState("white");
-
   const saveNewInfo = async () => {
     try {
       let user = await Auth.currentAuthenticatedUser();
@@ -39,8 +38,8 @@ const ChangeName = ({ navigation, route }) => {
         setBtnLabel("Saving");
         let result = await Auth.updateUserAttributes(user, {
           name: firstName,
-          family_name: LastName ? LastName : "",
-          middle_name: middle ? middle : "",
+          family_name: LastName,
+          middle_name: middle,
         }).then(async () => {
           // get the user again
           const authUser = await Auth.currentAuthenticatedUser({
@@ -153,7 +152,7 @@ const ChangeName = ({ navigation, route }) => {
                 setShowSaveBtn(true);
                 setMiddleName(e);
               }}
-              placeholder="Optional"
+              placeholder={middle ? middle : "Optional"}
               onFocus={() => setBorderTwo(2)}
               onEndEditing={() => setBorderTwo(0)}
               style={[styles.input, { borderColor: "white" }]}
@@ -164,7 +163,7 @@ const ChangeName = ({ navigation, route }) => {
             <TextInput
               value={LastName}
               onFocus={() => setBorderThree(2)}
-              placeholder="Optional"
+              placeholder={LastName ? LastName : "Optional"}
               onChangeText={(e) => {
                 setShowSaveBtn(true);
                 setLastName(e);

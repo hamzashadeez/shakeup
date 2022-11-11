@@ -20,9 +20,9 @@
           "passwordPolicyMinLength": 6,
           "passwordPolicyCharacters": []
         },
-        "mfaConfiguration": "OFF",
+        "mfaConfiguration": "OPTIONAL",
         "mfaTypes": [
-          "SMS"
+          "TOTP"
         ],
         "verificationMechanisms": [
           "EMAIL"

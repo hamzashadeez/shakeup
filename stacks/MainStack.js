@@ -13,6 +13,11 @@ const MainStack = () => {
   const [state, setState] = useState(null);
 
   useEffect(() => {
+    function getUser() {
+      return Auth.currentAuthenticatedUser()
+        .then((userData) => userData)
+        .catch(() => console.log("Not signed in"));
+    }
     const syncUser = async () => {
       try {
         const authUser = await Auth.currentAuthenticatedUser({
@@ -23,30 +28,30 @@ const MainStack = () => {
           username: authUser.attributes.preferred_username,
         });
         // check database
-        const user = await API.graphql(
-          graphqlOperation(getUsers, { id: authUser.attributes.email })
-        );
+        // const user = await API.graphql(
+        //   graphqlOperation(getUsers, { id: authUser.attributes.email })
+        // );
 
-        if (user.data.getUsers) {
-          // console.log("already in DB", user.data.getUsers);
-          return;
-        }
+        // if (user.data.getUsers) {
+        //   // console.log("already in DB", user.data.getUsers);
+        //   return;
+        // }
 
-        const newUser = {
-          id: authUser.attributes.email,
-          email: authUser.attributes.email,
-          username: authUser.attributes.preferred_username,
-          name: authUser.attributes.name,
-          password: "",
-          last: "",
-          middle: "",
-        };
+        // const newUser = {
+        //   id: authUser.attributes.email,
+        //   email: authUser.attributes.email,
+        //   username: authUser.attributes.preferred_username,
+        //   name: authUser.attributes.name,
+        //   password: "",
+        //   last: "",
+        //   middle: "",
+        // };
 
-        await API.graphql(
-          graphqlOperation(createUsers, { input: newUser })
-        ).then(() => console.log("Added"));
+        // await API.graphql(graphqlOperation(createUsers, { input: newUser }))
+        //   .then(() => console.log("Added"))
+        //   .catch((err) => console.log("error from DB: ", err));
       } catch (error) {
-        console.log(error);
+        console.log("MainStack: ", error);
       }
     };
 

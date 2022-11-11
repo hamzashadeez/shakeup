@@ -65,11 +65,6 @@ const Profile = ({ navigation }) => {
         </TouchableOpacity>
         <View style={styles.flex}>
           <Text style={styles.label}>Username</Text>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("change_username", { data: _ })}
-          >
-            <Text style={styles.label2}>Edit</Text>
-          </TouchableOpacity>
         </View>
         <TouchableOpacity
           style={{ zIndex: 15, position: "relative" }}
@@ -90,11 +85,6 @@ const Profile = ({ navigation }) => {
         {/* Email */}
         <View style={styles.flex}>
           <Text style={styles.label}>Email Address</Text>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("change_email", { data: _ })}
-          >
-            <Text style={styles.label2}>Edit</Text>
-          </TouchableOpacity>
         </View>
         <TouchableOpacity
           style={{ zIndex: 15, position: "relative" }}

@@ -4,6 +4,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
   View,
 } from "react-native";
 import React, { useState } from "react";
@@ -27,6 +28,11 @@ const OTP = ({ navigation, route }) => {
   const changeText = (text) => {
     setOTP(text);
   };
+  function getUser() {
+    return Auth.currentAuthenticatedUser()
+      .then((userData) => userData)
+      .catch(() => console.log("Not signed in"));
+  }
 
   const submit = async () => {
     if (loading === true) return;
@@ -35,11 +41,12 @@ const OTP = ({ navigation, route }) => {
       await Auth.confirmSignUp(email, otpcode).then(() => {
         console.log("Succefully Registed");
       });
+      console.log(getUser());
       setUser({ name, username, email, password });
     } catch (error) {
       setErrorMessage(true);
       setLoading(false);
-      console.log("error confirming sign up", error);
+      console.log("error confirming sign up from OTP", error);
     }
   };
 

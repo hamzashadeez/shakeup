@@ -18,7 +18,7 @@ const Discover = () => {
       console.log(_);
     };
 
-    getuser();
+    // getuser();
   }, []);
   return (
     <View>

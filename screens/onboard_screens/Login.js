@@ -27,50 +27,29 @@ const Login = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
 
-  // useEffect(() => {
-  //   API.graphql(graphqlOperation(listUsers)).then((result) =>
-  //     console.log(result.data?.listUsers?.items)
-  //   );
-  // }, []);
-
-  // useEffect(() => {
-  //   const getUserData = async () => {
-  //     const data = await API.graphql(
-  //       graphqlOperation(getUsers, {
-  //         id: "564fbec1-6605-4594-b680-c011b2ab72bc",
-  //       })
-  //     );
-  //     console.log(data.data.getUsers);
-  //   };
-  //   getUserData();
-  // }, []);
   // Log in
+  function getUser() {
+    return Auth.currentAuthenticatedUser()
+      .then((userData) => userData)
+      .catch((err) => console.log("Not signed in", err));
+  }
   async function signIn() {
     setLoading(true);
     try {
-      const user = await Auth.signIn(email, password).then(() => {
-        console.log("Signed Successfully");
+      const user = await Auth.signIn(email, password);
+      const authUser = await Auth.currentAuthenticatedUser({
+        bypassCache: true,
       });
+      setUser({
+        ...authUser.attributes,
+        username: authUser.attributes.preferred_username,
+      });
+      setLoading(false);
     } catch (error) {
       setLoading(false);
       setShowErrorMessage(true);
       console.log("error signing in", error);
     }
-    const authUser = await Auth.currentAuthenticatedUser({
-      bypassCache: true,
-    });
-    setUser({
-      ...authUser.attributes,
-      username: authUser.attributes.preferred_username,
-    });
-    // const userStored = await API.graphql(
-    //   graphqlOperation(getUsers, { id: email })
-    // );
-    // if (userStored.data.getUsers) {
-    //   setUser(userStored.data.getUsers);
-    //   // console.log("user fetched data ", userStored.data.getUsers);
-    //   return;
-    // }
   }
   return (
     <Screen>
