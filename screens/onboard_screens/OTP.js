@@ -63,11 +63,11 @@ const OTP = ({ navigation, route }) => {
           />
           <Text
             style={{
-              fontSize: 32,
+              fontSize: 28,
               textAlign: "center",
               color: "white",
               fontFamily: "Truculenta-Regular",
-              marginTop: 20,
+              marginTop: 10,
               marginBottom: 12,
             }}
           >
@@ -75,7 +75,7 @@ const OTP = ({ navigation, route }) => {
           </Text>
           <Text
             style={{
-              fontSize: 22,
+              fontSize: 20,
               textAlign: "center",
               color: "#EEEFF0",
               fontFamily: "Truculenta-Regular",
@@ -85,7 +85,7 @@ const OTP = ({ navigation, route }) => {
             {email}
           </Text>
           <TouchableOpacity
-            onPress={() => navigation.navigate("email")}
+            onPress={() => navigation.navigate("signup")}
             style={{
               width: "40%",
               marginLeft: "30%",
@@ -105,7 +105,7 @@ const OTP = ({ navigation, route }) => {
           </TouchableOpacity>
 
           {/* form */}
-          <View style={{ marginTop: 32 }}>
+          <View style={{ marginTop: 10 }}>
             <View
               style={{
                 display: "flex",
