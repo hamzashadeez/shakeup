@@ -5,18 +5,21 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ActivityIndicator,
 } from "react-native";
 import React, { useState } from "react";
 import Screen from "../../components/Screen";
 import Header from "../../components/Header";
 import { COLORS } from "../../Theme";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Auth } from "aws-amplify";
 
 const Email = ({ navigation, route }) => {
   const { name, username } = route.params;
   const [email, setEmail] = useState("");
   const [valid, setValid] = useState(null);
   const [show, showText] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [coloredBoarder, setColoredBoarder] = useState("white");
 
   function validateEmail(email) {
@@ -30,6 +33,36 @@ const Email = ({ navigation, route }) => {
     showText(false);
   };
 
+  async function signUp() {
+    if (loading === true) return;
+    try {
+      setLoading(true);
+      const user = await Auth.signUp({
+        username: email,
+        password: "password",
+        attributes: {
+          email,
+          preferred_username: username,
+          name,
+          family_name: "",
+          middle_name: "",
+        },
+        autoSignIn: {
+          enabled: true,
+        },
+      }).then(() => {
+        navigation.navigate("otp", {
+          name,
+          username,
+          email,
+        });
+      });
+    } catch (error) {
+      setLoading(false);
+      console.log("error signing up:", error);
+    }
+  }
+
   const submit = () => {
     if (email.length === 0) {
       setValid(null);
@@ -39,7 +72,8 @@ const Email = ({ navigation, route }) => {
       showText(!validateEmail(email));
     }
     if (validateEmail(email)) {
-      navigation.navigate("createpassword", { name, username, email });
+      setLoading(true);
+      signUp();
     } else {
       setColoredBoarder(COLORS.yellow);
     }
@@ -114,29 +148,45 @@ const Email = ({ navigation, route }) => {
               Error: Invalid input
             </Text>
           )}
-          <TouchableOpacity
-            onPress={() => submit()}
-            disabled={email.length > 3 ? false : true}
-            style={[
-              styles.btn,
-              {
-                backgroundColor: validateEmail(email)
-                  ? COLORS.orange
-                  : "#E3E4E6",
-              },
-            ]}
-          >
-            <Text
-              style={{
-                fontFamily: "Truculenta-Regular",
-                color: validateEmail(email) ? "white" : "#000",
-                fontSize: 18,
-              }}
+          {!loading && (
+            <TouchableOpacity
+              onPress={() => submit()}
+              disabled={email.length > 3 ? false : true}
+              style={[
+                styles.btn,
+                {
+                  backgroundColor: validateEmail(email)
+                    ? COLORS.orange
+                    : "#E3E4E6",
+                },
+              ]}
             >
-              Continue
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={{
+                  fontFamily: "Truculenta-Regular",
+                  color: validateEmail(email) ? "white" : "#000",
+                  fontSize: 18,
+                }}
+              >
+                Continue
+              </Text>
+            </TouchableOpacity>
+          )}
           {/* end form */}
+          {/* loader */}
+          {loading && (
+            <TouchableOpacity
+              style={[
+                styles.btn,
+                {
+                  backgroundColor: COLORS.orange,
+                },
+              ]}
+            >
+              <ActivityIndicator color="#fff" size={16} />
+            </TouchableOpacity>
+          )}
+
           <Image
             source={require("../../assets/ShakeUp.png")}
             resizeMode="contain"

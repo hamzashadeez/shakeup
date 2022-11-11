@@ -19,6 +19,7 @@ import { createUsers } from "../../src/graphql/mutations";
 
 const OTP = ({ navigation, route }) => {
   const { name, username, email, password } = route.params;
+  // let email = "ebbg@gmail.com";
   const [otpcode, setOTP] = useState("");
   const [coloredBoarder, setColoredBoarder] = useState("white");
   const [_, setUser] = useRecoilState(userData);
@@ -41,8 +42,8 @@ const OTP = ({ navigation, route }) => {
       await Auth.confirmSignUp(email, otpcode).then(() => {
         console.log("Succefully Registed");
       });
-      console.log(getUser());
-      setUser({ name, username, email, password });
+      navigation.navigate("createpassword", { name, email });
+      // setUser({ name, username, email, password });
     } catch (error) {
       setErrorMessage(true);
       setLoading(false);
@@ -54,7 +55,12 @@ const OTP = ({ navigation, route }) => {
     <Screen>
       <KeyboardAwareScrollView enableOnAndroid={true}>
         <Header />
-        <View style={{ paddingHorizontal: 15, paddingVertical: 10, flex: 1 }}>
+        <View style={{ paddingHorizontal: 15, paddingVertical: 7, flex: 1 }}>
+          <Image
+            source={require("../../assets/3.png")}
+            resizeMode="contain"
+            style={{ width: "100%", height: 28 }}
+          />
           <Text
             style={{
               fontSize: 32,
@@ -65,30 +71,70 @@ const OTP = ({ navigation, route }) => {
               marginBottom: 12,
             }}
           >
-            Verify OTP Code
+            Sign Up
           </Text>
           <Text
             style={{
-              fontSize: 18,
+              fontSize: 22,
               textAlign: "center",
               color: "#EEEFF0",
               fontFamily: "Truculenta-Regular",
             }}
           >
-            We have sent an OTP Code to your email address
+            To verify your email, we've sent a One Time Password (OTP) to{" "}
+            {email}
           </Text>
-
-          {/* form */}
-          <View style={{ marginTop: 32 }}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("email")}
+            style={{
+              width: "40%",
+              marginLeft: "30%",
+              marginTop: 5,
+            }}
+          >
             <Text
               style={{
                 fontSize: 16,
-                color: "#EEEFF0",
+                color: COLORS.green2,
                 fontFamily: "Truculenta-Regular",
+                textAlign: "center",
               }}
             >
-              OTP Code
+              (change)
             </Text>
+          </TouchableOpacity>
+
+          {/* form */}
+          <View style={{ marginTop: 32 }}>
+            <View
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                flexDirection: "row",
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: "#EEEFF0",
+                  fontFamily: "Truculenta-Regular",
+                }}
+              >
+                OTP Code
+              </Text>
+              <TouchableOpacity>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: COLORS.green2,
+                    fontFamily: "Truculenta-Regular",
+                  }}
+                >
+                  Resend OTP
+                </Text>
+              </TouchableOpacity>
+            </View>
             <TextInput
               value={otpcode}
               onChangeText={(e) => changeText(e)}

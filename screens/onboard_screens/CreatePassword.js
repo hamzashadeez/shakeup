@@ -14,6 +14,8 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import PasswordField from "../../components/PasswordField";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Auth } from "aws-amplify";
+import { useRecoilState } from "recoil";
+import userData from "../../recoil/userData";
 
 const CreatePassword = ({ navigation, route }) => {
   const { name, username, email } = route.params;
@@ -25,6 +27,7 @@ const CreatePassword = ({ navigation, route }) => {
   const [showCountErrorLabel, setShowCountErrorLabel] = useState(false);
   const [agreed, setAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [user_data, setUser] = useRecoilState(userData);
   const [coloredBoarder, setColoredBoarder] = useState("white");
   const [coloredBoarder2, setColoredBoarder2] = useState("white");
   let tempValid = valid;
@@ -37,31 +40,31 @@ const CreatePassword = ({ navigation, route }) => {
     setShowCountErrorLabel(false);
   };
 
-  async function signUp() {
-    if (loading === true) return;
-    try {
-      setLoading(true);
-      const user = await Auth.signUp({
-        username: email,
-        password,
-        attributes: {
-          email,
-          preferred_username: username,
-          name,
-          family_name: "",
-          middle_name: "",
-        },
-        autoSignIn: {
-          enabled: true,
-        },
-      }).then(() => {
-        navigation.navigate("otp", { name, username, email, password });
-      });
-    } catch (error) {
-      setLoading(false);
-      console.log("error signing up:", error);
-    }
-  }
+  // async function signUp() {
+  //   if (loading === true) return;
+  //   try {
+  //     setLoading(true);
+  //     const user = await Auth.signUp({
+  //       username: email,
+  //       password,
+  //       attributes: {
+  //         email,
+  //         preferred_username: username,
+  //         name,
+  //         family_name: "",
+  //         middle_name: "",
+  //       },
+  //       autoSignIn: {
+  //         enabled: true,
+  //       },
+  //     }).then(() => {
+  //       navigation.navigate("otp", { name, username, email, password });
+  //     });
+  //   } catch (error) {
+  //     setLoading(false);
+  //     console.log("error signing up:", error);
+  //   }
+  // }
 
   const realtimeValidation = () => {
     if (password === cpassword) {
@@ -80,7 +83,7 @@ const CreatePassword = ({ navigation, route }) => {
     }
   };
 
-  const next = () => {
+  const next = async () => {
     // save username and go to the username screen
     if (password === cpassword) {
       tempMatch = true;
@@ -109,8 +112,24 @@ const CreatePassword = ({ navigation, route }) => {
     }
 
     if (tempValid && tempMatch) {
-      // signup here
-      signUp();
+      // change password here
+      setLoading(true);
+      try {
+        Auth.currentAuthenticatedUser().then((user) => {
+          return Auth.changePassword(user, "password", password);
+        });
+        const authUser = await Auth.currentAuthenticatedUser({
+          bypassCache: true,
+        });
+        setUser({
+          ...authUser.attributes,
+          username: authUser.attributes.preferred_username,
+        });
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log("Error from password ", error);
+      }
     }
   };
   return (
@@ -251,27 +270,42 @@ const CreatePassword = ({ navigation, route }) => {
             </Text>
           </View>
           {/*end checkbox*/}
-          <TouchableOpacity
-            onPress={() => next()}
-            disabled={password.length > 1 && agreed ? false : true}
-            style={[
-              styles.btn,
-              {
-                backgroundColor: agreed === true ? COLORS.orange : "#E3E4E6",
-              },
-            ]}
-          >
-            <Text
-              style={{
-                fontFamily: "Truculenta-Regular",
-                color: agreed === true ? "#fff" : "#000",
-                fontSize: 18,
-              }}
+          {!loading && (
+            <TouchableOpacity
+              onPress={() => next()}
+              disabled={password.length > 1 && agreed ? false : true}
+              style={[
+                styles.btn,
+                {
+                  backgroundColor: agreed === true ? COLORS.orange : "#E3E4E6",
+                },
+              ]}
             >
-              Continue
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={{
+                  fontFamily: "Truculenta-Regular",
+                  color: agreed === true ? "#fff" : "#000",
+                  fontSize: 18,
+                }}
+              >
+                Continue
+              </Text>
+            </TouchableOpacity>
+          )}
           {/* end form */}
+          {/* loader */}
+          {loading && (
+            <TouchableOpacity
+              style={[
+                styles.btn,
+                {
+                  backgroundColor: COLORS.orange,
+                },
+              ]}
+            >
+              <ActivityIndicator color="#fff" size={16} />
+            </TouchableOpacity>
+          )}
           <Image
             source={require("../../assets/ShakeUp.png")}
             resizeMode="contain"
