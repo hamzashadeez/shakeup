@@ -6,11 +6,6 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/ShakeUp.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#027372"
-    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },

@@ -6,6 +6,14 @@ import { COLORS } from "../Theme";
 import { Ionicons } from "@expo/vector-icons";
 import { Image, StyleSheet } from "react-native";
 import { Profile } from "../screens/profile";
+import {
+  ProfileEnabled,
+  ProfileSvg,
+  LearnEnabled,
+  LearnSvg,
+  DiscoverEnabled,
+  DiscoverSvg,
+} from "../assets";
 
 const Tab = createBottomTabNavigator();
 const TabStack = () => {
@@ -35,17 +43,9 @@ const TabStack = () => {
           tabBarLabel: "Discover",
           tabBarIcon: ({ focused }) =>
             focused ? (
-              <Image
-                resizeMode="contain"
-                source={require("../assets/discover_enabled.png")}
-                style={styles.activeImg}
-              />
+              <DiscoverEnabled width={31} height={31} />
             ) : (
-              <Image
-                resizeMode="contain"
-                source={require("../assets/discover.png")}
-                style={styles.deActiveImg}
-              />
+              <DiscoverSvg width={31} height={31} />
             ),
         }}
       />
@@ -56,17 +56,9 @@ const TabStack = () => {
           tabBarLabel: "Learn",
           tabBarIcon: ({ focused }) =>
             focused ? (
-              <Image
-                resizeMode="contain"
-                source={require("../assets/Learn_enabled.png")}
-                style={styles.activeImg}
-              />
+              <LearnEnabled width={31} height={31} />
             ) : (
-              <Image
-                resizeMode="contain"
-                source={require("../assets/learn.png")}
-                style={styles.deActiveImg}
-              />
+              <LearnSvg width={31} height={31} />
             ),
         }}
       />
@@ -79,18 +71,9 @@ const TabStack = () => {
           tabBarIcon: ({ focused }) =>
             focused ? (
               // <Icon />
-              <Image
-                resizeMode="contain"
-                source={require("../assets/profile_enabled.png")}
-                style={styles.activeImg}
-              />
+              <ProfileEnabled width={31} height={31} />
             ) : (
-              // <SvgUri width="31" height="31" source={Icon} />
-              <Image
-                resizeMode="contain"
-                source={require("../assets/profile.png")}
-                style={styles.deActiveImg}
-              />
+              <ProfileSvg width={31} height={31} />
             ),
         }}
       />

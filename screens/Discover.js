@@ -6,6 +6,7 @@ import { Auth } from "aws-amplify";
 import HomeHeader from "../components/HomeHeader";
 import GeneralScreen from "../components/GeneralScreen";
 import Item from "../components/Item";
+import Logo from "../assets/svg/Club_Soda.svg";
 
 const Discover = () => {
   const [_, setUser] = useRecoilState(userData);
@@ -30,6 +31,7 @@ const Discover = () => {
         {/* content goes here */}
         <View style={{ height: 10 }} />
         <Item />
+        <Logo width={120} height={80} />
         {/* <Item /> */}
       </GeneralScreen>
     </>
