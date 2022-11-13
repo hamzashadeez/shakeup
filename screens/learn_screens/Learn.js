@@ -1,15 +1,15 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useEffect } from "react";
 import { useRecoilState } from "recoil";
-import userData from "../recoil/userData";
+import userData from "../../recoil/userData";
 import { Auth } from "aws-amplify";
-import HomeHeader from "../components/HomeHeader";
-import GeneralScreen from "../components/GeneralScreen";
+import HomeHeader from "../../components/HomeHeader";
+import GeneralScreen from "../../components/GeneralScreen";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { AntDesign } from "@expo/vector-icons";
-import { COLORS } from "../Theme";
+import { COLORS } from "../../Theme";
 
-const Learn = () => {
+const Learn = ({ navigation }) => {
   const [_, setUser] = useRecoilState(userData);
   useEffect(() => {
     const getuser = async () => {
@@ -31,7 +31,10 @@ const Learn = () => {
       <GeneralScreen>
         {/* content goes here */}
         <View style={{ height: 10 }} />
-        <View
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("learn_stack", { screen: "opencard" })
+          }
           style={{
             display: "flex",
             backgroundColor: "#0000000F",
@@ -58,7 +61,7 @@ const Learn = () => {
             //   setAgreed(e);
             // }}
           />
-        </View>
+        </TouchableOpacity>
       </GeneralScreen>
     </>
   );

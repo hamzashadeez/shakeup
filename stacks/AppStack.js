@@ -1,4 +1,5 @@
 import { createStackNavigator } from "@react-navigation/stack";
+import { OpenCard } from "../screens/learn_screens";
 import {
   AccountDeleted,
   Profile,
@@ -7,6 +8,7 @@ import {
   ChangeUsername,
   ChangeName,
 } from "../screens/profile";
+import LearnStack from "./LearnStack";
 import TabStack from "./TabStack";
 
 const Stack = createStackNavigator();
@@ -23,6 +25,7 @@ function AppStack() {
       <Stack.Screen name="change_password" component={ChangePassword} />
       <Stack.Screen name="change_username" component={ChangeUsername} />
       <Stack.Screen name="accountdeleted" component={AccountDeleted} />
+      {/* <Stack.Screen name="learn_stack" component={LearnStack} /> */}
     </Stack.Navigator>
   );
 }

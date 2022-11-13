@@ -1,10 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Discover from "../screens/Discover";
-import Learn from "../screens/Learn";
-import ProfileStack from "./ProfileStack";
 import { COLORS } from "../Theme";
-import { Ionicons } from "@expo/vector-icons";
-import { Image, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { Profile } from "../screens/profile";
 import {
   ProfileEnabled,
@@ -14,6 +11,8 @@ import {
   DiscoverEnabled,
   DiscoverSvg,
 } from "../assets";
+import LearnStack from "./LearnStack";
+import { Learn } from "../screens/learn_screens";
 
 const Tab = createBottomTabNavigator();
 const TabStack = () => {
@@ -50,8 +49,8 @@ const TabStack = () => {
         }}
       />
       <Tab.Screen
-        name="learn"
-        component={Learn}
+        name="learn_stack"
+        component={LearnStack}
         options={{
           tabBarLabel: "Learn",
           tabBarIcon: ({ focused }) =>

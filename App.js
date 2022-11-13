@@ -10,18 +10,6 @@ import MainStack from "./stacks/MainStack";
 Amplify.configure({
   ...awsconfig,
   Analytics: { disabled: true },
-  // Auth: {
-  //   // REQUIRED only for Federated Authentication - Amazon Cognito Identity Pool ID
-  //   identityPoolId: "us-east-1:6941d5af-6921-4f7a-a8d3-fb7b9cde0232",
-  //   // REQUIRED - Amazon Cognito Region
-  //   region: "us-east-1",
-  //   // OPTIONAL - Amazon Cognito User Pool ID
-  //   userPoolId: "us-east-1_CvUUIxQFb",
-  //   // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
-  //   // userPoolWebClientId: "5m5q5obip2sm7u63mlp10lp1u7",
-  //   // userPoolWebClientSecretId:
-  //   //   "10rq8pfa8t7iu9v4kl4vi82posrp8lc1p8otkjfahittmqsb1vdl",
-  // },
 });
 
 function App() {

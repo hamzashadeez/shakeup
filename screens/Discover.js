@@ -31,7 +31,7 @@ const Discover = () => {
         {/* content goes here */}
         <View style={{ height: 10 }} />
         <Item />
-        <Logo width={120} height={80} />
+        {/* <Logo width={120} heighMt={80} /> */}
         {/* <Item /> */}
       </GeneralScreen>
     </>

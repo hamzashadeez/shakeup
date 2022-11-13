@@ -1,4 +1,11 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useState } from "react";
 import { COLORS } from "../Theme";
 import Modal from "react-native-modal";
@@ -43,7 +50,11 @@ const Item = () => {
             </TouchableOpacity>
           )}
         </View>
-        <View style={styles.labelsCont}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.labelsCont}
+        >
           <View style={styles.labels}>
             <Text style={styles.text3}>Vodka</Text>
           </View>
@@ -53,7 +64,10 @@ const Item = () => {
           <View style={[styles.labels, { backgroundColor: "#3DBEBC" }]}>
             <Text style={styles.text3}>4 ingredients</Text>
           </View>
-        </View>
+          <View style={styles.labels}>
+            <Text style={styles.text3}>Vodka</Text>
+          </View>
+        </ScrollView>
       </View>
       {/* Modal */}
       <Modal animationType="slide" isVisible={showModal}>
@@ -121,12 +135,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginRight: 5,
     borderRadius: 2,
+    height: 20,
+    alignSelf: "flex-end",
   },
   labelsCont: {
     display: "flex",
-    flexDirection: "row",
+    // flexDirection: "row",
     // justifyContent: "space-around",
-    alignItems: "flex-end",
+    // alignItems: "flex-end",
     flex: 1,
   },
 });
