@@ -19,6 +19,7 @@ import { Auth } from "aws-amplify";
 
 const Profile = ({ navigation }) => {
   const [_, setUser] = useRecoilState(userData);
+  console.log(_);
   // logout function
   async function signOut() {
     try {

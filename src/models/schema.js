@@ -1,7 +1,7 @@
 export const schema = {
     "models": {
-        "Users": {
-            "name": "Users",
+        "UserData": {
+            "name": "UserData",
             "fields": {
                 "id": {
                     "name": "id",
@@ -17,20 +17,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "middle": {
-                    "name": "middle",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "last": {
-                    "name": "last",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
                 "username": {
                     "name": "username",
                     "isArray": false,
@@ -40,13 +26,6 @@ export const schema = {
                 },
                 "email": {
                     "name": "email",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "password": {
-                    "name": "password",
                     "isArray": false,
                     "type": "String",
                     "isRequired": true,
@@ -70,7 +49,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "Users",
+            "pluralName": "UserData",
             "attributes": [
                 {
                     "type": "model",
@@ -98,5 +77,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.3.1",
-    "version": "820604d64b7184734efccd32e8a41444"
+    "version": "e7b1188fa7847de285d4ef94ffd9489e"
 };

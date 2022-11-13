@@ -1,23 +1,21 @@
 {
   "auth": {
-    "ShakeUP": {
+    "shakeup7974e6e87974e6e8": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
       "customAuth": false,
       "frontendAuthConfig": {
         "socialProviders": [],
-        "usernameAttributes": [
-          "EMAIL"
-        ],
+        "usernameAttributes": [],
         "signupAttributes": [
-          "NAME",
-          "PREFERRED_USERNAME",
+          "EMAIL",
+          "FAMILY_NAME",
           "MIDDLE_NAME",
-          "FAMILY_NAME"
+          "NAME"
         ],
         "passwordProtectionSettings": {
-          "passwordPolicyMinLength": 6,
+          "passwordPolicyMinLength": "6",
           "passwordPolicyCharacters": []
         },
         "mfaConfiguration": "OPTIONAL",
@@ -51,6 +49,13 @@
           ]
         }
       }
+    }
+  },
+  "hosting": {
+    "amplifyhosting": {
+      "service": "amplifyhosting",
+      "providerPlugin": "awscloudformation",
+      "type": "manual"
     }
   }
 }

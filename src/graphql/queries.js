@@ -1,16 +1,13 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getUsers = /* GraphQL */ `
-  query GetUsers($id: ID!) {
-    getUsers(id: $id) {
+export const getUserData = /* GraphQL */ `
+  query GetUserData($id: ID!) {
+    getUserData(id: $id) {
       id
       name
-      middle
-      last
       username
       email
-      password
       createdAt
       updatedAt
       _version
@@ -19,21 +16,18 @@ export const getUsers = /* GraphQL */ `
     }
   }
 `;
-export const listUsers = /* GraphQL */ `
-  query ListUsers(
-    $filter: ModelUsersFilterInput
+export const listUserData = /* GraphQL */ `
+  query ListUserData(
+    $filter: ModelUserDataFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listUserData(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         name
-        middle
-        last
         username
         email
-        password
         createdAt
         updatedAt
         _version
@@ -45,14 +39,14 @@ export const listUsers = /* GraphQL */ `
     }
   }
 `;
-export const syncUsers = /* GraphQL */ `
-  query SyncUsers(
-    $filter: ModelUsersFilterInput
+export const syncUserData = /* GraphQL */ `
+  query SyncUserData(
+    $filter: ModelUserDataFilterInput
     $limit: Int
     $nextToken: String
     $lastSync: AWSTimestamp
   ) {
-    syncUsers(
+    syncUserData(
       filter: $filter
       limit: $limit
       nextToken: $nextToken
@@ -61,11 +55,8 @@ export const syncUsers = /* GraphQL */ `
       items {
         id
         name
-        middle
-        last
         username
         email
-        password
         createdAt
         updatedAt
         _version

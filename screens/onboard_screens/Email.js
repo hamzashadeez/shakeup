@@ -15,10 +15,11 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { Auth } from "aws-amplify";
 
 const Email = ({ navigation, route }) => {
-  const { name, username } = route.params;
+  const { name, username, data } = route.params;
   const [email, setEmail] = useState("");
   const [valid, setValid] = useState(null);
   const [show, showText] = useState(false);
+  const [emailExistError, setEmailExist] = useState(false);
   const [loading, setLoading] = useState(false);
   const [coloredBoarder, setColoredBoarder] = useState("white");
 
@@ -35,31 +36,38 @@ const Email = ({ navigation, route }) => {
 
   async function signUp() {
     if (loading === true) return;
-    try {
-      setLoading(true);
-      const user = await Auth.signUp({
-        username: email,
-        password: "password",
-        attributes: {
-          email,
-          preferred_username: username,
-          name,
-          family_name: "",
-          middle_name: "",
-        },
-        autoSignIn: {
-          enabled: true,
-        },
-      }).then(() => {
+    const found = data.some((item) => item.email === email);
+
+    if (found) {
+      setEmailExist(true);
+      setLoading(false);
+    } else {
+      try {
+        setLoading(true);
+        const user = await Auth.signUp({
+          username,
+          password: "password",
+          attributes: {
+            email,
+            // preferred_username: "",
+            name,
+            family_name: "",
+            middle_name: "",
+          },
+          autoSignIn: {
+            enabled: true,
+          },
+        });
+
         navigation.navigate("otp", {
           name,
           username,
           email,
         });
-      });
-    } catch (error) {
-      setLoading(false);
-      console.log("error signing up:", error);
+      } catch (error) {
+        setLoading(false);
+        console.log("error signing up:", error);
+      }
     }
   }
 
@@ -127,7 +135,10 @@ const Email = ({ navigation, route }) => {
               value={email}
               onChangeText={(e) => changeText(e)}
               placeholder="Enter Email"
-              onFocus={() => setColoredBoarder(COLORS.orange)}
+              onFocus={() => {
+                setEmailExist(false);
+                setColoredBoarder(COLORS.orange);
+              }}
               keyboardType="email-address"
               style={[
                 styles.input,
@@ -146,6 +157,17 @@ const Email = ({ navigation, route }) => {
               }}
             >
               Error: Invalid input
+            </Text>
+          )}
+          {emailExistError && (
+            <Text
+              style={{
+                color: COLORS.yellow,
+                fontSize: 16,
+                fontFamily: "Truculenta-Regular",
+              }}
+            >
+              Error: Email Address Not Available
             </Text>
           )}
           {!loading && (

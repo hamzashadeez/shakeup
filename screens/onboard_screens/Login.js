@@ -192,7 +192,7 @@ const Login = ({ navigation }) => {
                   fontFamily: "Truculenta-Regular",
                 }}
               >
-                Error: Incorrcet email or password
+                Error: Incorrect login credentials
               </Text>
             )}
           </View>

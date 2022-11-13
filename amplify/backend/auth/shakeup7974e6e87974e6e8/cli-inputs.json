@@ -1,0 +1,64 @@
+{
+  "version": "1",
+  "cognitoConfig": {
+    "identityPoolName": "shakeup7974e6e8_identitypool_7974e6e8",
+    "allowUnauthenticatedIdentities": false,
+    "resourceNameTruncated": "shakeu7974e6e8",
+    "userPoolName": "shakeup",
+    "autoVerifiedAttributes": [
+      "email"
+    ],
+    "mfaConfiguration": "OPTIONAL",
+    "mfaTypes": [
+      "TOTP"
+    ],
+    "smsAuthenticationMessage": "Your authentication code is {####}",
+    "smsVerificationMessage": "Your verification code is {####}",
+    "emailVerificationSubject": "Your verification code",
+    "emailVerificationMessage": "Your verification code is {####}",
+    "defaultPasswordPolicy": true,
+    "passwordPolicyMinLength": "6",
+    "passwordPolicyCharacters": [],
+    "requiredAttributes": [
+      "email",
+      "family_name",
+      "middle_name",
+      "name"
+    ],
+    "aliasAttributes": [
+      "email",
+      "preferred_username"
+    ],
+    "userpoolClientGenerateSecret": false,
+    "userpoolClientRefreshTokenValidity": 30,
+    "userpoolClientWriteAttributes": [
+      "preferred_username",
+      "email",
+      "family_name",
+      "middle_name",
+      "name"
+    ],
+    "userpoolClientReadAttributes": [
+      "email",
+      "family_name",
+      "middle_name",
+      "name",
+      "preferred_username"
+    ],
+    "userpoolClientLambdaRole": "shakeu7974e6e8_userpoolclient_lambda_role",
+    "userpoolClientSetAttributes": true,
+    "sharedId": "7974e6e8",
+    "resourceName": "shakeup7974e6e87974e6e8",
+    "authSelections": "identityPoolAndUserPool",
+    "useDefault": "manual",
+    "thirdPartyAuth": false,
+    "userPoolGroups": false,
+    "adminQueries": false,
+    "triggers": {},
+    "hostedUI": false,
+    "userPoolGroupList": [],
+    "serviceName": "Cognito",
+    "usernameCaseSensitive": false,
+    "useEnabledMfas": true
+  }
+} 

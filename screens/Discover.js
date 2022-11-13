@@ -14,14 +14,14 @@ const Discover = () => {
       const authUser = await Auth.currentAuthenticatedUser({
         bypassCache: true,
       });
-      setUser({
-        ...authUser.attributes,
-        username: authUser.attributes.preferred_username,
-      });
-      console.log(_);
+      // setUser({
+      //   ...authUser.attributes,
+      //   username: authUser.attributes.preferred_username,
+      // });
+      console.log("user ", authUser.attributes);
     };
 
-    // getuser();
+    getuser();
   }, []);
   return (
     <>

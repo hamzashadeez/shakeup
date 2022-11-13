@@ -118,6 +118,10 @@ const CreatePassword = ({ navigation, route }) => {
         Auth.currentAuthenticatedUser().then((user) => {
           return Auth.changePassword(user, "password", password);
         });
+        let userAuth = await Auth.currentAuthenticatedUser();
+        let result = await Auth.updateUserAttributes(userAuth, {
+          preferred_username: username,
+        });
         const authUser = await Auth.currentAuthenticatedUser({
           bypassCache: true,
         });

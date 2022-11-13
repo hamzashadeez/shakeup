@@ -24,8 +24,8 @@ const MainStack = () => {
           bypassCache: true,
         });
         setUser({
-          ...authUser.attributes,
-          username: authUser.attributes.preferred_username,
+          ...authUser?.attributes,
+          username: authUser?.attributes.preferred_username,
         });
         // check database
         // const user = await API.graphql(

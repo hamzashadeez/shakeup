@@ -12,7 +12,16 @@
       "AmplifyAppId": "d1rcdzgzwn50ar"
     },
     "categories": {
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d1rcdzgzwn50ar",
+          "type": "manual"
+        }
+      },
       "auth": {
+        "shakeup7974e6e87974e6e8": {}
+      },
+      "api": {
         "ShakeUP": {}
       }
     }

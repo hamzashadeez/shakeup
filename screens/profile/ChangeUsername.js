@@ -57,7 +57,7 @@ const ChangeUsername = ({ navigation, route }) => {
         let user = await Auth.currentAuthenticatedUser();
 
         let result = await Auth.updateUserAttributes(user, {
-          preferred_username: firstName,
+          username: firstName,
         }).then(async () => {
           // get the user again
           const authUser = await Auth.currentAuthenticatedUser({
@@ -65,7 +65,7 @@ const ChangeUsername = ({ navigation, route }) => {
           });
           setUser({
             ...authUser.attributes,
-            username: authUser.attributes.preferred_username,
+            username: authUser.attributes.username,
           });
           Toast.show({
             type: "success",

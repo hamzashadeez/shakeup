@@ -7,15 +7,19 @@ import {
   View,
   KeyboardAvoidingView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Screen from "../../components/Screen";
 import Header from "../../components/Header";
 import { COLORS } from "../../Theme";
+import { API, graphqlOperation } from "aws-amplify";
+import { listUserData } from "../../src/graphql/queries";
 
 const Username = ({ navigation, route }) => {
   const { fullname } = route.params;
   const [name, setName] = useState("");
   const [valid, setValid] = useState(false);
+  const [data, setData] = useState([]);
+  const [showError, setShowError] = useState(false);
   const [coloredBoarder, setColoredBoarder] = useState("white");
 
   const changeText = (text) => {
@@ -27,10 +31,30 @@ const Username = ({ navigation, route }) => {
     }
   };
 
+  useEffect(() => {
+    // check database
+    const checkUsers = async () => {
+      const user = await API.graphql(graphqlOperation(listUserData));
+      console.log(user.data.listUserData.items);
+      let _ = user.data.listUserData.items;
+      setData(_);
+      console.log("user: ", data);
+    };
+    checkUsers();
+  }, []);
+
   const next = () => {
     // save username and go to the username screen
-    if (valid) {
-      navigation.navigate("email", { name: fullname, username: name });
+    if (valid === false) return;
+    const found = data.some((item) => item.username === name);
+    if (found) {
+      setShowError(true);
+    } else {
+      navigation.navigate("email", {
+        name: fullname,
+        username: name,
+        data,
+      });
     }
   };
 
@@ -83,7 +107,10 @@ const Username = ({ navigation, route }) => {
               value={name}
               onChangeText={(e) => changeText(e)}
               placeholder="Enter Username"
-              onFocus={() => setColoredBoarder(COLORS.orange)}
+              onFocus={() => {
+                setShowError(false);
+                setColoredBoarder(COLORS.orange);
+              }}
               style={[
                 styles.input,
                 {
@@ -91,6 +118,17 @@ const Username = ({ navigation, route }) => {
                 },
               ]}
             />
+            {showError && (
+              <Text
+                style={{
+                  color: COLORS.yellow,
+                  fontSize: 16,
+                  fontFamily: "Truculenta-Regular",
+                }}
+              >
+                Error: Username Not Available
+              </Text>
+            )}
           </View>
           <TouchableOpacity
             disabled={valid ? false : true}

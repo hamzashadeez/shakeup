@@ -1,9 +1,7 @@
-type Users @model @auth(rules: [{allow: public}]) {
+type UserData @model @auth(rules: [{allow: public}]) {
   id: ID!
   name: String!
-  middle: String
-  last: String
   username: String!
   email: String!
-  password: String!
 }
+ 

@@ -15,7 +15,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { API, Auth, graphqlOperation } from "aws-amplify";
 import userData from "../../recoil/userData";
 import { useRecoilState } from "recoil";
-import { createUsers } from "../../src/graphql/mutations";
+import { createUserData } from "../../src/graphql/mutations";
 
 const OTP = ({ navigation, route }) => {
   const { name, username, email, password } = route.params;
@@ -39,10 +39,22 @@ const OTP = ({ navigation, route }) => {
     if (loading === true) return;
     try {
       setLoading(true);
-      await Auth.confirmSignUp(email, otpcode).then(() => {
+      await Auth.confirmSignUp(username, otpcode).then(() => {
         console.log("Succefully Registed");
       });
-      navigation.navigate("createpassword", { name, email });
+
+      const newUser = {
+        id: email,
+        email,
+        username,
+        name,
+      };
+
+      await API.graphql(graphqlOperation(createUserData, { input: newUser }));
+      // .then(() => console.log("Added"))
+      // .catch((err) => console.log("error from DB: ", err));
+
+      navigation.navigate("createpassword", { name, email, username });
       // setUser({ name, username, email, password });
     } catch (error) {
       setErrorMessage(true);
