@@ -108,7 +108,7 @@ const OpenCard = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </View>
-        <ScrollView style={{ height: 400 }}>
+        <ScrollView style={{ height: "100%" }}>
           <Image
             resizeMode="contain"
             source={require("../../assets/Cosmopolitan_Front.png")}
@@ -126,7 +126,9 @@ const OpenCard = ({ navigation }) => {
               }}
             />
           )}
+
           <TouchableOpacity
+            onPress={() => navigation.navigate("play")}
             style={{
               backgroundColor: COLORS.primary,
               width: "90%",
@@ -162,17 +164,26 @@ const OpenCard = ({ navigation }) => {
         >
           <TouchableOpacity
             onPress={() => setShowModal(false)}
-            style={{ padding: 10, position: "absolute", top: 0, right: 0 }}
+            style={{
+              padding: 15,
+              position: "absolute",
+              top: 0,
+              right: 0,
+              zIndex: 40,
+              paddingBottom: 25,
+            }}
           >
-            <AntDesign name="close" size={30} color="white" />
+            <AntDesign name="close" size={35} color="white" />
           </TouchableOpacity>
           <Image
             resizeMode="contain"
             source={require("../../assets/Cosmopolitan_Front.png")}
             style={{
+              flex: 1,
               // width: "100%",
-              width: 500,
-              height: 200,
+              // width: 500,
+              // height: 200,
+              margin: 120,
               transform: [{ rotateZ: "90deg" }],
             }}
           />

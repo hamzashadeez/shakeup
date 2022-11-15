@@ -10,6 +10,7 @@ import {
 } from "../screens/profile";
 import LearnStack from "./LearnStack";
 import TabStack from "./TabStack";
+import { Play } from "../screens/play_screens";
 
 const Stack = createStackNavigator();
 
@@ -25,7 +26,7 @@ function AppStack() {
       <Stack.Screen name="change_password" component={ChangePassword} />
       <Stack.Screen name="change_username" component={ChangeUsername} />
       <Stack.Screen name="accountdeleted" component={AccountDeleted} />
-      {/* <Stack.Screen name="learn_stack" component={LearnStack} /> */}
+      <Stack.Screen name="play" component={Play} />
     </Stack.Navigator>
   );
 }
