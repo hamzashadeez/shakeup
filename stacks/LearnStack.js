@@ -1,5 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import { Learn, OpenCard } from "../screens/learn_screens";
+import { Dog, Drag, Learn, OpenCard } from "../screens/learn_screens";
+
 const Stack = createStackNavigator();
 
 function LearnStack({ navigation }) {
@@ -10,6 +11,8 @@ function LearnStack({ navigation }) {
     >
       <Stack.Screen name="learn" component={Learn} />
       <Stack.Screen name="opencard" component={OpenCard} />
+      <Stack.Screen name="dog" component={Dog} />
+      <Stack.Screen name="drag" component={Drag} />
     </Stack.Navigator>
   );
 }

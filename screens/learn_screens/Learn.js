@@ -14,20 +14,6 @@ const Learn = ({ navigation }) => {
   const [_, setUser] = useRecoilState(userData);
   const [learning, setLearning] = useRecoilState(learningData);
 
-  useEffect(() => {
-    const getuser = async () => {
-      const authUser = await Auth.currentAuthenticatedUser({
-        bypassCache: true,
-      });
-      setUser({
-        ...authUser.attributes,
-        username: authUser.attributes.preferred_username,
-      });
-      console.log(_);
-    };
-
-    // getuser();
-  }, []);
   return (
     <>
       <HomeHeader />

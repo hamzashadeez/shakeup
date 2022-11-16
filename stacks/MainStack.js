@@ -70,7 +70,6 @@ const MainStack = () => {
       });
       //  update database
     }
-    console.log(learning, " is updated");
     check();
   }, [learning]);
 

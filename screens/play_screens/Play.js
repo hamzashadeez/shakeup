@@ -40,7 +40,8 @@ const Play = ({ navigation }) => {
     if (quizData.length > qIndex + 1) {
       setQIndex(qIndex + 1);
     } else {
-      alert("You reached to the end");
+      navigation.navigate("dog");
+      // alert("You reached to the end");
     }
   };
 
@@ -74,7 +75,7 @@ const Play = ({ navigation }) => {
             color="#000000DE"
           />
           <Text style={styles.textScore}>
-            {qScore} of {quizData.length}
+            {qScore} of {quizData.length + 1}
           </Text>
         </View>
       </View>
@@ -83,9 +84,7 @@ const Play = ({ navigation }) => {
         {/* questions */}
         <View style={styles.questionContainer}>
           <View style={styles.textContainer}>
-            <Text style={styles.questionText}>
-              Which ingredient is in a cosmopolitan?
-            </Text>
+            <Text style={styles.questionText}>{quizData[qIndex].label}</Text>
             {false && <Text style={styles.hint}>Hint</Text>}
           </View>
           {/* bottles container */}
@@ -150,7 +149,7 @@ const Play = ({ navigation }) => {
             onPress={() => checkAnswer()}
             disabled={select === 0 ? true : false}
             style={{
-              backgroundColor: "#0000001F",
+              backgroundColor: select === 0 ? "#0000001F" : "#E28B14",
               width: "80%",
               alignSelf: "flex-end",
               marginLeft: "10%",
@@ -338,11 +337,20 @@ const styles = StyleSheet.create({
   },
   bottleContainer: {
     backgroundColor: "white",
-    // flex: 1,
-    width: "10%",
+    // flex: 1.5,
+    width: "12%",
     display: "flex",
     borderRadius: 4,
-    elevation: 4,
+    // elevation: 4,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 7,
+    },
+    shadowOpacity: 0.41,
+    shadowRadius: 9.11,
+
+    elevation: 14,
   },
   textContainer: {
     flex: 3,

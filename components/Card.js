@@ -25,7 +25,7 @@ const Card = ({ onSelect, data }) => {
       style={[
         styles.card,
         {
-          backgroundColor: select === data.id ? "#E28B1424" : "whitesmoke",
+          backgroundColor: select === data.id ? "#E28B1424" : "white",
           //   elevation: select === data.id ? 0 : 4,
         },
       ]}
@@ -40,6 +40,7 @@ export default Card;
 const styles = StyleSheet.create({
   card: {
     padding: 10,
+    backgroundColor: "white",
     // backgroundColor: "whitesmoke",
     flex: 1,
     height: 100,
@@ -48,5 +49,14 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "flex-end",
     alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
 });
