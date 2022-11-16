@@ -10,10 +10,15 @@ import React, { useState } from "react";
 import { COLORS } from "../Theme";
 import Modal from "react-native-modal";
 import { AntDesign } from "@expo/vector-icons";
+import learningData from "../recoil/learningData";
+import { useRecoilState } from "recoil";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Item = () => {
-  const [add, setAdd] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [learning, setLearning] = useRecoilState(learningData);
+
   return (
     <View style={styles.item}>
       <TouchableOpacity onPress={() => setShowModal(true)}>
@@ -33,18 +38,28 @@ const Item = () => {
           }}
         >
           <Text style={styles.text2}>Cosmopolitan</Text>
-          {add && (
+          {learning && (
             <TouchableOpacity
               style={styles.btnCircle}
-              onPress={() => setAdd(!add)}
+              onPress={() => {
+                AsyncStorage.setItem("cosmopolitan", JSON.stringify(!learning));
+                setLearning(!learning);
+
+                console.log(learning);
+              }}
             >
               <AntDesign name="plus" size={18} color="white" />
             </TouchableOpacity>
           )}
-          {!add && (
+          {!learning && (
             <TouchableOpacity
               style={[styles.btnCircle, { backgroundColor: "#AB1D38" }]}
-              onPress={() => setAdd(!add)}
+              onPress={() => {
+                AsyncStorage.setItem("cosmopolitan", JSON.stringify(!learning));
+                setLearning(!learning);
+
+                console.log(learning);
+              }}
             >
               <AntDesign name="minus" size={20} color="white" />
             </TouchableOpacity>

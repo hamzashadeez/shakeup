@@ -5,11 +5,14 @@ import userData from "../recoil/userData";
 import BoardStack from "./BoardStack";
 import AppStack from "./AppStack";
 import { API, Auth, graphqlOperation } from "aws-amplify";
-import { getUsers } from "../src/graphql/queries";
-import { createUsers } from "../src/graphql/mutations";
+// import { getUsers } from "../src/graphql/queries";
+// import { createUsers } from "../src/graphql/mutations";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import learningData from "../recoil/learningData";
 
 const MainStack = () => {
   const [user_data, setUser] = useRecoilState(userData);
+  const [learning, setLearning] = useRecoilState(learningData);
   const [state, setState] = useState(null);
 
   useEffect(() => {
@@ -25,7 +28,7 @@ const MainStack = () => {
         });
         setUser({
           ...authUser?.attributes,
-          username: authUser?.attributes.preferred_username,
+          // username: authUser?.attributes.preferred_username,
         });
         // check database
         // const user = await API.graphql(
@@ -57,6 +60,19 @@ const MainStack = () => {
 
     syncUser();
   }, []);
+  //
+  useEffect(() => {
+    async function check() {
+      AsyncStorage.getItem("cosmopolitan").then((value) => {
+        if (value !== null) {
+          setLearning(JSON.parse(value));
+        }
+      });
+      //  update database
+    }
+    console.log(learning, " is updated");
+    check();
+  }, [learning]);
 
   return (
     <View style={{ flex: 1 }}>

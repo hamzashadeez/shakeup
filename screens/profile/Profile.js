@@ -19,7 +19,6 @@ import { Auth } from "aws-amplify";
 
 const Profile = ({ navigation }) => {
   const [_, setUser] = useRecoilState(userData);
-  console.log(_);
   // logout function
   async function signOut() {
     try {
@@ -31,7 +30,6 @@ const Profile = ({ navigation }) => {
   async function deleteUser() {
     try {
       const result = await Auth.deleteUser();
-      console.log(result);
       navigation.navigate("accountdeleted", { data: _ });
     } catch (error) {
       console.log("Error deleting user", error);
@@ -79,7 +77,7 @@ const Profile = ({ navigation }) => {
           />
           <TextInput
             editable={false}
-            value={_?.username}
+            value={_?.preferred_username}
             style={styles.input}
           />
         </TouchableOpacity>

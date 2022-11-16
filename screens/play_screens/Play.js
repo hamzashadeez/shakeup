@@ -262,7 +262,7 @@ const Play = ({ navigation }) => {
               fontFamily: "Truculenta-Regular",
             }}
           >
-            Answer is Vodka
+            Answer is {quizData[qIndex].rightAnswer.label}
           </Text>
           <TouchableOpacity
             onPress={() => continueToNextPhase()}
@@ -338,7 +338,8 @@ const styles = StyleSheet.create({
   },
   bottleContainer: {
     backgroundColor: "white",
-    flex: 1,
+    // flex: 1,
+    width: "10%",
     display: "flex",
     borderRadius: 4,
     elevation: 4,

@@ -13,6 +13,11 @@ import Prosecco from "./assets/svg/Prosecco.svg";
 import Peychaud from "./assets/svg/Peychaud's_Bitters.svg";
 import CRANBERRY from "./assets/svg/Cranberry_Juice.svg";
 import LimeJuice from "./assets/svg/Lime_Juice.svg";
+import PinappleSlice from "./assets/svg/Pinapple_Slice.svg";
+import Orange from "./assets/svg/Orange_Slice.svg";
+import Lemon from "./assets/svg/Lemon_Slice.svg";
+import ChocolateSyrup from "./assets/svg/Chocolate_Syrup.svg";
+import { Text } from "react-native";
 
 export const quizData = [
   {
@@ -46,8 +51,8 @@ export const quizData = [
     label: "Which glass is for a cosmopolitan?????",
     hint: "",
     rightAnswer: {
-      id: "2",
-      label: "Wine",
+      id: "1",
+      label: "Sloe Gin",
     },
     bottle: [<Wine width={30.22} height={78.52} />],
     option1: {
@@ -72,8 +77,8 @@ export const quizData = [
     label: "Which glass is for a cosmopolitan?????",
     hint: "",
     rightAnswer: {
-      id: "2",
-      label: "Wine",
+      id: "1",
+      label: "Triple Sec",
     },
     bottle: [<Vodka width={25.43} height={76.11} />],
     option1: {
@@ -99,7 +104,7 @@ export const quizData = [
     hint: "",
     rightAnswer: {
       id: "2",
-      label: "Wine",
+      label: "Cranberry Juice",
     },
     bottle: [
       <Vodka width={25.43} height={76.11} />,
@@ -149,6 +154,90 @@ export const quizData = [
     },
     option4: {
       icon: <Amaretto width={44.43} height={78.11} />,
+      id: "4",
+    },
+  },
+  {
+    id: 6,
+    label: "Which garnish is in a cosmopolitan?",
+    hint: "",
+    rightAnswer: {
+      id: "3",
+      label: "Lemon",
+    },
+    bottle: [
+      <Vodka width={25.43} height={76.11} />,
+      <TripleSec width={25.43} height={78.11} />,
+      <CRANBERRY width={49.43} height={78.11} />,
+      <LimeJuice width={30.22} height={78.11} />,
+    ],
+    option1: {
+      icon: (
+        <>
+          <Text
+            style={{
+              marginTop: 10,
+              fontFamily: "Truculenta-Regular",
+              fontSize: 16,
+            }}
+          >
+            Orange
+          </Text>
+          <Orange width={25.43} height={50.11} />
+        </>
+      ),
+      id: "1",
+    },
+    option2: {
+      icon: (
+        <>
+          <Text
+            style={{
+              marginTop: 10,
+              fontFamily: "Truculenta-Regular",
+              fontSize: 16,
+            }}
+          >
+            Pineapple
+          </Text>
+          <PinappleSlice width={25.43} height={50.11} />
+        </>
+      ),
+      id: "2",
+    },
+    option3: {
+      icon: (
+        <>
+          <Text
+            style={{
+              marginTop: 10,
+              fontFamily: "Truculenta-Regular",
+              fontSize: 16,
+            }}
+          >
+            Lemon
+          </Text>
+          <Lemon width={25.43} height={50.11} />
+        </>
+      ),
+      id: "3",
+    },
+    option4: {
+      icon: (
+        <>
+          <Text
+            style={{
+              marginTop: 5,
+              fontFamily: "Truculenta-Regular",
+              fontSize: 16,
+              marginBottom: 5,
+            }}
+          >
+            Chocolate Syrup
+          </Text>
+          <ChocolateSyrup width={25.43} height={50.11} />
+        </>
+      ),
       id: "4",
     },
   },

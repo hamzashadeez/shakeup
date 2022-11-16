@@ -31,6 +31,7 @@ const ChangeUsername = ({ navigation, route }) => {
   const [user_data, setUser] = useRecoilState(userData);
 
   const usernameList = ["hamza", "joe"];
+  console.log("------", preferred_username);
 
   const toastConfig = {
     success: (props) => (
@@ -57,7 +58,7 @@ const ChangeUsername = ({ navigation, route }) => {
         let user = await Auth.currentAuthenticatedUser();
 
         let result = await Auth.updateUserAttributes(user, {
-          username: firstName,
+          preferred_username: firstName,
         }).then(async () => {
           // get the user again
           const authUser = await Auth.currentAuthenticatedUser({
@@ -65,7 +66,7 @@ const ChangeUsername = ({ navigation, route }) => {
           });
           setUser({
             ...authUser.attributes,
-            username: authUser.attributes.username,
+            // username: authUser.attributes.username,
           });
           Toast.show({
             type: "success",
