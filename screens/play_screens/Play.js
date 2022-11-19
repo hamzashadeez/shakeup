@@ -163,7 +163,7 @@ const Play = ({ navigation }) => {
                 textAlign: "center",
                 fontSize: 20,
                 fontFamily: "Truculenta-Regular",
-                color: "#1A1A1A99",
+                color: select === 0 ? "#1A1A1A99" : "#fff",
               }}
             >
               Check

@@ -7,6 +7,7 @@ import awsconfig from "./src/aws-exports";
 import { withAuthenticator } from "aws-amplify-react-native";
 import { RecoilRoot, useRecoilState, useRecoilValue } from "recoil";
 import MainStack from "./stacks/MainStack";
+import { Drag } from "./screens/learn_screens";
 Amplify.configure({
   ...awsconfig,
   Analytics: { disabled: true },
@@ -49,6 +50,7 @@ function App() {
         <SafeAreaView style={styles.container}>
           <StatusBar style="auto" />
           <MainStack />
+          {/* <Drag /> */}
         </SafeAreaView>
       </NavigationContainer>
     </RecoilRoot>

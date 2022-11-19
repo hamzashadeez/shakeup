@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import CustomScreen from "../../components/CustomScreen";
-import { quizData } from "../../quiz";
+import { order, quizData } from "../../quiz";
 import { useRecoilState } from "recoil";
 import selectedCard from "../../recoil/selectedCard";
 import questionIndex from "../../recoil/questionIndex";
@@ -17,10 +17,24 @@ const Drag = ({ navigation }) => {
   const [qIndex, setQIndex] = useRecoilState(questionIndex);
   const [qScore, setScore] = useRecoilState(score);
   const [decision, setDecision] = useRecoilState(madeDecision);
+  const [correctUI, setCorrectUI] = useState(null);
+  const [showDefaultBtn, setShowDefaultBtn] = useState(true);
   const [data, setData] = useState([]);
+  const [dragged, setDragged] = useState(false);
+
   useEffect(() => {
     setData(d);
   }, []);
+
+  const checkAnswer = () => {
+    setShowDefaultBtn(false);
+    if (JSON.stringify(data) === JSON.stringify(order)) {
+      setCorrectUI(true);
+      setScore(qScore + 1);
+    } else {
+      setCorrectUI(false);
+    }
+  };
 
   const d = [
     {
@@ -48,6 +62,18 @@ const Drag = ({ navigation }) => {
   const renderItem = ({ item, drag, isActive }) => (
     <List drag={drag} isActive={isActive} data={item} />
   );
+
+  const saveRecord = () => {
+    // save record
+  };
+
+  const continueMoving = () => {
+    saveRecord();
+    setDragged(false);
+    setCorrectUI(null);
+    setShowDefaultBtn(true);
+    navigation.navigate("result");
+  };
   return (
     <CustomScreen>
       {/* header */}
@@ -104,12 +130,163 @@ const Drag = ({ navigation }) => {
           <DraggableFlatList
             data={data}
             style={{ height: "100%" }}
-            onDragEnd={({ data, from, to }) => setData(data)}
+            onDragEnd={({ data, from, to }) => {
+              setData(data);
+              setDragged(true);
+            }}
             keyExtractor={(item) => item.id}
             renderItem={renderItem}
           />
         </GestureHandlerRootView>
       </View>
+      {/* Error Message */}
+      {correctUI === false && (
+        <View
+          style={{
+            backgroundColor: "#BF45003D",
+            flex: 1,
+            height: 120,
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            display: "flex",
+            width: "100%",
+            flexDirection: "column",
+            paddingBottom: 15,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 18,
+              marginLeft: "10%",
+              marginTop: 10,
+              color: "#BF4500",
+              fontFamily: "Truculenta-Regular",
+            }}
+          >
+            Incorrect
+          </Text>
+
+          <TouchableOpacity
+            onPress={() => continueMoving()}
+            style={{
+              backgroundColor: "#BF4500",
+              width: "80%",
+              marginLeft: "10%",
+              padding: 10,
+              borderRadius: 5,
+              marginTop: 10,
+            }}
+          >
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: 20,
+                fontFamily: "Truculenta-Regular",
+                color: "white",
+              }}
+            >
+              Continue
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
+      {/* end error msessage */}
+
+      {/* Success Message */}
+      {correctUI === true && (
+        <View
+          style={{
+            backgroundColor: "#6EB5283D",
+            flex: 1,
+            height: 110,
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            display: "flex",
+            width: "100%",
+            flexDirection: "column",
+            paddingBottom: 15,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 18,
+              marginLeft: "10%",
+              marginTop: 10,
+              color: "#6EB528AD",
+              fontFamily: "Truculenta-Regular",
+            }}
+          >
+            Correct
+          </Text>
+          <TouchableOpacity
+            onPress={() => continueMoving()}
+            style={{
+              backgroundColor: "#6EB528AD",
+              width: "80%",
+              marginLeft: "10%",
+              padding: 10,
+              borderRadius: 5,
+              marginTop: 15,
+            }}
+          >
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: 20,
+                fontFamily: "Truculenta-Regular",
+                color: "white",
+              }}
+            >
+              Continue
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
+      {/* end success */}
+      {showDefaultBtn && (
+        <View
+          style={{
+            //   backgroundColor: "#6EB5283D",
+            flex: 1,
+            height: 110,
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            width: "100%",
+            flexDirection: "row",
+            paddingBottom: 15,
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => checkAnswer()}
+            disabled={dragged === false ? true : false}
+            style={{
+              backgroundColor: dragged === false ? "#0000001F" : "#E28B14",
+              width: "80%",
+              alignSelf: "flex-end",
+              marginLeft: "10%",
+              padding: 10,
+              borderRadius: 5,
+              marginTop: 20,
+            }}
+          >
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: 20,
+                fontFamily: "Truculenta-Regular",
+                color: dragged === false ? "#1A1A1A99" : "#fff",
+              }}
+            >
+              Check
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {/* default btn */}
     </CustomScreen>
   );
 };

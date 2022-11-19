@@ -3,11 +3,11 @@ import React, { useEffect } from "react";
 import CustomScreen from "../../components/CustomScreen";
 
 const Dog = ({ navigation }) => {
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     navigation.navigate("drag");
-  //   }, 2500);
-  // }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      navigation.navigate("drag");
+    }, 2500);
+  }, []);
   return (
     <CustomScreen>
       <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
