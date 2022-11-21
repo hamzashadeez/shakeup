@@ -8,6 +8,7 @@ import { withAuthenticator } from "aws-amplify-react-native";
 import { RecoilRoot, useRecoilState, useRecoilValue } from "recoil";
 import MainStack from "./stacks/MainStack";
 import { Drag } from "./screens/learn_screens";
+import { COLORS } from "./Theme";
 Amplify.configure({
   ...awsconfig,
   Analytics: { disabled: true },
@@ -48,7 +49,7 @@ function App() {
     <RecoilRoot>
       <NavigationContainer>
         <SafeAreaView style={styles.container}>
-          <StatusBar style="auto" />
+          <StatusBar style="auto" backgroundColor={COLORS.primary} />
           <MainStack />
           {/* <Drag /> */}
         </SafeAreaView>

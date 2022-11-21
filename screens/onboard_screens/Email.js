@@ -208,19 +208,19 @@ const Email = ({ navigation, route }) => {
               <ActivityIndicator color="#fff" size={16} />
             </TouchableOpacity>
           )}
-
-          <Image
-            source={require("../../assets/ShakeUp.png")}
-            resizeMode="contain"
-            style={{
-              width: "100%",
-              height: 300,
-              // marginTop: -100,
-              zIndex: -10,
-            }}
-          />
         </View>
       </KeyboardAwareScrollView>
+      <Image
+        source={require("../../assets/ShakeUp.png")}
+        resizeMode="contain"
+        style={{
+          width: "100%",
+          height: 300,
+          zIndex: -10,
+          position: "absolute",
+          bottom: -10,
+        }}
+      />
     </Screen>
   );
 };
@@ -231,18 +231,17 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: "white",
     height: 50,
-    padding: 15,
+    paddingLeft: 15,
     marginTop: 5,
-    borderRadius: 3,
+    borderRadius: 4,
     fontSize: 18,
     borderWidth: 2,
     fontFamily: "Truculenta-Regular",
   },
   btn: {
     height: 50,
-    padding: 15,
     marginTop: 20,
-    borderRadius: 3,
+    borderRadius: 4,
     fontSize: 18,
     borderColor: COLORS.orange,
     fontFamily: "Truculenta-Regular",

@@ -181,23 +181,25 @@ const ForgotPassword = ({ navigation }) => {
               style={{
                 fontFamily: "Truculenta-Regular",
                 color: valid ? "white" : "#000",
+                fontSize: 18,
               }}
             >
               Submit
             </Text>
           </TouchableOpacity>
-
-          <Image
-            source={require("../../assets/ShakeUp.png")}
-            resizeMode="contain"
-            style={{
-              width: "100%",
-              height: 300,
-              zIndex: -10,
-              opacity: 0.12,
-            }}
-          />
         </View>
+        <Image
+          source={require("../../assets/ShakeUp.png")}
+          resizeMode="contain"
+          style={{
+            width: "100%",
+            height: 300,
+            zIndex: -10,
+            opacity: 0.12,
+            position: "absolute",
+            bottom: -10,
+          }}
+        />
       </Screen>
     </KeyboardAvoidingView>
   );
@@ -209,18 +211,17 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: "white",
     height: 50,
-    padding: 15,
+    paddingLeft: 15,
     marginTop: 5,
-    borderRadius: 3,
+    borderRadius: 4,
     fontSize: 18,
     borderWidth: 2,
     fontFamily: "Truculenta-Regular",
   },
   btn: {
     height: 50,
-    padding: 15,
     marginTop: 20,
-    borderRadius: 3,
+    borderRadius: 4,
     fontSize: 18,
     borderColor: COLORS.orange,
     fontFamily: "Truculenta-Regular",

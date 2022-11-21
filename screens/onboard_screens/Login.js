@@ -211,7 +211,7 @@ const Login = ({ navigation }) => {
               <Text
                 style={{
                   color: email !== "" && password !== "" ? "white" : "#777",
-                  fontSize: 16,
+                  fontSize: 18,
                   fontFamily: "Truculenta-Regular",
                 }}
               >
@@ -278,21 +278,21 @@ const Login = ({ navigation }) => {
                 Forgot Password
               </Text>
             </TouchableOpacity>
-
-            <Image
-              source={require("../../assets/ShakeUp.png")}
-              resizeMode="contain"
-              style={{
-                width: "100%",
-                height: 300,
-                marginTop: -70,
-                zIndex: -10,
-                opacity: 0.12,
-              }}
-            />
           </View>
         </View>
       </KeyboardAwareScrollView>
+      <Image
+        source={require("../../assets/ShakeUp.png")}
+        resizeMode="contain"
+        style={{
+          width: "100%",
+          height: 250,
+          zIndex: -10,
+          opacity: 0.12,
+          position: "absolute",
+          bottom: -10,
+        }}
+      />
     </Screen>
   );
 };
@@ -303,17 +303,16 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: "white",
     height: 50,
-    padding: 15,
+    paddingLeft: 15,
     marginTop: 5,
-    borderRadius: 3,
+    borderRadius: 4,
     fontSize: 18,
     borderWidth: 2,
     fontFamily: "Truculenta-Regular",
   },
   btn: {
     display: "flex",
-    // height: 54,
-    padding: 15,
+    height: 50,
     marginTop: 20,
     borderRadius: 3,
     fontSize: 18,

@@ -112,7 +112,7 @@ const ForgotUsername = ({ navigation }) => {
             <PasswordField
               value={password}
               onFocus={() => setColoredBoarder(COLORS.orange)}
-              onEndEditing={()=>setColoredBoarder(COLORS.primary)}
+              onEndEditing={() => setColoredBoarder(COLORS.primary)}
               onChangeText={(e) => {
                 setPassword(e);
                 realtimeValidation();
@@ -140,7 +140,7 @@ const ForgotUsername = ({ navigation }) => {
             <PasswordField
               value={cpassword}
               onChangeText={(e) => changeText(e)}
-              onEndEditing={()=>setColoredBoarder2(COLORS.primary)}
+              onEndEditing={() => setColoredBoarder2(COLORS.primary)}
               onFocus={() => setColoredBoarder2(COLORS.orange)}
               placeholder="Confirm Password"
               style={[
@@ -186,24 +186,27 @@ const ForgotUsername = ({ navigation }) => {
               style={{
                 fontFamily: "Truculenta-Regular",
                 color: "#000",
+                fontSize: 18,
               }}
             >
               Continue
             </Text>
           </TouchableOpacity>
           {/* end form */}
-          <Image
-            source={require("../../assets/ShakeUp.png")}
-            resizeMode="contain"
-            style={{
-              width: "100%",
-              height: 300,
-              opacity: 0.12,
-              zIndex: -10,
-            }}
-          />
         </View>
       </KeyboardAwareScrollView>
+      <Image
+        source={require("../../assets/ShakeUp.png")}
+        resizeMode="contain"
+        style={{
+          width: "100%",
+          height: 250,
+          zIndex: -10,
+          opacity: 0.12,
+          position: "absolute",
+          bottom: -10,
+        }}
+      />
     </Screen>
   );
 };
@@ -214,9 +217,9 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: "white",
     height: 50,
-    padding: 15,
     marginTop: 5,
-    borderRadius: 3,
+    paddingLeft: 15,
+    borderRadius: 4,
     fontSize: 18,
     borderWidth: 2,
     fontFamily: "Truculenta-Regular",
@@ -225,7 +228,7 @@ const styles = StyleSheet.create({
     height: 50,
     padding: 15,
     marginTop: 25,
-    borderRadius: 3,
+    borderRadius: 4,
     fontSize: 18,
     borderColor: COLORS.orange,
     fontFamily: "Truculenta-Regular",
