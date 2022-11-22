@@ -9,7 +9,7 @@ import {
 import React, { useState } from "react";
 import Screen from "../../components/Screen";
 import Header from "../../components/Header";
-import { COLORS } from "../../Theme";
+import { COLORS, hp } from "../../Theme";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import PasswordField from "../../components/PasswordField";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -18,7 +18,8 @@ import { useRecoilState } from "recoil";
 import userData from "../../recoil/userData";
 
 const CreatePassword = ({ navigation, route }) => {
-  const { name, username, email } = route.params;
+  // const { name, username, email } = route.params;
+  let username;
   const [password, setPassword] = useState("");
   const [cpassword, setCPassword] = useState("");
   const [valid, setValid] = useState(null);
@@ -153,7 +154,7 @@ const CreatePassword = ({ navigation, route }) => {
               color: "white",
               fontFamily: "Truculenta-Regular",
               marginBottom: hp("1.97%"),
-              marginTop: hp("4.12%"),
+              marginTop: hp("3.12%"),
             }}
           >
             Sign Up
@@ -237,39 +238,33 @@ const CreatePassword = ({ navigation, route }) => {
                   fontFamily: "Truculenta-Regular",
                 }}
               >
-                Error: Password didn't match
+                Error: Password do not match
               </Text>
             )}
           </View>
-
-          {/*checkbox*/}
           <View
             style={{
               paddingVertical: 10,
               flexDirection: "row",
               display: "flex",
               alignItems: "center",
+              paddingHorizontal: 15,
             }}
           >
-            <BouncyCheckbox
-              size={25}
-              fillColor={COLORS.orange}
-              unfillColor="#BCC0C4"
-              style={{ borderRadius: 0 }}
-              iconStyle={{ borderRadius: 2 }}
-              innerIconStyle={{ borderWidth: 0, color: "blue" }}
-              textStyle={{ fontFamily: "Truculenta-Regular" }}
-              onPress={(e) => {
-                setAgreed(e);
-              }}
-            />
             <Text style={styles.text}>
-              I Agree to{" "}
+              By creating an account, you agree to ShakeUp’s{" "}
               <Text
                 onPress={() => navigation.navigate("terms")}
                 style={{ color: COLORS.yellow }}
               >
-                Terms & Conditions
+                Conditions of Use
+              </Text>{" "}
+              and{" "}
+              <Text
+                onPress={() => navigation.navigate("terms")}
+                style={{ color: COLORS.yellow }}
+              >
+                Privacy Notice.
               </Text>
             </Text>
           </View>
@@ -277,18 +272,19 @@ const CreatePassword = ({ navigation, route }) => {
           {!loading && (
             <TouchableOpacity
               onPress={() => next()}
-              disabled={password.length > 1 && agreed ? false : true}
+              disabled={password.length > 5 ? false : true}
               style={[
                 styles.btn,
                 {
-                  backgroundColor: agreed === true ? COLORS.orange : "#E3E4E6",
+                  backgroundColor:
+                    password.length > 5 ? COLORS.orange : "#E3E4E6",
                 },
               ]}
             >
               <Text
                 style={{
                   fontFamily: "Truculenta-Regular",
-                  color: agreed === true ? "#fff" : "#000",
+                  color: password.length > 5 ? "#fff" : "#000",
                   fontSize: 18,
                 }}
               >
@@ -312,7 +308,7 @@ const CreatePassword = ({ navigation, route }) => {
           )}
         </View>
       </KeyboardAwareScrollView>
-      <Image
+      {/* <Image
         source={require("../../assets/ShakeUp.png")}
         resizeMode="contain"
         style={{
@@ -322,7 +318,7 @@ const CreatePassword = ({ navigation, route }) => {
           position: "absolute",
           bottom: -10,
         }}
-      />
+      /> */}
     </Screen>
   );
 };
