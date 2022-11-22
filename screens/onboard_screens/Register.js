@@ -9,7 +9,7 @@ import {
 import React, { useState } from "react";
 import Screen from "../../components/Screen";
 import Header from "../../components/Header";
-import { COLORS } from "../../Theme";
+import { COLORS, hp } from "../../Theme";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const Register = ({ navigation }) => {
@@ -17,6 +17,7 @@ const Register = ({ navigation }) => {
   const [valid, setValid] = useState(null);
   const [coloredBoarder, setColoredBoarder] = useState("white");
   const [show, showText] = useState(false);
+  const [showAvatar, setAvatar] = useState(true);
 
   const changeText = (text) => {
     setName(text);
@@ -127,8 +128,8 @@ const Register = ({ navigation }) => {
               textAlign: "center",
               color: "white",
               fontFamily: "Truculenta-Regular",
-              marginBottom: 12,
-              marginTop: 5,
+              marginBottom: hp("1.97%"),
+              marginTop: hp("8.12%"),
             }}
           >
             Sign Up
@@ -159,7 +160,11 @@ const Register = ({ navigation }) => {
               value={name}
               onChangeText={(e) => changeText(e)}
               placeholder="Enter First Name"
-              onFocus={() => setColoredBoarder(COLORS.orange)}
+              onFocus={() => {
+                setAvatar(false);
+                setColoredBoarder(COLORS.orange);
+              }}
+              onEndEditing={() => setAvatar(true)}
               style={[
                 styles.input,
                 {
@@ -205,17 +210,19 @@ const Register = ({ navigation }) => {
           {/* end form */}
         </View>
       </KeyboardAwareScrollView>
-      <Image
-        source={require("../../assets/ShakeUp.png")}
-        resizeMode="contain"
-        style={{
-          width: "100%",
-          height: 300,
-          zIndex: -10,
-          position: "absolute",
-          bottom: -10,
-        }}
-      />
+      {showAvatar && (
+        <Image
+          source={require("../../assets/ShakeUp.png")}
+          resizeMode="contain"
+          style={{
+            width: "100%",
+            height: hp("40%"),
+            zIndex: -10,
+            position: "absolute",
+            bottom: -10,
+          }}
+        />
+      )}
     </Screen>
   );
 };

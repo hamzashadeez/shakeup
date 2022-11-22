@@ -10,7 +10,7 @@ import {
 import React, { useState } from "react";
 import Screen from "../../components/Screen";
 import Header from "../../components/Header";
-import { COLORS } from "../../Theme";
+import { COLORS, hp } from "../../Theme";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Auth } from "aws-amplify";
 
@@ -22,6 +22,7 @@ const Email = ({ navigation, route }) => {
   const [emailExistError, setEmailExist] = useState(false);
   const [loading, setLoading] = useState(false);
   const [coloredBoarder, setColoredBoarder] = useState("white");
+  const [showAvatar, setAvatar] = useState(true);
 
   function validateEmail(email) {
     const res =
@@ -90,7 +91,68 @@ const Email = ({ navigation, route }) => {
   return (
     <Screen>
       <KeyboardAwareScrollView enableOnAndroid={true}>
-        <Header />
+        {/* <Header /> */}
+        <View
+          style={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            // height: "9%",
+            padding: 10,
+            flexDirection: "row",
+            elevation: 4,
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.5,
+            shadowRadius: 2,
+            elevation: 2,
+            backgroundColor: COLORS.primary,
+          }}
+        >
+          <View style={{ flex: 1 }}>
+            <Text />
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              flex: 1,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Text style={styles.text}>ShakeUP</Text>
+            <Image
+              source={require("../../assets/cup.png")}
+              style={styles.cup}
+              resizeMode="contain"
+            />
+          </View>
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate("login")}
+            style={{
+              paddingVertical: 10,
+              flex: 1,
+              display: "flex",
+              alignItems: "flex-end",
+              justifyContent: "center",
+              paddingHorizontal: 5,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 18,
+                color: "#EEEFF0",
+                fontFamily: "Truculenta-Regular",
+              }}
+            >
+              Log In
+            </Text>
+          </TouchableOpacity>
+        </View>
+        {/* end */}
         <View style={{ paddingHorizontal: 15, paddingVertical: 10, flex: 1 }}>
           <Image
             source={require("../../assets/2.png")}
@@ -103,8 +165,8 @@ const Email = ({ navigation, route }) => {
               textAlign: "center",
               color: "white",
               fontFamily: "Truculenta-Regular",
-              marginTop: 20,
-              marginBottom: 12,
+              marginBottom: hp("1.97%"),
+              marginTop: hp("4.12%"),
             }}
           >
             Sign Up
@@ -136,9 +198,11 @@ const Email = ({ navigation, route }) => {
               onChangeText={(e) => changeText(e)}
               placeholder="Enter Email"
               onFocus={() => {
+                setAvatar(false);
                 setEmailExist(false);
                 setColoredBoarder(COLORS.orange);
               }}
+              onEndEditing={() => setAvatar(true)}
               keyboardType="email-address"
               style={[
                 styles.input,
@@ -210,17 +274,19 @@ const Email = ({ navigation, route }) => {
           )}
         </View>
       </KeyboardAwareScrollView>
-      <Image
-        source={require("../../assets/ShakeUp.png")}
-        resizeMode="contain"
-        style={{
-          width: "100%",
-          height: 300,
-          zIndex: -10,
-          position: "absolute",
-          bottom: -10,
-        }}
-      />
+      {showAvatar && (
+        <Image
+          source={require("../../assets/ShakeUp.png")}
+          resizeMode="contain"
+          style={{
+            width: "100%",
+            height: 300,
+            zIndex: -10,
+            position: "absolute",
+            bottom: -10,
+          }}
+        />
+      )}
     </Screen>
   );
 };
@@ -249,5 +315,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 20,
+  },
+  text: {
+    color: "white",
+    fontFamily: "Truculenta-SemiBold",
+    fontSize: 22,
+  },
+  cup: {
+    height: 27,
+    width: 21,
+    marginLeft: -18,
+    marginBottom: 4,
   },
 });

@@ -10,7 +10,7 @@ import {
 import React, { useEffect, useState } from "react";
 import Screen from "../../components/Screen";
 import Header from "../../components/Header";
-import { COLORS } from "../../Theme";
+import { COLORS, hp } from "../../Theme";
 import { API, graphqlOperation } from "aws-amplify";
 import { listUserData } from "../../src/graphql/queries";
 
@@ -21,6 +21,7 @@ const Username = ({ navigation, route }) => {
   const [data, setData] = useState([]);
   const [showError, setShowError] = useState(false);
   const [coloredBoarder, setColoredBoarder] = useState("white");
+  const [showAvatar, setAvatar] = useState(true);
 
   const changeText = (text) => {
     setName(text);
@@ -75,8 +76,8 @@ const Username = ({ navigation, route }) => {
               textAlign: "center",
               color: "white",
               fontFamily: "Truculenta-Regular",
-              marginTop: 20,
-              marginBottom: 12,
+              marginBottom: hp("1.97%"),
+              marginTop: hp("4.12%"),
             }}
           >
             Sign Up
@@ -108,9 +109,11 @@ const Username = ({ navigation, route }) => {
               onChangeText={(e) => changeText(e)}
               placeholder="Enter Username"
               onFocus={() => {
+                setAvatar(false);
                 setShowError(false);
                 setColoredBoarder(COLORS.orange);
               }}
+              onEndEditing={() => setAvatar(true)}
               style={[
                 styles.input,
                 {
@@ -150,17 +153,19 @@ const Username = ({ navigation, route }) => {
           </TouchableOpacity>
           {/* end form */}
         </View>
-        <Image
-          source={require("../../assets/ShakeUp.png")}
-          resizeMode="contain"
-          style={{
-            width: "100%",
-            height: 300,
-            zIndex: -10,
-            position: "absolute",
-            bottom: -10,
-          }}
-        />
+        {showAvatar && (
+          <Image
+            source={require("../../assets/ShakeUp.png")}
+            resizeMode="contain"
+            style={{
+              width: "100%",
+              height: hp("40%"),
+              zIndex: -10,
+              position: "absolute",
+              bottom: -10,
+            }}
+          />
+        )}
       </Screen>
     </KeyboardAvoidingView>
   );

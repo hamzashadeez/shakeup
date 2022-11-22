@@ -26,6 +26,7 @@ const Login = ({ navigation }) => {
   const [_, setUser] = useRecoilState(userData);
   const [loading, setLoading] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [showAvatar, setAvatar] = useState(true);
 
   // Log in
   function getUser() {
@@ -146,10 +147,14 @@ const Login = ({ navigation }) => {
               placeholder="Enter Email"
               keyboardType="email-address"
               onFocus={() => {
+                setAvatar(false);
                 setShowErrorMessage(false);
                 setColoredBoarder(COLORS.orange);
               }}
-              onEndEditing={() => setColoredBoarder(COLORS.primary)}
+              onEndEditing={() => {
+                setAvatar(true);
+                setColoredBoarder(COLORS.primary);
+              }}
               style={[
                 styles.input,
                 {
@@ -173,10 +178,14 @@ const Login = ({ navigation }) => {
               onChangeText={(e) => setPassword(e)}
               placeholder="Enter password"
               onFocus={() => {
+                setAvatar(true);
                 setShowErrorMessage(false);
                 setColoredBoarder2(COLORS.orange);
               }}
-              onEndEditing={() => setColoredBoarder2(COLORS.primary)}
+              onEndEditing={() => {
+                setAvatar(true);
+                setColoredBoarder2(COLORS.primary);
+              }}
               style={[
                 styles.input,
                 {
@@ -281,18 +290,20 @@ const Login = ({ navigation }) => {
           </View>
         </View>
       </KeyboardAwareScrollView>
-      <Image
-        source={require("../../assets/ShakeUp.png")}
-        resizeMode="contain"
-        style={{
-          width: "100%",
-          height: 250,
-          zIndex: -10,
-          opacity: 0.12,
-          position: "absolute",
-          bottom: -10,
-        }}
-      />
+      {showAvatar && (
+        <Image
+          source={require("../../assets/ShakeUp.png")}
+          resizeMode="contain"
+          style={{
+            width: "100%",
+            height: 250,
+            zIndex: -10,
+            opacity: 0.12,
+            position: "absolute",
+            bottom: -10,
+          }}
+        />
+      )}
     </Screen>
   );
 };

@@ -9,7 +9,7 @@ import {
 import React, { useState } from "react";
 import Screen from "../../components/Screen";
 import Header from "../../components/Header";
-import { COLORS } from "../../Theme";
+import { COLORS, hp } from "../../Theme";
 import PasswordField from "../../components/PasswordField";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
@@ -22,6 +22,8 @@ const ForgotUsername = ({ navigation }) => {
   const [showCountErrorLabel, setShowCountErrorLabel] = useState(false);
   const [coloredBoarder, setColoredBoarder] = useState("white");
   const [coloredBoarder2, setColoredBoarder2] = useState("white");
+  const [showAvatar, setAvatar] = useState(true);
+
   let tempValid = valid;
   let tempMatch = match;
 
@@ -111,8 +113,14 @@ const ForgotUsername = ({ navigation }) => {
             </Text>
             <PasswordField
               value={password}
-              onFocus={() => setColoredBoarder(COLORS.orange)}
-              onEndEditing={() => setColoredBoarder(COLORS.primary)}
+              onFocus={() => {
+                setAvatar(false);
+                setColoredBoarder(COLORS.orange);
+              }}
+              onEndEditing={() => {
+                setAvatar(true);
+                setColoredBoarder(COLORS.primary);
+              }}
               onChangeText={(e) => {
                 setPassword(e);
                 realtimeValidation();
@@ -140,8 +148,14 @@ const ForgotUsername = ({ navigation }) => {
             <PasswordField
               value={cpassword}
               onChangeText={(e) => changeText(e)}
-              onEndEditing={() => setColoredBoarder2(COLORS.primary)}
-              onFocus={() => setColoredBoarder2(COLORS.orange)}
+              onEndEditing={() => {
+                setAvatar(true);
+                setColoredBoarder2(COLORS.primary);
+              }}
+              onFocus={() => {
+                setAvatar(false);
+                setColoredBoarder2(COLORS.orange);
+              }}
               placeholder="Confirm Password"
               style={[
                 styles.input,
@@ -195,18 +209,20 @@ const ForgotUsername = ({ navigation }) => {
           {/* end form */}
         </View>
       </KeyboardAwareScrollView>
-      <Image
-        source={require("../../assets/ShakeUp.png")}
-        resizeMode="contain"
-        style={{
-          width: "100%",
-          height: 250,
-          zIndex: -10,
-          opacity: 0.12,
-          position: "absolute",
-          bottom: -10,
-        }}
-      />
+      {showAvatar && (
+        <Image
+          source={require("../../assets/ShakeUp.png")}
+          resizeMode="contain"
+          style={{
+            width: "100%",
+            height: hp("40%"),
+            zIndex: -10,
+            opacity: 0.12,
+            position: "absolute",
+            bottom: -10,
+          }}
+        />
+      )}
     </Screen>
   );
 };

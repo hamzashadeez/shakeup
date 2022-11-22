@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import Screen from "../../components/Screen";
-import { COLORS } from "../../Theme";
+import { COLORS, hp } from "../../Theme";
 import { Entypo } from "@expo/vector-icons";
 import { Auth } from "aws-amplify";
 
@@ -17,6 +17,7 @@ const ForgotPassword = ({ navigation }) => {
   const [name, setName] = useState("");
   const [valid, setValid] = useState(false);
   const [coloredBoarder, setColoredBoarder] = useState("white");
+  const [showAvatar, setAvatar] = useState(true);
 
   const changeText = (text) => {
     setName(text);
@@ -188,18 +189,20 @@ const ForgotPassword = ({ navigation }) => {
             </Text>
           </TouchableOpacity>
         </View>
-        <Image
-          source={require("../../assets/ShakeUp.png")}
-          resizeMode="contain"
-          style={{
-            width: "100%",
-            height: 300,
-            zIndex: -10,
-            opacity: 0.12,
-            position: "absolute",
-            bottom: -10,
-          }}
-        />
+        {showAvatar && (
+          <Image
+            source={require("../../assets/ShakeUp.png")}
+            resizeMode="contain"
+            style={{
+              width: "100%",
+              height: hp("40%"),
+              zIndex: -10,
+              opacity: 0.12,
+              position: "absolute",
+              bottom: -10,
+            }}
+          />
+        )}
       </Screen>
     </KeyboardAvoidingView>
   );

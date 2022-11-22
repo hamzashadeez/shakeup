@@ -1,3 +1,10 @@
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+
+export { wp, hp };
+
 export const COLORS = {
   primary: "#027372",
   lightgray: "#E2E2E2",

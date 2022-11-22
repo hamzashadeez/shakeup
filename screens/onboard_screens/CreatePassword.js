@@ -152,8 +152,8 @@ const CreatePassword = ({ navigation, route }) => {
               textAlign: "center",
               color: "white",
               fontFamily: "Truculenta-Regular",
-              marginTop: 20,
-              marginBottom: 12,
+              marginBottom: hp("1.97%"),
+              marginTop: hp("4.12%"),
             }}
           >
             Sign Up
