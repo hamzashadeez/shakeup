@@ -10,7 +10,6 @@ import React, { useState } from "react";
 import Screen from "../../components/Screen";
 import Header from "../../components/Header";
 import { COLORS, hp } from "../../Theme";
-import BouncyCheckbox from "react-native-bouncy-checkbox";
 import PasswordField from "../../components/PasswordField";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Auth } from "aws-amplify";
@@ -40,32 +39,6 @@ const CreatePassword = ({ navigation, route }) => {
     setShowMatchErrorLabel(false);
     setShowCountErrorLabel(false);
   };
-
-  // async function signUp() {
-  //   if (loading === true) return;
-  //   try {
-  //     setLoading(true);
-  //     const user = await Auth.signUp({
-  //       username: email,
-  //       password,
-  //       attributes: {
-  //         email,
-  //         preferred_username: username,
-  //         name,
-  //         family_name: "",
-  //         middle_name: "",
-  //       },
-  //       autoSignIn: {
-  //         enabled: true,
-  //       },
-  //     }).then(() => {
-  //       navigation.navigate("otp", { name, username, email, password });
-  //     });
-  //   } catch (error) {
-  //     setLoading(false);
-  //     console.log("error signing up:", error);
-  //   }
-  // }
 
   const realtimeValidation = () => {
     if (password === cpassword) {
