@@ -6,7 +6,7 @@ const PasswordField = (props) => {
   const [view, setView] = useState(true);
   const ref = useRef();
   return (
-    <View style={{ position: "relative" }}>
+    <View style={{ position: "relative", height: 50 }}>
       <TextInput ref={ref} {...props} secureTextEntry={view} />
       <Pressable
         style={styles.btn}

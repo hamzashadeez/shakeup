@@ -8,6 +8,7 @@ import ForgotUsername from "./ForgotUsername";
 import Terms from "./Terms";
 import Home from "./Home";
 import OTP from "./OTP";
+import NewPassword from "./NewPassword";
 
 export {
   Home,
@@ -20,4 +21,5 @@ export {
   OTP,
   Register,
   CreatePassword,
+  NewPassword,
 };

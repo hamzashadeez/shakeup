@@ -5,6 +5,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   View,
+  TextInput,
 } from "react-native";
 import React, { useState } from "react";
 import Screen from "../../components/Screen";
@@ -14,9 +15,10 @@ import PasswordField from "../../components/PasswordField";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Auth } from "aws-amplify";
 import { useRecoilState } from "recoil";
+import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 import userData from "../../recoil/userData";
 
-const CreatePassword = ({ navigation, route }) => {
+const NewPassword = ({ navigation, route }) => {
   const { name, username, email } = route.params;
   const [password, setPassword] = useState("");
   const [cpassword, setCPassword] = useState("");
@@ -26,11 +28,28 @@ const CreatePassword = ({ navigation, route }) => {
   const [showCountErrorLabel, setShowCountErrorLabel] = useState(false);
   const [agreed, setAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [code, setCode] = useState("");
   const [user_data, setUser] = useRecoilState(userData);
   const [coloredBoarder, setColoredBoarder] = useState("white");
   const [coloredBoarder2, setColoredBoarder2] = useState("white");
   let tempValid = valid;
   let tempMatch = match;
+
+  const toastConfig = {
+    success: (props) => (
+      <BaseToast
+        {...props}
+        style={{ backgroundColor: COLORS.green }}
+        contentContainerStyle={{ paddingHorizontal: 15 }}
+        text1Style={{
+          fontSize: 15,
+          fontWeight: "400",
+          color: "white",
+          fontFamily: "Truculenta-Regular",
+        }}
+      />
+    ),
+  };
 
   const changeText = (text) => {
     setCPassword(text);
@@ -58,6 +77,11 @@ const CreatePassword = ({ navigation, route }) => {
 
   const next = async () => {
     // save username and go to the username screen
+    if (code.length < 5) {
+      alert("Incorrect Verification code");
+      return;
+    }
+    //
     if (password === cpassword) {
       tempMatch = true;
       setmatch(true);
@@ -88,24 +112,25 @@ const CreatePassword = ({ navigation, route }) => {
       // change password here
       setLoading(true);
       try {
-        Auth.currentAuthenticatedUser().then((user) => {
-          return Auth.changePassword(user, "password", password);
-        });
-        let userAuth = await Auth.currentAuthenticatedUser();
-        let result = await Auth.updateUserAttributes(userAuth, {
-          preferred_username: username,
-        });
-        const authUser = await Auth.currentAuthenticatedUser({
-          bypassCache: true,
-        });
-        setUser({
-          ...authUser.attributes,
-          username: authUser.attributes.preferred_username,
-        });
-        setLoading(false);
+        // Collect confirmation code and new password, then
+        Auth.forgotPasswordSubmit(username, code, password)
+          .then(() => {
+            setLoading(false);
+            Toast.show({
+              type: "success",
+              text1: "Check your mail",
+              position: "bottom",
+            });
+            navigation.navigate("login");
+          })
+          .catch((err) => {
+            console.log("New password: ", err);
+            setLoading(false);
+          });
       } catch (error) {
         setLoading(false);
         console.log("Error from password ", error);
+        alert(error);
       }
     }
   };
@@ -114,11 +139,6 @@ const CreatePassword = ({ navigation, route }) => {
       <KeyboardAwareScrollView enableOnAndroid={true}>
         <Header />
         <View style={{ paddingHorizontal: 15, paddingVertical: 10, flex: 1 }}>
-          <Image
-            source={require("../../assets/3.png")}
-            resizeMode="contain"
-            style={{ width: "100%", height: 28 }}
-          />
           <Text
             style={{
               fontSize: 32,
@@ -129,21 +149,40 @@ const CreatePassword = ({ navigation, route }) => {
               marginTop: hp("3.12%"),
             }}
           >
-            Sign Up
+            New Password
           </Text>
           <Text
             style={{
-              fontSize: 24,
+              fontSize: 20,
               textAlign: "center",
               color: "#EEEFF0",
               fontFamily: "Truculenta-Regular",
             }}
           >
-            Welcome to learning cocktails!
+            Verification Code was to your email
           </Text>
 
           {/* form */}
           <View style={{ marginTop: 32 }}>
+            <Text
+              style={{
+                fontSize: 16,
+                color: "#EEEFF0",
+                fontFamily: "Truculenta-Regular",
+              }}
+            >
+              Verification Code
+            </Text>
+            <TextInput
+              value={code}
+              onChangeText={(e) => setCode(e)}
+              keyboardType="numeric"
+              placeholder="e.g 000000"
+              style={[
+                styles.input,
+                { borderColor: COLORS.primary, marginBottom: 7 },
+              ]}
+            />
             <Text
               style={{
                 fontSize: 16,
@@ -196,6 +235,7 @@ const CreatePassword = ({ navigation, route }) => {
                 style={{
                   color: COLORS.yellow,
                   fontSize: 16,
+                  marginTop: 5,
                   fontFamily: "Truculenta-Regular",
                 }}
               >
@@ -207,6 +247,7 @@ const CreatePassword = ({ navigation, route }) => {
                 style={{
                   color: COLORS.yellow,
                   fontSize: 16,
+                  marginTop: 5,
                   fontFamily: "Truculenta-Regular",
                 }}
               >
@@ -214,32 +255,7 @@ const CreatePassword = ({ navigation, route }) => {
               </Text>
             )}
           </View>
-          <View
-            style={{
-              paddingVertical: 10,
-              flexDirection: "row",
-              display: "flex",
-              alignItems: "center",
-              paddingHorizontal: 15,
-            }}
-          >
-            <Text style={styles.text}>
-              By creating an account, you agree to ShakeUp’s{" "}
-              <Text
-                onPress={() => navigation.navigate("terms")}
-                style={{ color: COLORS.yellow }}
-              >
-                Conditions of Use
-              </Text>{" "}
-              and{" "}
-              <Text
-                onPress={() => navigation.navigate("terms")}
-                style={{ color: COLORS.yellow }}
-              >
-                Privacy Notice.
-              </Text>
-            </Text>
-          </View>
+
           {/*end checkbox*/}
           {!loading && (
             <TouchableOpacity
@@ -248,8 +264,7 @@ const CreatePassword = ({ navigation, route }) => {
               style={[
                 styles.btn,
                 {
-                  backgroundColor:
-                    password.length > 5 ? COLORS.orange : "#E3E4E6",
+                  backgroundColor: password.length > 5 ? COLORS.orange : "#fff",
                 },
               ]}
             >
@@ -280,6 +295,8 @@ const CreatePassword = ({ navigation, route }) => {
           )}
         </View>
       </KeyboardAwareScrollView>
+      <Toast config={toastConfig} />
+
       {/* <Image
         source={require("../../assets/ShakeUp.png")}
         resizeMode="contain"
@@ -295,7 +312,7 @@ const CreatePassword = ({ navigation, route }) => {
   );
 };
 
-export default CreatePassword;
+export default NewPassword;
 
 const styles = StyleSheet.create({
   input: {
@@ -313,7 +330,8 @@ const styles = StyleSheet.create({
     marginTop: 25,
     borderRadius: 4,
     fontSize: 18,
-    borderColor: COLORS.orange,
+    borderColor: COLORS.primary,
+    borderWidth: 2,
     fontFamily: "Truculenta-Regular",
     display: "flex",
     alignItems: "center",

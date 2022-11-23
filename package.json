@@ -25,11 +25,11 @@
     "expo-font": "~10.2.0",
     "expo-splash-screen": "~0.16.2",
     "expo-status-bar": "~1.4.0",
+    "expo-updates": "^0.15.6",
     "react": "18.0.0",
     "react-dom": "^18.0.0",
     "react-native": "0.69.6",
     "react-native-bouncy-checkbox": "^3.0.5",
-    "react-native-draggable-flatlist": "^3.1.2",
     "react-native-easy-grid": "^0.2.2",
     "react-native-gesture-handler": "~2.5.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
@@ -43,7 +43,8 @@
     "react-native-timeago": "^0.5.0",
     "react-native-toast-message": "^2.1.5",
     "react-native-web": "^0.18.9",
-    "recoil": "^0.7.6"
+    "recoil": "^0.7.6",
+    "uninstall": "^0.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

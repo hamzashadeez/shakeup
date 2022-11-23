@@ -10,6 +10,7 @@ import {
   Terms,
   Login,
   OTP,
+  NewPassword,
 } from "../screens/onboard_screens";
 
 const Stack = createStackNavigator();
@@ -30,6 +31,7 @@ function BoardStack() {
       <Stack.Screen name="forgotusername" component={ForgotUsername} />
       <Stack.Screen name="terms" component={Terms} />
       <Stack.Screen name="otp" component={OTP} />
+      <Stack.Screen name="newpassword" component={NewPassword} />
     </Stack.Navigator>
   );
 }

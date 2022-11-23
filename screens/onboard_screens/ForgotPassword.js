@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ActivityIndicator,
   KeyboardAvoidingView,
 } from "react-native";
 import React, { useState } from "react";
@@ -12,14 +13,18 @@ import Screen from "../../components/Screen";
 import { COLORS, hp } from "../../Theme";
 import { Entypo } from "@expo/vector-icons";
 import { Auth } from "aws-amplify";
+import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 
 const ForgotPassword = ({ navigation }) => {
-  const [name, setName] = useState("");
+  const [email, setName] = useState("");
   const [valid, setValid] = useState(false);
   const [coloredBoarder, setColoredBoarder] = useState("white");
   const [showAvatar, setAvatar] = useState(true);
+  const [showValidEmail, setShowValidEmail] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const changeText = (text) => {
+    setShowValidEmail();
     setName(text);
     if (text.length > 1) {
       setValid(true);
@@ -28,14 +33,55 @@ const ForgotPassword = ({ navigation }) => {
     }
   };
 
+  function validateEmail(email) {
+    const res =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return res.test(String(email).toLowerCase());
+  }
+
   const forgotpassword = async () => {
     // Send confirmation code to user's email
-    Auth.forgotPassword(email)
-      .then((data) => console.log(data))
-      .catch((err) => console.log(err));
+    console.log("Presssed");
+    setLoading(true);
+    if (validateEmail(email)) {
+      Auth.forgotPassword(email)
+        .then((data) => {
+          // if everything is successfull...
+          Toast.show({
+            type: "success",
+            text1: "Check your mail",
+            position: "bottom",
+          });
+          navigation.navigate("newpassword", { username: email });
+          setLoading(false);
+        })
+        .catch((err) => {
+          alert(err);
+          console.log(err);
+          setLoading(false);
+        });
+    } else {
+      setShowValidEmail(true);
+    }
   };
 
-  // // Collect confirmation code and new password, then
+  const toastConfig = {
+    success: (props) => (
+      <BaseToast
+        {...props}
+        style={{ backgroundColor: COLORS.green }}
+        contentContainerStyle={{ paddingHorizontal: 15 }}
+        text1Style={{
+          fontSize: 15,
+          fontWeight: "400",
+          color: "white",
+          fontFamily: "Truculenta-Regular",
+        }}
+      />
+    ),
+  };
+
+  // Collect confirmation code and new password, then
   // Auth.forgotPasswordSubmit(username, code, new_password)
   //   .then((data) => console.log(data))
   //   .catch((err) => console.log(err));
@@ -153,11 +199,13 @@ const ForgotPassword = ({ navigation }) => {
               Email Address
             </Text>
             <TextInput
-              value={name}
+              value={email}
               onChangeText={(e) => changeText(e)}
               keyboardType="email-address"
               placeholder="Insert Email Address"
-              onFocus={() => setColoredBoarder(COLORS.orange)}
+              onFocus={() => {
+                setColoredBoarder(COLORS.orange);
+              }}
               style={[
                 styles.input,
                 {
@@ -170,24 +218,49 @@ const ForgotPassword = ({ navigation }) => {
                 },
               ]}
             />
+            {showValidEmail && (
+              <Text
+                style={{
+                  color: COLORS.yellow,
+                  fontSize: 16,
+                  fontFamily: "Truculenta-Regular",
+                }}
+              >
+                Error: Invalid input
+              </Text>
+            )}
           </View>
-          <TouchableOpacity
-            onPress={() => next()}
-            style={[
-              styles.btn,
-              { backgroundColor: valid ? COLORS.orange : "#E3E4E6" },
-            ]}
-          >
-            <Text
-              style={{
-                fontFamily: "Truculenta-Regular",
-                color: valid ? "white" : "#000",
-                fontSize: 18,
-              }}
+          {!loading && (
+            <TouchableOpacity
+              onPress={() => forgotpassword()}
+              style={[
+                styles.btn,
+                { backgroundColor: valid ? COLORS.orange : "#E3E4E6" },
+              ]}
             >
-              Submit
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={{
+                  fontFamily: "Truculenta-Regular",
+                  color: valid ? "white" : "#000",
+                  fontSize: 18,
+                }}
+              >
+                Submit
+              </Text>
+            </TouchableOpacity>
+          )}
+          {loading && (
+            <TouchableOpacity
+              style={[
+                styles.btn,
+                {
+                  backgroundColor: COLORS.orange,
+                },
+              ]}
+            >
+              <ActivityIndicator color="#fff" size={16} />
+            </TouchableOpacity>
+          )}
         </View>
         {showAvatar && (
           <Image
@@ -203,6 +276,7 @@ const ForgotPassword = ({ navigation }) => {
             }}
           />
         )}
+        <Toast config={toastConfig} />
       </Screen>
     </KeyboardAvoidingView>
   );

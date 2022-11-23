@@ -1,22 +1,22 @@
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import React from "react";
-import DraggableFlatList, {
-  ScaleDecorator,
-} from "react-native-draggable-flatlist";
+// import DraggableFlatList, {
+//   ScaleDecorator,
+// } from "react-native-draggable-flatlist";
 
 const List = ({ data, drag, isActive }) => {
   return (
-    <ScaleDecorator>
-      <TouchableOpacity
-        onLongPress={drag}
-        style={[
-          styles.list,
-          { backgroundColor: isActive ? "#0000001F" : "white" },
-        ]}
-      >
-        <Text style={styles.text}>{data?.name}</Text>
-      </TouchableOpacity>
-    </ScaleDecorator>
+    // <ScaleDecorator>
+    <TouchableOpacity
+      onLongPress={drag}
+      style={[
+        styles.list,
+        { backgroundColor: isActive ? "#0000001F" : "white" },
+      ]}
+    >
+      <Text style={styles.text}>{data?.name}</Text>
+    </TouchableOpacity>
+    // </ScaleDecorator>
   );
 };
 
