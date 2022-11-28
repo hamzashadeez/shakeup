@@ -7,7 +7,7 @@ import {
   View,
 } from "react-native";
 import React, { useState } from "react";
-import { COLORS } from "../Theme";
+import { COLORS, hp } from "../Theme";
 import Modal from "react-native-modal";
 import { AntDesign } from "@expo/vector-icons";
 import learningData from "../recoil/learningData";
@@ -80,7 +80,7 @@ const Item = () => {
             <Text style={styles.text3}>4 ingredients</Text>
           </View>
           <View style={styles.labels}>
-            <Text style={styles.text3}>Vodka</Text>
+            <Text style={styles.text3}>Martini</Text>
           </View>
         </ScrollView>
       </View>
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderBottomWidth: 1,
     paddingVertical: 5,
-    height: 100,
+    height: hp("14.3%"),
     marginBottom: 2,
     display: "flex",
     flexDirection: "row",
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   text3: {
     color: "#000000DE",
     fontFamily: "Truculenta-SemiBold",
-    fontSize: 11,
+    fontSize: 13,
   },
   btnCircle: {
     backgroundColor: COLORS.primary,
@@ -150,7 +150,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginRight: 5,
     borderRadius: 2,
-    height: 20,
+    height: 25,
+    alignItems: "center",
+    justifyContent: "center",
     alignSelf: "flex-end",
   },
   labelsCont: {

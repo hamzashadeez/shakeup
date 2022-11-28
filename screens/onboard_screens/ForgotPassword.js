@@ -41,7 +41,7 @@ const ForgotPassword = ({ navigation }) => {
 
   const forgotpassword = async () => {
     // Send confirmation code to user's email
-    console.log("Presssed");
+    // console.log("Presssed");
     setLoading(true);
     if (validateEmail(email)) {
       Auth.forgotPassword(email)
@@ -52,7 +52,9 @@ const ForgotPassword = ({ navigation }) => {
             text1: "Check your mail",
             position: "bottom",
           });
-          navigation.navigate("newpassword", { username: email });
+          setTimeout(() => {
+            navigation.navigate("newpassword", { username: email });
+          }, 1000);
           setLoading(false);
         })
         .catch((err) => {
@@ -165,10 +167,11 @@ const ForgotPassword = ({ navigation }) => {
               display: "flex",
               alignItems: "center",
               marginTop: 10,
+              position: "relative",
             }}
           >
             <TouchableOpacity
-              style={styles.backBtn}
+              style={[styles.backBtn, { position: "absolute" }]}
               onPress={() => navigation.navigate("login")}
             >
               <Entypo name="chevron-thin-left" size={24} color="white" />

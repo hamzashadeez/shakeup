@@ -9,6 +9,8 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { AntDesign } from "@expo/vector-icons";
 import { COLORS } from "../../Theme";
 import learningData from "../../recoil/learningData";
+import Card from "../../assets/card.svg";
+import Progress from "../../assets/not_started.svg";
 
 const Learn = ({ navigation }) => {
   const [_, setUser] = useRecoilState(userData);
@@ -32,13 +34,16 @@ const Learn = ({ navigation }) => {
               flexDirection: "row",
               alignItems: "center",
               padding: 13,
+              height: 70,
             }}
           >
             <Text style={{ marginRight: 20 }}>
-              <AntDesign name="creditcard" size={20} color="black" />
+              <Card />
+              {/* <AntDesign name="creditcard" size={20} color="black" /> */}
             </Text>
             <Text style={styles.text2}>Cosmopolitan</Text>
-            <BouncyCheckbox
+            <Progress />
+            {/* <BouncyCheckbox
               size={23}
               isChecked={true}
               fillColor={"#6EB528"}
@@ -50,7 +55,7 @@ const Learn = ({ navigation }) => {
               // onPress={(e) => {
               //   setAgreed(e);
               // }}
-            />
+            /> */}
           </TouchableOpacity>
         )}
       </GeneralScreen>

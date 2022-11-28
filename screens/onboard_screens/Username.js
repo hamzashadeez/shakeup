@@ -64,11 +64,13 @@ const Username = ({ navigation, route }) => {
       <Screen>
         <Header />
         <View style={{ paddingHorizontal: 15, paddingVertical: 10, flex: 1 }}>
-          <Image
-            source={require("../../assets/1.png")}
-            resizeMode="contain"
-            style={{ width: "100%", height: 28 }}
-          />
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Image
+              source={require("../../assets/1.png")}
+              resizeMode="contain"
+              style={{ width: "100%", height: 28 }}
+            />
+          </TouchableOpacity>
 
           <Text
             style={{

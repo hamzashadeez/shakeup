@@ -68,11 +68,14 @@ const OTP = ({ navigation, route }) => {
       <KeyboardAwareScrollView enableOnAndroid={true}>
         <Header />
         <View style={{ paddingHorizontal: 15, paddingVertical: 7, flex: 1 }}>
-          <Image
-            source={require("../../assets/3.png")}
-            resizeMode="contain"
-            style={{ width: "100%", height: 28 }}
-          />
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Image
+              source={require("../../assets/3.png")}
+              resizeMode="contain"
+              style={{ width: "100%", height: 28 }}
+            />
+          </TouchableOpacity>
+
           <Text
             style={{
               fontSize: 28,

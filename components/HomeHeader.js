@@ -1,4 +1,11 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import React from "react";
 import { COLORS } from "../Theme";
 import { AntDesign } from "@expo/vector-icons";
@@ -22,27 +29,21 @@ const HomeHeader = () => {
             resizeMode="contain"
           />
         </View>
-        <View
+        <TextInput
+          placeholder="Search"
+          placeholderTextColor={"gray"}
           style={{
             backgroundColor: "#eee",
             height: 40,
             flex: 1,
             marginLeft: 7,
+            paddingHorizontal: 15,
           }}
         />
       </View>
       <View style={styles.controls}>
         <TouchableOpacity style={styles.btn}>
           <Text style={styles.text2}>All Liquors</Text>
-          <AntDesign
-            name="caretdown"
-            size={14}
-            color="white"
-            style={{ marginLeft: 7 }}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.btn}>
-          <Text style={styles.text2}>Most popular</Text>
           <AntDesign
             name="caretdown"
             size={14}
