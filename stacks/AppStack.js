@@ -7,6 +7,8 @@ import {
   ChangePassword,
   ChangeUsername,
   ChangeName,
+  ForgotPassword2,
+  NewPassword2,
 } from "../screens/profile";
 import LearnStack from "./LearnStack";
 import TabStack from "./TabStack";
@@ -26,6 +28,8 @@ function AppStack() {
       <Stack.Screen name="change_password" component={ChangePassword} />
       <Stack.Screen name="change_username" component={ChangeUsername} />
       <Stack.Screen name="accountdeleted" component={AccountDeleted} />
+      <Stack.Screen name="forgot_password2" component={ForgotPassword2} />
+      <Stack.Screen name="newpassword" component={NewPassword2} />
       <Stack.Screen name="play" component={Play} />
     </Stack.Navigator>
   );

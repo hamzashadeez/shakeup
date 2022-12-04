@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
     height: 42,
     marginBottom: 15,
     borderRadius: 5,
+    marginHorizontal: 10,
     display: "flex",
     justifyContent: "center",
     paddingHorizontal: 15,

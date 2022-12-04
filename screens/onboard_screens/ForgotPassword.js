@@ -7,6 +7,7 @@ import {
   View,
   ActivityIndicator,
   KeyboardAvoidingView,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import Screen from "../../components/Screen";
@@ -58,12 +59,17 @@ const ForgotPassword = ({ navigation }) => {
           setLoading(false);
         })
         .catch((err) => {
-          alert(err);
-          console.log(err);
+          if (err.message === "Username/client id combination not found.") {
+            Alert.alert("Alert!", "User not found");
+          } else {
+            alert(err);
+          }
+          console.log(err.message);
           setLoading(false);
         });
     } else {
       setShowValidEmail(true);
+      setLoading(false);
     }
   };
 
@@ -171,7 +177,7 @@ const ForgotPassword = ({ navigation }) => {
             }}
           >
             <TouchableOpacity
-              style={[styles.backBtn, { position: "absolute" }]}
+              style={[styles.backBtn, { position: "absolute", zIndex: 30 }]}
               onPress={() => navigation.navigate("login")}
             >
               <Entypo name="chevron-thin-left" size={24} color="white" />
@@ -271,7 +277,7 @@ const ForgotPassword = ({ navigation }) => {
             resizeMode="contain"
             style={{
               width: "100%",
-              height: hp("40%"),
+              height: hp("35%"),
               zIndex: -10,
               opacity: 0.12,
               position: "absolute",

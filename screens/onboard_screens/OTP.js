@@ -15,16 +15,33 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { API, Auth, graphqlOperation } from "aws-amplify";
 import userData from "../../recoil/userData";
 import { useRecoilState } from "recoil";
-import { createUserData } from "../../src/graphql/mutations";
+import { createUserData, deleteUserData } from "../../src/graphql/mutations";
+import uuid from "react-native-uuid";
+import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
+import { Ball } from "../../components/ProgressBar";
+import authData from "../../recoil/authData";
 
 const OTP = ({ navigation, route }) => {
-  const { name, username, email, password } = route.params;
-  // let email = "ebbg@gmail.com";
   const [otpcode, setOTP] = useState("");
   const [coloredBoarder, setColoredBoarder] = useState("white");
   const [_, setUser] = useRecoilState(userData);
   const [showError, setErrorMessage] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [userAuth, setUserAuth] = useRecoilState(authData);
+
+  async function resendConfirmationCode() {
+    try {
+      await Auth.resendSignUp(userAuth.username);
+      console.log("code resent successfully");
+      Toast.show({
+        type: "success",
+        text1: "Resent Confirmation Code Successful",
+        position: "bottom",
+      });
+    } catch (err) {
+      console.log("error resending code: ", err);
+    }
+  }
 
   const changeText = (text) => {
     setOTP(text);
@@ -35,26 +52,58 @@ const OTP = ({ navigation, route }) => {
       .catch(() => console.log("Not signed in"));
   }
 
+  const changeEmail = async () => {
+    // Delete the existing email;
+    Auth.currentAuthenticatedUser({
+      bypassCache: true, // Optional, By default is false.
+    })
+      .then((user) => {
+        user.deleteUser((error, data) => {
+          if (error) {
+            throw error;
+          }
+          if (data) console.log(data);
+
+          // Delete all user data in your system
+
+          // Log the user out
+          Auth.signOut({ global: true });
+        });
+      })
+      .catch((err) => console.log(err));
+    // change state email to ""
+    setUserAuth({ ...userAuth, email: "" });
+    // Delete from DB as well
+    // await API.graphql(
+    //   graphqlOperation(deleteUserData, { input: { id: userAuth.email } })
+    // );
+    // navigate to email screen
+    navigation.navigate("email");
+  };
+
   const submit = async () => {
     if (loading === true) return;
     try {
       setLoading(true);
-      await Auth.confirmSignUp(username, otpcode).then(() => {
+      await Auth.confirmSignUp(userAuth.username, otpcode).then(() => {
         console.log("Succefully Registed");
       });
 
       const newUser = {
-        id: email,
-        email,
-        username,
-        name,
+        // id: uuid.v4(),
+        name: userAuth.fullname,
+        username: userAuth.username,
+        id: userAuth.email,
+        email: userAuth.email,
       };
+      console.log(newUser);
 
-      await API.graphql(graphqlOperation(createUserData, { input: newUser }));
-      // .then(() => console.log("Added"))
-      // .catch((err) => console.log("error from DB: ", err));
+      await API.graphql(graphqlOperation(createUserData, { input: newUser }))
+        .then(() => console.log("Added"))
+        .catch((err) => console.log("error from DB: ", err));
 
-      navigation.navigate("createpassword", { name, email, username });
+      setLoading(false);
+      navigation.navigate("createpassword");
       // setUser({ name, username, email, password });
     } catch (error) {
       setErrorMessage(true);
@@ -63,18 +112,36 @@ const OTP = ({ navigation, route }) => {
     }
   };
 
+  const toastConfig = {
+    success: (props) => (
+      <BaseToast
+        {...props}
+        style={{ backgroundColor: COLORS.green }}
+        contentContainerStyle={{ paddingHorizontal: 15 }}
+        text1Style={{
+          fontSize: 15,
+          fontWeight: "400",
+          color: "white",
+          fontFamily: "Truculenta-Regular",
+        }}
+      />
+    ),
+  };
+
   return (
     <Screen>
       <KeyboardAwareScrollView enableOnAndroid={true}>
         <Header />
         <View style={{ paddingHorizontal: 15, paddingVertical: 7, flex: 1 }}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Image
-              source={require("../../assets/3.png")}
-              resizeMode="contain"
-              style={{ width: "100%", height: 28 }}
-            />
-          </TouchableOpacity>
+          {/* progress */}
+          <View style={styles.progressContainer}>
+            <View style={styles.line}></View>
+            <Ball borderred fill onPress={() => navigation.goBack()} />
+            <Ball borderred fill onPress={() => gotoUsername()} />
+            <Ball borderred fill onPress={() => gotoEmail()} />
+            <Ball borderred onPress={() => navigation.goBack()} />
+          </View>
+          {/* end progress */}
 
           <Text
             style={{
@@ -97,10 +164,10 @@ const OTP = ({ navigation, route }) => {
             }}
           >
             To verify your email, we've sent a One Time Password (OTP) to{" "}
-            {email}
+            {userAuth.email}
           </Text>
           <TouchableOpacity
-            onPress={() => navigation.navigate("signup")}
+            onPress={() => changeEmail()}
             style={{
               width: "40%",
               marginLeft: "30%",
@@ -138,7 +205,7 @@ const OTP = ({ navigation, route }) => {
               >
                 OTP Code
               </Text>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => resendConfirmationCode()}>
                 <Text
                   style={{
                     fontSize: 16,
@@ -221,12 +288,13 @@ const OTP = ({ navigation, route }) => {
         resizeMode="contain"
         style={{
           width: "100%",
-          height: 300,
+          height: 260,
           zIndex: -10,
           position: "absolute",
           bottom: -10,
         }}
       />
+      <Toast config={toastConfig} />
     </Screen>
   );
 };
@@ -255,5 +323,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 20,
+  },
+  line: {
+    height: 2,
+    width: "90%",
+    marginHorizontal: 20,
+    backgroundColor: "white",
+    position: "absolute",
+  },
+  progressContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    height: 28,
+    position: "relative",
   },
 });

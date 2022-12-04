@@ -203,7 +203,7 @@ const ChangePassword = ({ navigation }) => {
             <View style={styles.flex}>
               <Text style={styles.label}>Current Password</Text>
               <TouchableOpacity
-                onPress={() => navigation.navigate("change_username")}
+                onPress={() => navigation.navigate("forgot_password2")}
               >
                 <Text style={styles.label2}>Forgot Password</Text>
               </TouchableOpacity>

@@ -1,21 +1,18 @@
-import { StyleSheet, Text, SafeAreaView } from 'react-native'
-import React from 'react'
-import { COLORS } from '../Theme'
+import { StyleSheet, Text, SafeAreaView, View, Platform } from "react-native";
+import React from "react";
+import { COLORS } from "../Theme";
 
-const CustomScreen = ({children}) => {
-  return (
-    <SafeAreaView style={styles.main}>
-      {children}
-    </SafeAreaView>
-  )
-}
+const CustomScreen = ({ children }) => {
+  return <View style={styles.main}>{children}</View>;
+};
 
-export default CustomScreen
+export default CustomScreen;
 
 const styles = StyleSheet.create({
-    main: {
-        flex: 1,
-        backgroundColor: "white",
-        position: "relative"
-    }
-})
+  main: {
+    flex: 1,
+    backgroundColor: "white",
+    position: "relative",
+    paddingTop: Platform.OS === "ios" ? 44 : 0,
+  },
+});

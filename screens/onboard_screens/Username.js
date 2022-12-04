@@ -10,18 +10,21 @@ import {
 import React, { useEffect, useState } from "react";
 import Screen from "../../components/Screen";
 import Header from "../../components/Header";
+import ProgressBar, { Ball } from "../../components/ProgressBar";
 import { COLORS, hp } from "../../Theme";
 import { API, graphqlOperation } from "aws-amplify";
 import { listUserData } from "../../src/graphql/queries";
+import { useRecoilState } from "recoil";
+import authData from "../../recoil/authData";
 
 const Username = ({ navigation, route }) => {
-  const { fullname } = route.params;
   const [name, setName] = useState("");
   const [valid, setValid] = useState(false);
   const [data, setData] = useState([]);
   const [showError, setShowError] = useState(false);
   const [coloredBoarder, setColoredBoarder] = useState("white");
   const [showAvatar, setAvatar] = useState(true);
+  const [userAuth, setUserAuth] = useRecoilState(authData);
 
   const changeText = (text) => {
     setName(text);
@@ -32,14 +35,26 @@ const Username = ({ navigation, route }) => {
     }
   };
 
+  const gotoEmail = () => {
+    if (userAuth.email !== "") {
+      navigation.navigate("email");
+    }
+  };
+
+  const gotoUsername = () => {
+    if (userAuth.username !== "") {
+      navigation.navigate("username");
+    }
+  };
+
   useEffect(() => {
     // check database
     const checkUsers = async () => {
       const user = await API.graphql(graphqlOperation(listUserData));
       console.log(user.data.listUserData.items);
       let _ = user.data.listUserData.items;
-      setData(_);
-      console.log("user: ", data);
+      let perm_users = _.filter((userss) => userss._deleted !== true);
+      setData(perm_users);
     };
     checkUsers();
   }, []);
@@ -51,9 +66,10 @@ const Username = ({ navigation, route }) => {
     if (found) {
       setShowError(true);
     } else {
+      setUserAuth({ ...userAuth, username: name });
+      console.log(userAuth);
+
       navigation.navigate("email", {
-        name: fullname,
-        username: name,
         data,
       });
     }
@@ -64,13 +80,13 @@ const Username = ({ navigation, route }) => {
       <Screen>
         <Header />
         <View style={{ paddingHorizontal: 15, paddingVertical: 10, flex: 1 }}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Image
-              source={require("../../assets/1.png")}
-              resizeMode="contain"
-              style={{ width: "100%", height: 28 }}
-            />
-          </TouchableOpacity>
+          <View style={styles.progressContainer}>
+            <View style={styles.line}></View>
+            <Ball borderred fill onPress={() => navigation.goBack()} />
+            <Ball borderred onPress={() => gotoUsername()} />
+            <Ball onPress={() => gotoEmail()} />
+            <Ball onPress={() => navigation.goBack()} />
+          </View>
 
           <Text
             style={{
@@ -92,7 +108,7 @@ const Username = ({ navigation, route }) => {
               fontFamily: "Truculenta-Regular",
             }}
           >
-            Welcome to learning cocktails!
+            Create username
           </Text>
 
           {/* form */}
@@ -161,7 +177,7 @@ const Username = ({ navigation, route }) => {
             resizeMode="contain"
             style={{
               width: "100%",
-              height: hp("40%"),
+              height: hp("35%"),
               zIndex: -10,
               position: "absolute",
               bottom: -10,
@@ -196,5 +212,20 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+  },
+  line: {
+    height: 2,
+    width: "90%",
+    marginHorizontal: 20,
+    backgroundColor: "white",
+    position: "absolute",
+  },
+  progressContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    height: 28,
+    position: "relative",
   },
 });

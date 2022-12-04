@@ -10,19 +10,24 @@ import { AntDesign } from "@expo/vector-icons";
 import { COLORS } from "../../Theme";
 import learningData from "../../recoil/learningData";
 import Card from "../../assets/card.svg";
-import Progress from "../../assets/not_started.svg";
+import StartingIcon from "../../assets/not_started.svg";
+import ProgressIcon from "../../assets/in_progress.svg";
+import Completed from "../../assets/completed.svg";
+import progress from "../../recoil/progress";
 
 const Learn = ({ navigation }) => {
   const [_, setUser] = useRecoilState(userData);
   const [learning, setLearning] = useRecoilState(learningData);
+  const [progressData, setProgressData] = useRecoilState(progress);
 
+  console.log(progressData);
   return (
     <>
       <HomeHeader />
       <GeneralScreen>
         {/* content goes here */}
         <View style={{ height: 10 }} />
-        {learning === false && (
+        {learning === true && (
           <TouchableOpacity
             onPress={() =>
               navigation.navigate("learn_stack", { screen: "opencard" })
@@ -42,7 +47,10 @@ const Learn = ({ navigation }) => {
               {/* <AntDesign name="creditcard" size={20} color="black" /> */}
             </Text>
             <Text style={styles.text2}>Cosmopolitan</Text>
-            <Progress />
+            {progressData === 0 && <StartingIcon />}
+            {progressData > 0 && progressData < 11 && <ProgressIcon />}
+            {progressData === 11 && <Completed />}
+
             {/* <BouncyCheckbox
               size={23}
               isChecked={true}

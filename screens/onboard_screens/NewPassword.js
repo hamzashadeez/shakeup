@@ -20,6 +20,7 @@ import userData from "../../recoil/userData";
 
 const NewPassword = ({ navigation, route }) => {
   const { name, username, email } = route.params;
+  // let username = "";
   const [password, setPassword] = useState("");
   const [cpassword, setCPassword] = useState("");
   const [valid, setValid] = useState(null);
@@ -118,10 +119,10 @@ const NewPassword = ({ navigation, route }) => {
             setLoading(false);
             Toast.show({
               type: "success",
-              text1: "Check your mail",
+              text1: "Password Changed Successfully",
               position: "bottom",
             });
-            navigation.navigate("login");
+            setTimeout(() => navigation.navigate("login"), 3000);
           })
           .catch((err) => {
             console.log("New password: ", err);
@@ -150,16 +151,6 @@ const NewPassword = ({ navigation, route }) => {
             }}
           >
             New Password
-          </Text>
-          <Text
-            style={{
-              fontSize: 20,
-              textAlign: "center",
-              color: "#EEEFF0",
-              fontFamily: "Truculenta-Regular",
-            }}
-          >
-            Verification Code was to your email
           </Text>
 
           {/* form */}

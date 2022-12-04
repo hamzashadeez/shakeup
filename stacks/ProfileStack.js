@@ -1,5 +1,13 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import { AccountDeleted,Profile, ChangeEmail, ChangePassword, ChangeUsername, ChangeName} from "../screens/profile";
+import {
+  AccountDeleted,
+  Profile,
+  ChangeEmail,
+  ChangePassword,
+  ChangeUsername,
+  ChangeName,
+  ForgotPassword2,
+} from "../screens/profile";
 
 const Stack = createStackNavigator();
 
@@ -15,6 +23,7 @@ function ProfileStack() {
       <Stack.Screen name="change_password" component={ChangePassword} />
       <Stack.Screen name="change_username" component={ChangeUsername} />
       <Stack.Screen name="accountdeleted" component={AccountDeleted} />
+      <Stack.Screen name="forgot_password2" component={ForgotPassword2} />
     </Stack.Navigator>
   );
 }
