@@ -16,8 +16,7 @@ import MainStack from "./stacks/MainStack";
 import { Drag } from "./screens/learn_screens";
 import { COLORS } from "./Theme";
 import { Register } from "./screens/onboard_screens";
-
-const  awsconfig = {
+Amplify.configure({...{
   "aws_project_region": "us-east-1",
   "aws_cognito_identity_pool_id": "us-east-1:7740bd62-8dcb-4493-86ae-727dd94bdde6",
   "aws_cognito_region": "us-east-1",
@@ -47,12 +46,7 @@ const  awsconfig = {
   "aws_appsync_region": "us-east-1",
   "aws_appsync_authenticationType": "API_KEY",
   "aws_appsync_apiKey": "da2-eyredmqj3jfxpa332pujwsqsca"
-};
-
-Amplify.configure({
-  ...awsconfig,
-  Analytics: { disabled: true },
-});
+} ,Analytics: { disabled: true },})
 
 const STATUSBAR_HEIGHT = StatusBar.currentHeight;
 const APPBAR_HEIGHT = Platform.OS === "ios" ? 44 : 56;
