@@ -1,4 +1,11 @@
-import { StyleSheet, Text, View, SafeAreaView, StatusBar } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  StatusBar,
+  Platform,
+} from "react-native";
 import { useFonts } from "expo-font";
 import { useCallback } from "react";
 import { NavigationContainer } from "@react-navigation/native";
@@ -9,10 +16,22 @@ import { RecoilRoot, useRecoilState, useRecoilValue } from "recoil";
 import MainStack from "./stacks/MainStack";
 import { Drag } from "./screens/learn_screens";
 import { COLORS } from "./Theme";
+import { Register } from "./screens/onboard_screens";
 Amplify.configure({
   ...awsconfig,
   Analytics: { disabled: true },
 });
+
+const STATUSBAR_HEIGHT = StatusBar.currentHeight;
+const APPBAR_HEIGHT = Platform.OS === "ios" ? 44 : 56;
+
+const MyStatusBar = ({ backgroundColor, ...props }) => {
+  <View style={[styles.statusBar, { backgroundColor }]}>
+    <SafeAreaView>
+      <StatusBar translucent backgroundColor={backgroundColor} {...props} />
+    </SafeAreaView>
+  </View>;
+};
 
 function App() {
   const [fontsLoaded] = useFonts({
@@ -21,19 +40,6 @@ function App() {
     "Truculenta-SemiBold": require("./assets/Truculenta/Truculenta-SemiBold.ttf"),
     "Truculenta-Bold": require("./assets/Truculenta/Truculenta-Bold.ttf"),
   });
-
-  // Amplify.configure({
-  //   Auth: {
-  //     // REQUIRED only for Federated Authentication - Amazon Cognito Identity Pool ID
-  //     identityPoolId: "XX-XXXX-X:XXXXXXXX-XXXX-1234-abcd-1234567890ab",
-  //     // REQUIRED - Amazon Cognito Region
-  //     region: "us-east-1",
-  //     // OPTIONAL - Amazon Cognito User Pool ID
-  //     userPoolId: "us-east-1_J30ieIzQ8",
-  //     // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
-  //     userPoolWebClientId: "5m5q5obip2sm7u63mlp10lp1u7",
-  //   },
-  // });
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
@@ -48,11 +54,27 @@ function App() {
   return (
     <RecoilRoot>
       <NavigationContainer>
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
+          {/* <View style={styles.appBar} /> */}
+          {/* {Platform.OS === "ios" && ( */}
+          {/* <View
+            style={{
+              height: StatusBar.currentHeight,
+              backgroundColor: COLORS.green,
+              width: "100%",
+              zIndex: 100,
+              position: "absolute",
+              top: 0,
+              left: 0,
+            }}
+          /> */}
           <StatusBar style="auto" backgroundColor={COLORS.primary} />
+          {/* )} */}
+          {/* {Platform.OS === "android" && (
+          )} */}
           <MainStack />
           {/* <Drag /> */}
-        </SafeAreaView>
+        </View>
       </NavigationContainer>
     </RecoilRoot>
   );
@@ -64,5 +86,14 @@ export default App;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    position: "relative",
+    // paddingTop: StatusBar.currentHeight,
+  },
+  statusBar: {
+    height: STATUSBAR_HEIGHT,
+  },
+  appBar: {
+    backgroundColor: COLORS.primary,
+    height: APPBAR_HEIGHT,
   },
 });

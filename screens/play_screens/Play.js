@@ -19,6 +19,8 @@ import selectedCard from "../../recoil/selectedCard";
 import questionIndex from "../../recoil/questionIndex";
 import score from "../../recoil/score";
 import madeDecision from "../../recoil/madeDecision";
+import progress from "../../recoil/progress";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width, height } = Dimensions.get("screen");
 const Play = ({ navigation }) => {
@@ -27,6 +29,7 @@ const Play = ({ navigation }) => {
   const [qScore, setScore] = useRecoilState(score);
   const [decision, setDecision] = useRecoilState(madeDecision);
   const [choosedAnswer, setChoosedAnswer] = useState(null);
+  const [progressData, setProgressData] = useRecoilState(progress);
 
   const onSelect = (id) => {
     setSelect(id);
@@ -39,6 +42,9 @@ const Play = ({ navigation }) => {
 
     if (quizData.length > qIndex + 1) {
       setQIndex(qIndex + 1);
+      setProgressData(progressData + 1);
+      console.log("progressData ", progressData);
+      AsyncStorage.setItem("progress", JSON.stringify(progressData));
     } else {
       navigation.navigate("dog");
       // alert("You reached to the end");

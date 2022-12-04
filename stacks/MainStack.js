@@ -9,11 +9,22 @@ import { API, Auth, graphqlOperation } from "aws-amplify";
 // import { createUsers } from "../src/graphql/mutations";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import learningData from "../recoil/learningData";
+import progress from "../recoil/progress";
 
 const MainStack = () => {
   const [user_data, setUser] = useRecoilState(userData);
   const [learning, setLearning] = useRecoilState(learningData);
+  const [progressData, setprogress] = useRecoilState(progress);
   const [state, setState] = useState(null);
+
+  useEffect(() => {
+    AsyncStorage.getItem("progress").then((value) => {
+      if (value !== null) {
+        setprogress(JSON.parse(value));
+      }
+      console.info("progress", progressData);
+    });
+  }, []);
 
   useEffect(() => {
     const syncUser = async () => {
@@ -34,7 +45,8 @@ const MainStack = () => {
   //
   useEffect(() => {
     async function check() {
-      AsyncStorage.getItem("cosmopolitan").then((value) => {
+      // will be removed later
+      AsyncStorage.getItem("cosmopolitanx").then((value) => {
         if (value !== null) {
           setLearning(JSON.parse(value));
         }
@@ -43,6 +55,16 @@ const MainStack = () => {
     }
     check();
   }, [learning]);
+
+  // track progress
+  // useEffect(() => {
+  //   AsyncStorage.getItem("progress").then((value) => {
+  //     if (value !== null) {
+  //       setprogress(JSON.parse(value));
+  //     }
+  //     console.info("progress undate", progressData);
+  //   });
+  // }, [progressData]);
 
   return (
     <View style={{ flex: 1 }}>

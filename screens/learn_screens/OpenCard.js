@@ -9,7 +9,7 @@ import {
 import React, { useState } from "react";
 import CustomScreen from "../../components/CustomScreen";
 import { Entypo } from "@expo/vector-icons";
-import { COLORS } from "../../Theme";
+import { COLORS, hp } from "../../Theme";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import Modal from "react-native-modal";
 
@@ -179,19 +179,11 @@ const OpenCard = ({ navigation }) => {
             resizeMode="contain"
             source={require("../../assets/Cosmopolitan_Front.png")}
             style={{
-              flex: 1,
-              // width: "100%",
-              // width: 500,
-              // height: 200,
+              width: hp("80%"),
               margin: 120,
               transform: [{ rotateZ: "90deg" }],
             }}
           />
-          {/* <Image
-            resizeMode="contain"
-            source={require("../../assets/Cosmopolitan_Back.png")}
-            style={{ width: "100%", height: "35%", marginTop: 15 }}
-          /> */}
         </View>
       </Modal>
       {/* end Moda; */}

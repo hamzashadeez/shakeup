@@ -4,7 +4,7 @@ let data = {
   email: "",
   password: "",
   username: "",
-  name: "",
+  fullname: "",
 };
 
 const authData = atom({

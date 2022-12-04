@@ -11,6 +11,8 @@ import Screen from "../../components/Screen";
 import Header from "../../components/Header";
 import { COLORS, hp } from "../../Theme";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { useRecoilS, useRecoilState } from "recoil";
+import authData from "../../recoil/authData";
 
 const Register = ({ navigation }) => {
   const [name, setName] = useState("");
@@ -18,6 +20,7 @@ const Register = ({ navigation }) => {
   const [coloredBoarder, setColoredBoarder] = useState("white");
   const [show, showText] = useState(false);
   const [showAvatar, setAvatar] = useState(true);
+  const [userAuth, setUserAuth] = useRecoilState(authData);
 
   const changeText = (text) => {
     setName(text);
@@ -42,7 +45,8 @@ const Register = ({ navigation }) => {
     } else {
       if (text.length !== 0) {
         setValid(true);
-        navigation.navigate("username", { fullname: name });
+        setUserAuth({ ...userAuth, fullname: name });
+        navigation.navigate("username");
       } else {
         setValid(null);
       }
@@ -216,7 +220,7 @@ const Register = ({ navigation }) => {
           resizeMode="contain"
           style={{
             width: "100%",
-            height: hp("40%"),
+            height: hp("35%"),
             zIndex: -10,
             position: "absolute",
             bottom: -10,

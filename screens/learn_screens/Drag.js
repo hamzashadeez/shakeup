@@ -9,8 +9,8 @@ import score from "../../recoil/score";
 import madeDecision from "../../recoil/madeDecision";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import List from "../../components/List";
-// import DraggableFlatList from "react-native-draggable-flatlist";
-// import { GestureHandlerRootView } from "react-native-gesture-handler";
+import DraggableFlatList from "react-native-draggable-flatlist";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const Drag = ({ navigation }) => {
   const [select, setSelect] = useRecoilState(selectedCard);
@@ -126,7 +126,7 @@ const Drag = ({ navigation }) => {
         Hint
       </Text>
       <View style={{ paddingHorizontal: 15, marginTop: 30 }}>
-        {/* <GestureHandlerRootView>
+        <GestureHandlerRootView>
           <DraggableFlatList
             data={data}
             animationConfig={{ mass: 0.5 }}
@@ -138,7 +138,7 @@ const Drag = ({ navigation }) => {
             keyExtractor={(item) => item.id}
             renderItem={renderItem}
           />
-        </GestureHandlerRootView> */}
+        </GestureHandlerRootView>
       </View>
       {/* Error Message */}
       {correctUI === false && (

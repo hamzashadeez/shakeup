@@ -18,6 +18,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const Item = () => {
   const [showModal, setShowModal] = useState(false);
   const [learning, setLearning] = useRecoilState(learningData);
+  // console.log(learning);
 
   return (
     <View style={styles.item}>
@@ -38,25 +39,30 @@ const Item = () => {
           }}
         >
           <Text style={styles.text2}>Cosmopolitan</Text>
-          {learning && (
+          {!learning && (
             <TouchableOpacity
               style={styles.btnCircle}
               onPress={() => {
-                AsyncStorage.setItem("cosmopolitan", JSON.stringify(!learning));
+                AsyncStorage.setItem(
+                  "cosmopolitanx",
+                  JSON.stringify(!learning)
+                );
                 setLearning(!learning);
-
-                console.log(learning);
               }}
             >
               <AntDesign name="plus" size={18} color="white" />
             </TouchableOpacity>
           )}
-          {!learning && (
+          {learning && (
             <TouchableOpacity
               style={[styles.btnCircle, { backgroundColor: "#AB1D38" }]}
               onPress={() => {
-                AsyncStorage.setItem("cosmopolitan", JSON.stringify(!learning));
+                AsyncStorage.setItem(
+                  "cosmopolitanx",
+                  JSON.stringify(!learning)
+                );
                 setLearning(!learning);
+                AsyncStorage.setItem("progress", JSON.stringify(0));
 
                 console.log(learning);
               }}
