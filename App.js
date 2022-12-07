@@ -9,44 +9,12 @@ import {
 import { useFonts } from "expo-font";
 import { useCallback } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { Amplify, Auth } from "aws-amplify";
-import { withAuthenticator } from "aws-amplify-react-native";
 import { RecoilRoot, useRecoilState, useRecoilValue } from "recoil";
-import MainStack from "./stacks/MainStack";
+import BoardStack from "./stacks/BoardStack";
 import { Drag } from "./screens/learn_screens";
 import { COLORS } from "./Theme";
 import { Register } from "./screens/onboard_screens";
-Amplify.configure({...{
-  "aws_project_region": "us-east-1",
-  "aws_cognito_identity_pool_id": "us-east-1:7740bd62-8dcb-4493-86ae-727dd94bdde6",
-  "aws_cognito_region": "us-east-1",
-  "aws_user_pools_id": "us-east-1_dDLN3UZab",
-  "aws_user_pools_web_client_id": "92arebnhat1gikhg7pri66ekf",
-  "oauth": {},
-  "aws_cognito_username_attributes": [],
-  "aws_cognito_social_providers": [],
-  "aws_cognito_signup_attributes": [
-      "EMAIL",
-      "FAMILY_NAME",
-      "MIDDLE_NAME",
-      "NAME"
-  ],
-  "aws_cognito_mfa_configuration": "OPTIONAL",
-  "aws_cognito_mfa_types": [
-      "TOTP"
-  ],
-  "aws_cognito_password_protection_settings": {
-      "passwordPolicyMinLength": "6",
-      "passwordPolicyCharacters": []
-  },
-  "aws_cognito_verification_mechanisms": [
-      "EMAIL"
-  ],
-  "aws_appsync_graphqlEndpoint": "https://m6hfistwfzaebgp3pbymcast4i.appsync-api.us-east-1.amazonaws.com/graphql",
-  "aws_appsync_region": "us-east-1",
-  "aws_appsync_authenticationType": "API_KEY",
-  "aws_appsync_apiKey": "da2-eyredmqj3jfxpa332pujwsqsca"
-} ,Analytics: { disabled: true },})
+
 
 const STATUSBAR_HEIGHT = StatusBar.currentHeight;
 const APPBAR_HEIGHT = Platform.OS === "ios" ? 44 : 56;
@@ -98,7 +66,7 @@ function App() {
           {/* )} */}
           {/* {Platform.OS === "android" && (
           )} */}
-          <MainStack />
+          <BoardStack />
           {/* <Drag /> */}
         </View>
       </NavigationContainer>

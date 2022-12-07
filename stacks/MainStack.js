@@ -4,7 +4,7 @@ import { useRecoilState } from "recoil";
 import userData from "../recoil/userData";
 import BoardStack from "./BoardStack";
 import AppStack from "./AppStack";
-import { API, Auth, graphqlOperation } from "aws-amplify";
+// import { API, Auth, graphqlOperation } from "aws-amplify";
 // import { getUsers } from "../src/graphql/queries";
 // import { createUsers } from "../src/graphql/mutations";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -26,22 +26,22 @@ const MainStack = () => {
     });
   }, []);
 
-  useEffect(() => {
-    const syncUser = async () => {
-      try {
-        const authUser = await Auth.currentAuthenticatedUser({
-          bypassCache: true,
-        });
-        setUser({
-          ...authUser?.attributes,
-        });
-      } catch (error) {
-        console.log("MainStack: ", error);
-      }
-    };
+  // useEffect(() => {
+  //   const syncUser = async () => {
+  //     try {
+  //       const authUser = await Auth.currentAuthenticatedUser({
+  //         bypassCache: true,
+  //       });
+  //       setUser({
+  //         ...authUser?.attributes,
+  //       });
+  //     } catch (error) {
+  //       console.log("MainStack: ", error);
+  //     }
+  //   };
 
-    syncUser();
-  }, []);
+  //   syncUser();
+  // }, []);
   //
   useEffect(() => {
     async function check() {

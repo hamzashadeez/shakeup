@@ -6,9 +6,7 @@
     "start": "expo start --dev-client",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "web": "expo start --web",
-    "aws-export": "echo 'Update Expo AWS_EXPORTS secret with value: \n\n' && cat aws-exports.js |base64",
-    "eas-build-pre-install": "echo $AWS_EXPORTS | base64 -di > ./src/aws-exports.js"
+    "web": "expo start --web"
   },
   "dependencies": {
     "@expo/config-plugins": "^5.0.4",
@@ -19,8 +17,6 @@
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/stack": "^6.3.2",
     "amazon-cognito-identity-js": "^5.2.12",
-    "aws-amplify": "^4.3.42",
-    "aws-amplify-react-native": "^6.0.8",
     "expo": "~46.0.16",
     "expo-font": "~10.2.0",
     "expo-splash-screen": "~0.16.2",
