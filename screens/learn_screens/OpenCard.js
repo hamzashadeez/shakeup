@@ -29,7 +29,7 @@ const OpenCard = ({ navigation }) => {
         <Text style={styles.label}>Cosmopolitan</Text>
       </View>
       {/* end header */}
-      <View style={{ padding: 10 }}>
+      <View style={{ padding: 10, backgroundColor: "white" }}>
         <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
           {show === false && (
             <TouchableOpacity

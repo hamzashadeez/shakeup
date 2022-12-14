@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     padding: 13,
+    paddingTop: 24,
   },
   btn: {
     flexDirection: "row",

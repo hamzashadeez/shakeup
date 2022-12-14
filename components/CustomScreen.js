@@ -11,8 +11,8 @@ export default CustomScreen;
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: COLORS.primary,
     position: "relative",
-    paddingTop: Platform.OS === "ios" ? 44 : 0,
+    paddingTop: Platform.OS === "ios" ? 20 : 0,
   },
 });

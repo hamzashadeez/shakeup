@@ -50,7 +50,8 @@ const ForgotPassword = ({ navigation }) => {
           // if everything is successfull...
           Toast.show({
             type: "success",
-            text1: "Check your mail",
+            text1:
+              "If there is an email address on file, you will receive an email",
             position: "bottom",
           });
           setTimeout(() => {

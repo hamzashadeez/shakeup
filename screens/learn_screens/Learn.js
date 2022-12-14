@@ -23,9 +23,9 @@ const Learn = ({ navigation }) => {
   console.log(progressData);
   return (
     <>
-      <HomeHeader />
       <GeneralScreen>
         {/* content goes here */}
+        <HomeHeader />
         <View style={{ height: 10 }} />
         {learning === true && (
           <TouchableOpacity
@@ -50,20 +50,6 @@ const Learn = ({ navigation }) => {
             {progressData === 0 && <StartingIcon />}
             {progressData > 0 && progressData < 11 && <ProgressIcon />}
             {progressData === 11 && <Completed />}
-
-            {/* <BouncyCheckbox
-              size={23}
-              isChecked={true}
-              fillColor={"#6EB528"}
-              unfillColor="#BCC0C4"
-              style={{ borderRadius: 0 }}
-              // iconStyle={{ borderRadius: 2 }}
-              innerIconStyle={{ borderWidth: 0, color: "blue" }}
-              textStyle={{ fontFamily: "Truculenta-Regular" }}
-              // onPress={(e) => {
-              //   setAgreed(e);
-              // }}
-            /> */}
           </TouchableOpacity>
         )}
       </GeneralScreen>

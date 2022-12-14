@@ -45,7 +45,7 @@ const Profile = ({ navigation }) => {
       <CustomHeader name={"Profile"} />
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{ flex: 1, padding: 20 }}
+        style={{ flex: 1, padding: 20, backgroundColor: "white" }}
       >
         <Text style={styles.label}>Name</Text>
         <TouchableOpacity
@@ -125,6 +125,7 @@ const Profile = ({ navigation }) => {
           justifyContent: "space-between",
           alignItems: "flex-end",
           paddingBottom: 25,
+          backgroundColor: "white",
         }}
       >
         <TouchableOpacity style={styles.btn} onPress={() => deleteAccount()}>

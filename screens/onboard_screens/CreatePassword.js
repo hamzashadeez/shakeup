@@ -12,10 +12,11 @@ import Header from "../../components/Header";
 import { COLORS, hp } from "../../Theme";
 import PasswordField from "../../components/PasswordField";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { Auth } from "aws-amplify";
+import { API, Auth, graphqlOperation } from "aws-amplify";
 import { useRecoilState } from "recoil";
 import userData from "../../recoil/userData";
 import authData from "../../recoil/authData";
+import { createUserData } from "../../src/graphql/mutations";
 
 const CreatePassword = ({ navigation, route }) => {
   const [password, setPassword] = useState("");
@@ -103,6 +104,17 @@ const CreatePassword = ({ navigation, route }) => {
           ...authUser.attributes,
           username: authUser.attributes.preferred_username,
         });
+        const newUser = {
+          // id: uuid.v4(),
+          name: userAuthData.fullname,
+          username: userAuthData.username2,
+          id: userAuthData.username2,
+          email: userAuthData.email,
+        };
+
+        await API.graphql(graphqlOperation(createUserData, { input: newUser }))
+          .then(() => console.log("Added"))
+          .catch((err) => console.log("error from DB: ", err));
         setLoading(false);
       } catch (error) {
         setLoading(false);

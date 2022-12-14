@@ -170,7 +170,10 @@ const ChangePassword = ({ navigation }) => {
 
   return (
     <CustomScreen>
-      <KeyboardAwareScrollView enableOnAndroid={true}>
+      <KeyboardAwareScrollView
+        enableOnAndroid={true}
+        style={{ backgroundColor: "white" }}
+      >
         <CustomHeader name={"Change Password"} />
         <ScrollView
           showsVerticalScrollIndicator={false}

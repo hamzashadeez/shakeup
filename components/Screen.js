@@ -13,6 +13,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.primary,
     position: "relative",
-    paddingTop: Platform.OS === "ios" ? 44 : 0,
+    paddingTop: Platform.OS === "ios" ? 20 : 0,
   },
 });

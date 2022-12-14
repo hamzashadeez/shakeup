@@ -8,7 +8,8 @@ import {
   ActivityIndicator,
   Alert,
 } from "react-native";
-import React, { useState } from "react";
+import uuid from "react-native-uuid";
+import React, { useEffect, useState } from "react";
 import Screen from "../../components/Screen";
 import Header from "../../components/Header";
 import { COLORS, hp } from "../../Theme";
@@ -35,6 +36,11 @@ const Email = ({ navigation, route }) => {
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return res.test(String(email).toLowerCase());
   }
+
+  useEffect(() => {
+    console.log("from email screen: ", userAuth);
+    console.log("uuid(): ", uuid.v4());
+  }, []);
 
   const changeText = (text) => {
     setEmail(text);
@@ -68,8 +74,10 @@ const Email = ({ navigation, route }) => {
     } else {
       try {
         setLoading(true);
+        let tempUsername = uuid.v4();
         const user = await Auth.signUp({
-          username: userAuth.username,
+          // username: userAuth.username,
+          username: tempUsername,
           password: "password",
           attributes: {
             email,
@@ -82,7 +90,7 @@ const Email = ({ navigation, route }) => {
             enabled: true,
           },
         });
-        setUserAuth({ ...userAuth, email });
+        setUserAuth({ ...userAuth, email, username2: tempUsername });
 
         navigation.navigate("otp");
         setLoading(false);

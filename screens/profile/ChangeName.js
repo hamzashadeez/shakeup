@@ -87,11 +87,14 @@ const ChangeName = ({ navigation, route }) => {
 
   return (
     <CustomScreen>
-      <KeyboardAwareScrollView enableOnAndroid={true}>
+      <KeyboardAwareScrollView
+        enableOnAndroid={true}
+        style={{ backgroundColor: "white" }}
+      >
         <CustomHeader name={"Name"} />
         <ScrollView
           showsVerticalScrollIndicator={false}
-          style={{ flex: 1, padding: 20 }}
+          style={{ flex: 1, padding: 20, backgroundColor: "white" }}
         >
           <View style={[styles.flex, { marginTop: 0 }]}>
             {/* backBtn */}

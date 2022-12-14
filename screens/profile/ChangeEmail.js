@@ -167,7 +167,10 @@ const ChangeEmail = ({ navigation, route }) => {
 
   return (
     <CustomScreen>
-      <KeyboardAwareScrollView enableOnAndroid={true}>
+      <KeyboardAwareScrollView
+        enableOnAndroid={true}
+        style={{ backgroundColor: "white" }}
+      >
         <CustomHeader name={"Email Address"} />
         <ScrollView
           showsVerticalScrollIndicator={false}

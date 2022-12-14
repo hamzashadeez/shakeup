@@ -66,7 +66,7 @@ const Username = ({ navigation, route }) => {
     if (found) {
       setShowError(true);
     } else {
-      setUserAuth({ ...userAuth, username: name });
+      setUserAuth({ ...userAuth, username: name, username2: name });
       console.log(userAuth);
 
       navigation.navigate("email", {

@@ -4,6 +4,7 @@ let data = {
   email: "",
   password: "",
   username: "",
+  username2: "",
   fullname: "",
 };
 

@@ -86,7 +86,9 @@ const Play = ({ navigation }) => {
         </View>
       </View>
       {/* end header */}
-      <ScrollView style={{ flex: 1, position: "relative" }}>
+      <ScrollView
+        style={{ flex: 1, position: "relative", backgroundColor: "white" }}
+      >
         {/* questions */}
         <View style={styles.questionContainer}>
           <View style={styles.textContainer}>

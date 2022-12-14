@@ -31,7 +31,7 @@ const OTP = ({ navigation, route }) => {
 
   async function resendConfirmationCode() {
     try {
-      await Auth.resendSignUp(userAuth.username);
+      await Auth.resendSignUp(userAuth.username2);
       console.log("code resent successfully");
       Toast.show({
         type: "success",
@@ -53,31 +53,21 @@ const OTP = ({ navigation, route }) => {
   }
 
   const changeEmail = async () => {
+    // setUserAuth({ ...userAuth, username: "user" });
+
     // Delete the existing email;
-    Auth.currentAuthenticatedUser({
-      bypassCache: true, // Optional, By default is false.
-    })
-      .then((user) => {
-        user.deleteUser((error, data) => {
-          if (error) {
-            throw error;
-          }
-          if (data) console.log(data);
-
-          // Delete all user data in your system
-
-          // Log the user out
-          Auth.signOut({ global: true });
-        });
-      })
-      .catch((err) => console.log(err));
+    try {
+      const awsUser = await Auth.currentAuthenticatedUser({
+        bypassCache: true,
+      });
+      console.log("AWS USER: ", awsUser);
+      const result = await awsUser.deleteUser();
+    } catch (error) {
+      console.log("Error deleting user", error);
+    }
     // change state email to ""
     setUserAuth({ ...userAuth, email: "" });
-    // Delete from DB as well
-    // await API.graphql(
-    //   graphqlOperation(deleteUserData, { input: { id: userAuth.email } })
-    // );
-    // navigate to email screen
+    // got to email screen
     navigation.navigate("email");
   };
 
@@ -85,22 +75,9 @@ const OTP = ({ navigation, route }) => {
     if (loading === true) return;
     try {
       setLoading(true);
-      await Auth.confirmSignUp(userAuth.username, otpcode).then(() => {
+      await Auth.confirmSignUp(userAuth.username2, otpcode).then(() => {
         console.log("Succefully Registed");
       });
-
-      const newUser = {
-        // id: uuid.v4(),
-        name: userAuth.fullname,
-        username: userAuth.username,
-        id: userAuth.email,
-        email: userAuth.email,
-      };
-      console.log(newUser);
-
-      await API.graphql(graphqlOperation(createUserData, { input: newUser }))
-        .then(() => console.log("Added"))
-        .catch((err) => console.log("error from DB: ", err));
 
       setLoading(false);
       navigation.navigate("createpassword");

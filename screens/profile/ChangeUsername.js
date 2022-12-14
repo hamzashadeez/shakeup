@@ -89,7 +89,10 @@ const ChangeUsername = ({ navigation, route }) => {
 
   return (
     <CustomScreen>
-      <KeyboardAwareScrollView enableOnAndroid={true}>
+      <KeyboardAwareScrollView
+        enableOnAndroid={true}
+        style={{ backgroundColor: "white" }}
+      >
         <CustomHeader name={"Username"} />
         <ScrollView
           showsVerticalScrollIndicator={false}
