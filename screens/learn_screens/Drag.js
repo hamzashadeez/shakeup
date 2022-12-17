@@ -76,218 +76,220 @@ const Drag = ({ navigation }) => {
   };
   return (
     <CustomScreen>
-      {/* header */}
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={{
-            padding: 7,
-            paddingLeft: 0,
-            paddingRight: 30,
-          }}
-          onPress={() => navigation.goBack("opencard")}
-        >
-          <AntDesign name="close" size={20} color="#000000DE" />
-        </TouchableOpacity>
-        <View style={styles.score}>
-          <MaterialCommunityIcons
-            name="star-outline"
-            size={16}
-            color="#000000DE"
-          />
-          <Text style={styles.textScore}>
-            {qScore} of {quizData.length + 1}
-          </Text>
+      <View style={{ flex: 1, backgroundColor: "white" }}>
+        {/* header */}
+        <View style={styles.header}>
+          <TouchableOpacity
+            style={{
+              padding: 7,
+              paddingLeft: 0,
+              paddingRight: 30,
+            }}
+            onPress={() => navigation.goBack("opencard")}
+          >
+            <AntDesign name="close" size={20} color="#000000DE" />
+          </TouchableOpacity>
+          <View style={styles.score}>
+            <MaterialCommunityIcons
+              name="star-outline"
+              size={16}
+              color="#000000DE"
+            />
+            <Text style={styles.textScore}>
+              {qScore} of {quizData.length + 1}
+            </Text>
+          </View>
         </View>
+        {/* end header */}
+        <Text
+          style={[
+            styles.questionText,
+            {
+              fontSize: 22,
+              marginHorizontal: 15,
+              marginVertical: 20,
+            },
+          ]}
+        >
+          Drag into the correct order
+        </Text>
+        <Text
+          style={[
+            styles.questionText,
+            {
+              fontSize: 22,
+              marginHorizontal: 15,
+              marginBottom: 20,
+              color: "#146AE2",
+            },
+          ]}
+        >
+          Hint
+        </Text>
+        <View style={{ paddingHorizontal: 15, marginTop: 30 }}>
+          <GestureHandlerRootView>
+            <DraggableFlatList
+              data={data}
+              animationConfig={{ mass: 0.5 }}
+              style={{ height: "100%" }}
+              onDragEnd={({ data, from, to }) => {
+                setData(data);
+                setDragged(true);
+              }}
+              keyExtractor={(item) => item.id}
+              renderItem={renderItem}
+            />
+          </GestureHandlerRootView>
+        </View>
+        {/* Error Message */}
+        {correctUI === false && (
+          <View
+            style={{
+              backgroundColor: "#BF45003D",
+              flex: 1,
+              height: 120,
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              display: "flex",
+              width: "100%",
+              flexDirection: "column",
+              paddingBottom: 15,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 18,
+                marginLeft: "10%",
+                marginTop: 10,
+                color: "#BF4500",
+                fontFamily: "Truculenta-Regular",
+              }}
+            >
+              Incorrect
+            </Text>
+
+            <TouchableOpacity
+              onPress={() => continueMoving()}
+              style={{
+                backgroundColor: "#BF4500",
+                width: "80%",
+                marginLeft: "10%",
+                padding: 10,
+                borderRadius: 5,
+                marginTop: 10,
+              }}
+            >
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 20,
+                  fontFamily: "Truculenta-Regular",
+                  color: "white",
+                }}
+              >
+                Continue
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        {/* end error msessage */}
+
+        {/* Success Message */}
+        {correctUI === true && (
+          <View
+            style={{
+              backgroundColor: "#6EB5283D",
+              flex: 1,
+              height: 110,
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              display: "flex",
+              width: "100%",
+              flexDirection: "column",
+              paddingBottom: 15,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 18,
+                marginLeft: "10%",
+                marginTop: 10,
+                color: "#6EB528AD",
+                fontFamily: "Truculenta-Regular",
+              }}
+            >
+              Correct
+            </Text>
+            <TouchableOpacity
+              onPress={() => continueMoving()}
+              style={{
+                backgroundColor: "#6EB528AD",
+                width: "80%",
+                marginLeft: "10%",
+                padding: 10,
+                borderRadius: 5,
+                marginTop: 15,
+              }}
+            >
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 20,
+                  fontFamily: "Truculenta-Regular",
+                  color: "white",
+                }}
+              >
+                Continue
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        {/* end success */}
+        {showDefaultBtn && (
+          <View
+            style={{
+              //   backgroundColor: "#6EB5283D",
+              flex: 1,
+              height: 110,
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              width: "100%",
+              flexDirection: "row",
+              paddingBottom: 15,
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => checkAnswer()}
+              disabled={dragged === false ? true : false}
+              style={{
+                backgroundColor: dragged === false ? "#0000001F" : "#E28B14",
+                width: "80%",
+                alignSelf: "flex-end",
+                marginLeft: "10%",
+                padding: 10,
+                borderRadius: 5,
+                marginTop: 20,
+              }}
+            >
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 20,
+                  fontFamily: "Truculenta-Regular",
+                  color: dragged === false ? "#1A1A1A99" : "#fff",
+                }}
+              >
+                Check
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {/* default btn */}
       </View>
-      {/* end header */}
-      <Text
-        style={[
-          styles.questionText,
-          {
-            fontSize: 22,
-            marginHorizontal: 15,
-            marginVertical: 20,
-          },
-        ]}
-      >
-        Drag into the correct order
-      </Text>
-      <Text
-        style={[
-          styles.questionText,
-          {
-            fontSize: 22,
-            marginHorizontal: 15,
-            marginBottom: 20,
-            color: "#146AE2",
-          },
-        ]}
-      >
-        Hint
-      </Text>
-      <View style={{ paddingHorizontal: 15, marginTop: 30 }}>
-        <GestureHandlerRootView>
-          <DraggableFlatList
-            data={data}
-            animationConfig={{ mass: 0.5 }}
-            style={{ height: "100%" }}
-            onDragEnd={({ data, from, to }) => {
-              setData(data);
-              setDragged(true);
-            }}
-            keyExtractor={(item) => item.id}
-            renderItem={renderItem}
-          />
-        </GestureHandlerRootView>
-      </View>
-      {/* Error Message */}
-      {correctUI === false && (
-        <View
-          style={{
-            backgroundColor: "#BF45003D",
-            flex: 1,
-            height: 120,
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            display: "flex",
-            width: "100%",
-            flexDirection: "column",
-            paddingBottom: 15,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 18,
-              marginLeft: "10%",
-              marginTop: 10,
-              color: "#BF4500",
-              fontFamily: "Truculenta-Regular",
-            }}
-          >
-            Incorrect
-          </Text>
-
-          <TouchableOpacity
-            onPress={() => continueMoving()}
-            style={{
-              backgroundColor: "#BF4500",
-              width: "80%",
-              marginLeft: "10%",
-              padding: 10,
-              borderRadius: 5,
-              marginTop: 10,
-            }}
-          >
-            <Text
-              style={{
-                textAlign: "center",
-                fontSize: 20,
-                fontFamily: "Truculenta-Regular",
-                color: "white",
-              }}
-            >
-              Continue
-            </Text>
-          </TouchableOpacity>
-        </View>
-      )}
-      {/* end error msessage */}
-
-      {/* Success Message */}
-      {correctUI === true && (
-        <View
-          style={{
-            backgroundColor: "#6EB5283D",
-            flex: 1,
-            height: 110,
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            display: "flex",
-            width: "100%",
-            flexDirection: "column",
-            paddingBottom: 15,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 18,
-              marginLeft: "10%",
-              marginTop: 10,
-              color: "#6EB528AD",
-              fontFamily: "Truculenta-Regular",
-            }}
-          >
-            Correct
-          </Text>
-          <TouchableOpacity
-            onPress={() => continueMoving()}
-            style={{
-              backgroundColor: "#6EB528AD",
-              width: "80%",
-              marginLeft: "10%",
-              padding: 10,
-              borderRadius: 5,
-              marginTop: 15,
-            }}
-          >
-            <Text
-              style={{
-                textAlign: "center",
-                fontSize: 20,
-                fontFamily: "Truculenta-Regular",
-                color: "white",
-              }}
-            >
-              Continue
-            </Text>
-          </TouchableOpacity>
-        </View>
-      )}
-      {/* end success */}
-      {showDefaultBtn && (
-        <View
-          style={{
-            //   backgroundColor: "#6EB5283D",
-            flex: 1,
-            height: 110,
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            width: "100%",
-            flexDirection: "row",
-            paddingBottom: 15,
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => checkAnswer()}
-            disabled={dragged === false ? true : false}
-            style={{
-              backgroundColor: dragged === false ? "#0000001F" : "#E28B14",
-              width: "80%",
-              alignSelf: "flex-end",
-              marginLeft: "10%",
-              padding: 10,
-              borderRadius: 5,
-              marginTop: 20,
-            }}
-          >
-            <Text
-              style={{
-                textAlign: "center",
-                fontSize: 20,
-                fontFamily: "Truculenta-Regular",
-                color: dragged === false ? "#1A1A1A99" : "#fff",
-              }}
-            >
-              Check
-            </Text>
-          </TouchableOpacity>
-        </View>
-      )}
-
-      {/* default btn */}
     </CustomScreen>
   );
 };

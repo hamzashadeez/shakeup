@@ -37,6 +37,7 @@ function App() {
   const [fontsLoaded] = useFonts({
     "Truculenta-Black": require("./assets/Truculenta/Truculenta-Black.ttf"),
     "Truculenta-Regular": require("./assets/Truculenta/Truculenta-Regular.ttf"),
+    "MyriadPro-Bold": require("./assets/Truculenta/Truculenta-Regular.ttf"),
     "Truculenta-SemiBold": require("./assets/Truculenta/Truculenta-SemiBold.ttf"),
     "Truculenta-Bold": require("./assets/Truculenta/Truculenta-Bold.ttf"),
   });
