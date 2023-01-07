@@ -18,13 +18,13 @@ import Orange from "./assets/svg/Orange_Slice.svg";
 import Lemon from "./assets/svg/Lemon_Slice.svg";
 import OneOZ from "./assets/svg/1_oz.svg";
 import One2OZ from "./assets/svg/1:2_oz.svg";
-import One5OZ from "./assets/svg/1.5_oz.svg";
+import One5OZ from "./assets/svg/1:2_oz.svg";
 import TwoOZ from "./assets/svg/2_oz.svg";
-import ThreeOZ from "./assets/svg/3_oz.svg";
-import S1 from "./assets/svg/s1.png";
+import ThreeOZ from "./assets/svg/2_oz.svg";
+import S1 from "./assets/svg/s2.png";
 import S2 from "./assets/svg/s2.png";
 import S3 from "./assets/svg/s3.png";
-import S4 from "./assets/svg/s4.png";
+import S4 from "./assets/svg/s3.png";
 import ChocolateSyrup from "./assets/svg/Chocolate_Syrup.svg";
 import { Text, Image } from "react-native";
 

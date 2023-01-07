@@ -345,19 +345,16 @@ const styles = StyleSheet.create({
   },
   bottleContainer: {
     backgroundColor: "white",
-    // flex: 1.5,
     width: "12%",
     display: "flex",
     borderRadius: 4,
-    // elevation: 4,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 7,
+      height: 10,
     },
-    shadowOpacity: 0.41,
-    shadowRadius: 9.11,
-
+    shadowOpacity: 0.51,
+    shadowRadius: 13.16,
     elevation: 14,
   },
   textContainer: {

@@ -106,7 +106,7 @@ const Item = () => {
           />
           <Image
             resizeMode="contain"
-            source={require("../assets/Cosmopolitan_Back.png")}
+            source={require("../assets/Cosmopolitan_Front.png")}
             style={{ width: "100%", height: "35%", marginTop: 15 }}
           />
         </View>

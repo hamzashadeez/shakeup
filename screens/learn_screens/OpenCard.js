@@ -117,7 +117,7 @@ const OpenCard = ({ navigation }) => {
           {show === false && (
             <Image
               resizeMode="contain"
-              source={require("../../assets/Cosmopolitan_Back.png")}
+              source={require("../../assets/Cosmopolitan_Front.png")}
               style={{
                 width: "94%",
                 marginLeft: "3%",
